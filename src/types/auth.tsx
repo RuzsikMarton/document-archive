@@ -7,3 +7,15 @@ export type PublicSession = {
   };
   role: Role;
 };
+
+export interface SignUpFormValues {
+  email: string;
+  name: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface SignInFormValues {
+  email: string;
+  password: string;
+}

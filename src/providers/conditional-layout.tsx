@@ -3,14 +3,16 @@
 import { usePathname } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { PublicSession } from "@/types/auth";
 
 interface ConditionalLayoutProps {
   children: React.ReactNode;
-  session: PublicSession | null;
+  publicSession: any;
 }
 
-const ConditionalLayout = ({ children, session }: ConditionalLayoutProps) => {
+const ConditionalLayout = ({
+  children,
+  publicSession,
+}: ConditionalLayoutProps) => {
   const pathname = usePathname();
 
   // Hide header and footer on these routes
@@ -19,7 +21,7 @@ const ConditionalLayout = ({ children, session }: ConditionalLayoutProps) => {
 
   return (
     <>
-      {!hideLayout && <Header session={session} />}
+      {!hideLayout && <Header publicSession={publicSession} />}
       <div role="main" tabIndex={-1}>
         {children}
       </div>

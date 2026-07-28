@@ -1,15 +1,14 @@
 "use client";
 
-import { PublicSession } from "@/types/auth";
 import { ThemeProvider } from "./theme-provider";
 import ConditionalLayout from "./conditional-layout";
 
 export function Providers({
   children,
-  session,
+  publicSession,
 }: {
   children: React.ReactNode;
-  session: PublicSession | null;
+  publicSession: any;
 }) {
   return (
     <ThemeProvider
@@ -18,7 +17,9 @@ export function Providers({
       enableSystem
       disableTransitionOnChange
     >
-      <ConditionalLayout session={session}>{children}</ConditionalLayout>
+      <ConditionalLayout publicSession={publicSession}>
+        {children}
+      </ConditionalLayout>
     </ThemeProvider>
   );
 }
