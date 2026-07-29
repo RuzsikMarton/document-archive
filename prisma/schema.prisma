@@ -17,7 +17,7 @@ model Folder {
   name         String
   qrCodeImage  String?
   year         Int
-  contents     String
+  contents     String?
   accessCode   String?
   handedOver   Boolean   @default(false)
   handedOverAt DateTime?

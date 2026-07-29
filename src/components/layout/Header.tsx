@@ -16,8 +16,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogOut, User, FolderOpen } from "lucide-react";
 import Image from "next/image";
+import { PublicSession } from "@/types/auth";
 
-const Header = ({ publicSession }: { publicSession: any }) => {
+const Header = ({ publicSession }: { publicSession: PublicSession | null }) => {
   const { data: session, isPending } = useSession();
   const router = useRouter();
 

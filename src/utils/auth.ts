@@ -15,6 +15,14 @@ export async function requireAuth(path: string) {
   return session;
 }
 
+export async function getSession() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  return session;
+}
+
 export async function isAdmin() {
   const session = await auth.api.getSession({
     headers: await headers(),

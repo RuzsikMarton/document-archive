@@ -1,12 +1,12 @@
 "use client";
-
+import { PublicSession } from "@/types/auth";
 import { usePathname } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 interface ConditionalLayoutProps {
   children: React.ReactNode;
-  publicSession: any;
+  publicSession: PublicSession | null;
 }
 
 const ConditionalLayout = ({

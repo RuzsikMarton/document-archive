@@ -1,7 +1,7 @@
 import { Role } from "@/generated/prisma/enums";
 
 export type PublicSession = {
-  user: {
+  user?: {
     id: string;
     name: string;
   };
