@@ -24,6 +24,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { CreateFolderFormType } from "@/types/folder";
 import { createFolder } from "@/actions/folder/new-folder";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const NewFolderForm = () => {
   const router = useRouter();
@@ -31,7 +34,13 @@ const NewFolderForm = () => {
   const years = Array.from({ length: 10 }, (_, i) => String(currentYear - i));
   const { closeDialog } = useNewFolderDialog();
 
-  const { handleSubmit, control, clearErrors, setError } = useForm({
+  const {
+    handleSubmit,
+    control,
+    clearErrors,
+    setError,
+    formState: { isSubmitting },
+  } = useForm({
     resolver: zodResolver(CreateFolderSchema),
     defaultValues: {
       name: "",
@@ -46,7 +55,7 @@ const NewFolderForm = () => {
       setError("root", { type: "manual", message: res.message });
       return;
     }
-
+    toast.success("Šanón bol úspešne vytvorený.");
     closeDialog();
     router.push(`/folders/${res.id}`);
   };
@@ -117,8 +126,12 @@ const NewFolderForm = () => {
       </form>
       <DialogFooter>
         <DialogClose render={<Button variant="outline">Zrušiť</Button>} />
-        <Button type="submit" form="new-folder-form">
-          Vytvoriť
+        <Button
+          type="submit"
+          className="dark:text-black"
+          form="new-folder-form"
+        >
+          {isSubmitting ? <Loader2 className="animate-spin" /> : "Vytvoriť"}
         </Button>
       </DialogFooter>
     </>

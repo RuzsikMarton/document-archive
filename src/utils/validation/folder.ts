@@ -22,16 +22,8 @@ export const EditFolderSchema = z
       .number()
       .min(1900, "Rok musí byť platný.")
       .max(new Date().getFullYear() + 1, "Rok musí byť platný"),
-    monthFrom: z
-      .number()
-      .min(1, "Mesiac musí byť medzi 1-12")
-      .max(12, "Mesiac musí byť medzi 1-12")
-      .optional(),
-    monthTo: z
-      .number()
-      .min(1, "Mesiac musí byť medzi 1-12")
-      .max(12, "Mesiac musí byť medzi 1-12")
-      .optional(),
+    monthFrom: z.number().nullable().optional(),
+    monthTo: z.number().nullable().optional(),
     contents: z.string().optional(),
   })
   .transform((data) => {

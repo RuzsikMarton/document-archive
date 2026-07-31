@@ -5,6 +5,7 @@ import { LoaderCircle } from "lucide-react";
 import { Providers } from "@/providers/providers";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -96,6 +97,7 @@ export default function RootLayout({
       className={`${inter.className} scroll-smooth relative`}
     >
       <body className="min-h-full antialiased">
+        <Toaster />
         <LayoutContent>{children}</LayoutContent>
       </body>
     </html>

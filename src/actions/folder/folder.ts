@@ -124,4 +124,5 @@ export const folderHandedOverAction = async (folderId: string) => {
 };
 
 //TODO
+export const folderUnhandedOverAction = async (folderId: string) => {};
 export const generateTransferCodeAction = async (folderId: string) => {};

@@ -7,6 +7,7 @@ import { z } from "zod";
 import {
   deleteFolderAction,
   folderHandedOverAction,
+  folderUnhandedOverAction,
   updateFolderAction,
 } from "@/actions/folder/folder";
 import {
@@ -23,15 +24,32 @@ import { Button } from "../ui/button";
 import { Switch } from "../ui/switch";
 import { Textarea } from "../ui/textarea";
 import Image from "next/image";
-import { EditFolderSchema } from "@/utils/validation/folder";
+
 import { useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { Folder } from "@/generated/prisma/browser";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
+import { Loader2, Trash2Icon } from "lucide-react";
+import { toast } from "sonner";
+import { jsPDF } from "jspdf";
+import { EditFolderSchema } from "@/utils/validation/folder";
 
 type EditFolderFormType = z.infer<typeof EditFolderSchema>;
 
 const FolderEditForm = ({ folder }: { folder: Folder }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -59,23 +77,29 @@ const FolderEditForm = ({ folder }: { folder: Folder }) => {
 
   const onSubmit: SubmitHandler<EditFolderFormType> = async (data) => {
     clearErrors();
-    setIsEditing(false);
-
+    setIsPending(true);
     const res = await updateFolderAction(data, folder.id);
     if (!res.success) {
-      setError("root", { type: "manual", message: res.message });
+      toast.error(res.message || "Chyba pri aktualizácii záznamu.");
       return;
     }
+    setIsPending(false);
+    setIsEditing(false);
+    toast.success("Záznam bol úspešne aktualizovaný.");
     reset(data); // Reset the form with the updated data
   };
 
   const handleDelete = async () => {
     clearErrors();
+    setIsPending(true);
     const res = await deleteFolderAction(folder.id);
     if (!res.success) {
-      setError("root", { type: "manual", message: res.message });
+      toast.error(res.message || "Chyba pri mazaní záznamu.");
+      setIsPending(false);
       return;
     }
+    setIsPending(false);
+    toast.success("Záznam bol úspešne zmazaný.");
     router.push("/");
   };
 
@@ -84,11 +108,22 @@ const FolderEditForm = ({ folder }: { folder: Folder }) => {
     if (checked) {
       const res = await folderHandedOverAction(folder.id);
       if (!res.success) {
-        setError("root", { type: "manual", message: res.message });
+        toast.error(res.message || "Chyba pri aktualizácii stavu odovzdania.");
         return;
       }
-      router.refresh(); // Refresh the page to reflect the change
-    } else {
+      toast.success("Záznam bol úspešne označený ako odovzdaný.");
+      router.refresh();
+    }
+    {
+      /*else {
+      const res = await folderUnhandedOverAction(folder.id);
+      if (!res.success) {
+        toast.error(res.message || "Chyba pri aktualizácii stavu odovzdania.");
+        return;
+      }
+      toast.success("Záznam bol úspešne označený ako neodovzdaný.");
+      router.refresh();
+    }*/
     }
   };
 
@@ -99,12 +134,30 @@ const FolderEditForm = ({ folder }: { folder: Folder }) => {
 
   const handleDownloadQR = () => {
     if (folder.qrCodeImage) {
-      const link = document.createElement("a");
-      link.href = folder.qrCodeImage;
-      link.download = `qr-${folder.name}-${folder.year}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const doc = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      });
+
+      const pageWidth = doc.internal.pageSize.getWidth();
+      doc.setFontSize(20);
+      doc.text(folder.name, pageWidth / 2, 20, { align: "center" });
+      doc.setFontSize(14);
+      let period = `${folder.year}`;
+      if (folder.monthFrom && folder.monthTo) {
+        period += ` • ${folder.monthFrom}-${folder.monthTo}`;
+      } else if (folder.monthFrom) {
+        period += ` • od ${folder.monthFrom}`;
+      } else if (folder.monthTo) {
+        period += ` • do ${folder.monthTo}`;
+      }
+      doc.text(period, pageWidth / 2, 30, { align: "center" });
+      doc.addImage(folder.qrCodeImage, "PNG", pageWidth / 2 - 35, 40, 70, 70);
+      doc.setFontSize(10);
+      doc.text(`ID: ${folder.id}`, pageWidth / 2, 118, { align: "center" });
+      doc.rect(20, 10, pageWidth - 40, 115);
+      doc.save(`qr-${folder.name}-${folder.year}.pdf`);
     }
   };
 
@@ -129,16 +182,57 @@ const FolderEditForm = ({ folder }: { folder: Folder }) => {
               </div>
               <div className="flex gap-2">
                 <Button className="hidden"></Button>
-                <Button onClick={() => setIsEditing(true)}>Upraviť</Button>
-                <Button variant="destructive" onClick={handleDelete}>
-                  Zmazať
+                <Button
+                  className="dark:text-black"
+                  onClick={() => setIsEditing(true)}
+                >
+                  Upraviť
                 </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger
+                    render={<Button variant="destructive">Zmazať</Button>}
+                  />
+                  <AlertDialogContent size="sm">
+                    <AlertDialogHeader>
+                      <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
+                        <Trash2Icon />
+                      </AlertDialogMedia>
+                      <AlertDialogTitle>Zmazať záznam?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Ste si istý, že chcete zmazať tento záznam? Táto akcia
+                        je nevratná a všetky údaje budú nenávratne odstránené.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel variant="outline">
+                        Zrušiť
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        variant="destructive"
+                        render={
+                          <Button onClick={handleDelete} disabled={isPending}>
+                            {isPending ? (
+                              <Loader2 className="animate-spin" />
+                            ) : (
+                              "Zmazať"
+                            )}
+                          </Button>
+                        }
+                      />
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </div>
           ) : (
             <div className="flex justify-end gap-2">
-              <Button type="submit" form="folder-edit-form">
-                Uložiť
+              <Button
+                type="submit"
+                className="dark:text-black"
+                form="folder-edit-form"
+                disabled={isPending}
+              >
+                {isPending ? <Loader2 className="animate-spin" /> : "Uložiť"}
               </Button>
               <Button variant="outline" onClick={handleCancel}>
                 Zrušiť
@@ -232,7 +326,9 @@ const FolderEditForm = ({ folder }: { folder: Folder }) => {
                           items={months}
                           value={field.value ? String(field.value) : ""}
                           onValueChange={(value) =>
-                            field.onChange(value ? Number(value) : undefined)
+                            field.onChange(
+                              value === "" ? undefined : Number(value),
+                            )
                           }
                           disabled={!isEditing}
                         >
@@ -277,7 +373,9 @@ const FolderEditForm = ({ folder }: { folder: Folder }) => {
                           items={months}
                           value={field.value ? String(field.value) : ""}
                           onValueChange={(value) =>
-                            field.onChange(value ? Number(value) : undefined)
+                            field.onChange(
+                              value === "" ? undefined : Number(value),
+                            )
                           }
                           disabled={!isEditing}
                         >
