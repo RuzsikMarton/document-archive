@@ -1,19 +1,19 @@
+import { getFolderById } from "@/actions/folder/folder";
+import FolderEditForm from "@/components/forms/FolderEditForm";
 import { prisma } from "@/lib/prisma";
+import { notFound } from "next/navigation";
 
 const FolderPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
-  const data = await prisma.folder.findUnique({
-    where: {
-      id: id,
-    },
-  });
+  const data = await getFolderById(id);
+
+  if (!data) {
+    notFound();
+  }
 
   return (
     <div>
-      <p>ID: {data?.id}</p>
-      <p>Name: {data?.name}</p>
-      <p>Year: {data?.year}</p>
-      <img src={data?.qrCodeImage || ""} alt="QR Code" />
+      <FolderEditForm folder={data} />
     </div>
   );
 };
