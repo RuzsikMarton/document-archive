@@ -53,14 +53,14 @@ const Footer = () => {
           </div>
           <div className="flex flex-col items-start justify-items-start gap-2">
             <h2 className="uppercase text-xl font-semibold">Centrum pomoci</h2>
+            <Link href="/help" className="hover:underline ">
+              Ako používať Evidio
+            </Link>
             <Link href="/terms" className="hover:underline ">
               Podmienky používania
             </Link>
             <Link href="/privacy" className="hover:underline ">
               Ochrana osobných údajov
-            </Link>
-            <Link href="/help" className="hover:underline ">
-              Ako používať Evidio
             </Link>
           </div>
           <div className="flex flex-col items-start justify-items-start gap-2">

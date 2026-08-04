@@ -24,7 +24,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { CreateFolderFormType } from "@/types/folder";
 import { createFolder } from "@/actions/folder/new-folder";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 

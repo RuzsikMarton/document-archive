@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
-import { ThemeToggle } from "../ThemeToggle";
+import { ThemeToggle } from "../common/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, User, FolderOpen } from "lucide-react";
+import { LogOut, User, FolderOpen, Building2Icon, Users } from "lucide-react";
 import Image from "next/image";
 import { PublicSession } from "@/types/auth";
 
@@ -103,8 +103,16 @@ const Header = ({ publicSession }: { publicSession: PublicSession | null }) => {
                         <DropdownMenuItem
                           onClick={() => router.push("/admin/users")}
                         >
-                          <User />
-                          User Management
+                          <Users />
+                          Manage Users
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem
+                          onClick={() => router.push("/admin/companies")}
+                        >
+                          <Building2Icon />
+                          Manage Companies
                         </DropdownMenuItem>
                       </DropdownMenuGroup>
                     </>

@@ -7,7 +7,6 @@ import { z } from "zod";
 import {
   deleteFolderAction,
   folderHandedOverAction,
-  folderUnhandedOverAction,
   updateFolderAction,
 } from "@/actions/folder/folder";
 import {
@@ -61,7 +60,6 @@ const FolderEditForm = ({ folder }: { folder: Folder }) => {
     handleSubmit,
     control,
     reset,
-    setError,
     clearErrors,
     formState: { errors },
   } = useForm<EditFolderFormType>({
@@ -86,6 +84,7 @@ const FolderEditForm = ({ folder }: { folder: Folder }) => {
     setIsPending(false);
     setIsEditing(false);
     toast.success("Záznam bol úspešne aktualizovaný.");
+    router.refresh();
     reset(data); // Reset the form with the updated data
   };
 
@@ -100,31 +99,23 @@ const FolderEditForm = ({ folder }: { folder: Folder }) => {
     }
     setIsPending(false);
     toast.success("Záznam bol úspešne zmazaný.");
-    router.push("/");
+    router.push("/folders");
   };
 
   const handleHandedOverChange = async (checked: boolean) => {
     clearErrors();
+
+    const res = await folderHandedOverAction(folder.id, checked);
+    if (!res.success) {
+      toast.error(res.message || "Chyba pri aktualizácii stavu odovzdania.");
+      return;
+    }
     if (checked) {
-      const res = await folderHandedOverAction(folder.id);
-      if (!res.success) {
-        toast.error(res.message || "Chyba pri aktualizácii stavu odovzdania.");
-        return;
-      }
       toast.success("Záznam bol úspešne označený ako odovzdaný.");
-      router.refresh();
-    }
-    {
-      /*else {
-      const res = await folderUnhandedOverAction(folder.id);
-      if (!res.success) {
-        toast.error(res.message || "Chyba pri aktualizácii stavu odovzdania.");
-        return;
-      }
+    } else {
       toast.success("Záznam bol úspešne označený ako neodovzdaný.");
-      router.refresh();
-    }*/
     }
+    router.refresh();
   };
 
   const handleCancel = () => {
@@ -139,24 +130,31 @@ const FolderEditForm = ({ folder }: { folder: Folder }) => {
         unit: "mm",
         format: "a4",
       });
-
       const pageWidth = doc.internal.pageSize.getWidth();
+
       doc.setFontSize(20);
-      doc.text(folder.name, pageWidth / 2, 20, { align: "center" });
-      doc.setFontSize(14);
-      let period = `${folder.year}`;
+      const maxWidth = pageWidth - 170;
+      const lines = doc.splitTextToSize(folder.name, maxWidth);
+      doc.text(lines, pageWidth / 2, 30, {
+        align: "center",
+      });
+
+      doc.setFontSize(24);
+      let year = `${folder.year}`;
+      let period = "";
       if (folder.monthFrom && folder.monthTo) {
-        period += ` • ${folder.monthFrom}-${folder.monthTo}`;
+        period += `${folder.monthFrom}-${folder.monthTo}`;
       } else if (folder.monthFrom) {
-        period += ` • od ${folder.monthFrom}`;
+        period += `od ${folder.monthFrom}`;
       } else if (folder.monthTo) {
-        period += ` • do ${folder.monthTo}`;
+        period += `do ${folder.monthTo}`;
       }
-      doc.text(period, pageWidth / 2, 30, { align: "center" });
-      doc.addImage(folder.qrCodeImage, "PNG", pageWidth / 2 - 35, 40, 70, 70);
-      doc.setFontSize(10);
-      doc.text(`ID: ${folder.id}`, pageWidth / 2, 118, { align: "center" });
-      doc.rect(20, 10, pageWidth - 40, 115);
+      doc.text(year, pageWidth / 2, 70, { align: "center" });
+      doc.text(period, pageWidth / 2, 80, { align: "center" });
+      doc.addImage(folder.qrCodeImage, "PNG", pageWidth / 2 - 25, 85, 50, 50);
+      doc.setFontSize(8);
+      doc.text(`${folder.id}`, pageWidth / 2, 135, { align: "center" });
+      doc.rect(80, 10, pageWidth - 160, 150);
       doc.save(`qr-${folder.name}-${folder.year}.pdf`);
     }
   };

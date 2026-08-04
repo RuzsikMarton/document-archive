@@ -4,6 +4,7 @@ import { ThemeProvider } from "./theme-provider";
 import ConditionalLayout from "./conditional-layout";
 import { PublicSession } from "@/types/auth";
 import { NewFolderDialogProvider } from "./new-folder-dialog-provider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export function Providers({
   children,
@@ -19,9 +20,11 @@ export function Providers({
       enableSystem
       disableTransitionOnChange
     >
-      <ConditionalLayout publicSession={publicSession}>
-        <NewFolderDialogProvider>{children}</NewFolderDialogProvider>
-      </ConditionalLayout>
+      <TooltipProvider>
+        <ConditionalLayout publicSession={publicSession}>
+          <NewFolderDialogProvider>{children}</NewFolderDialogProvider>
+        </ConditionalLayout>
+      </TooltipProvider>
     </ThemeProvider>
   );
 }

@@ -1,6 +1,5 @@
 import { getFolderById } from "@/actions/folder/folder";
 import FolderEditForm from "@/components/forms/FolderEditForm";
-import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 
 const FolderPage = async ({ params }: { params: Promise<{ id: string }> }) => {

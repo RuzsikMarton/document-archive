@@ -73,7 +73,7 @@ const Dashboard = ({ folders }: { folders: PrismaFolder[] }) => {
           </a>
 
           <a
-            href="/folders?status=pending"
+            href="/folders?handedOver=false"
             className="flex items-center gap-3 sm:gap-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-3 sm:p-5 transition-all hover:shadow-md hover:border-slate-300 dark:hover:border-slate-600 group"
           >
             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-amber-50 dark:bg-amber-950 flex items-center justify-center text-amber-600 dark:text-amber-400 group-hover:bg-amber-100 dark:group-hover:bg-amber-900 transition-colors">

@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getSession } from "@/utils/auth";
 import { checkFolderOwnership } from "@/utils/folder";
 import { EditFolderSchema } from "@/utils/validation/folder";
+import { revalidatePath } from "next/cache";
 
 export const getFolderById = async (id: string) => {
   const folder = await prisma.folder.findUnique({
@@ -51,6 +52,10 @@ export const updateFolderAction = async (data: any, folderId: string) => {
       },
     });
 
+    // Invalidate cache for both the list and detail pages
+    revalidatePath("/folders");
+    revalidatePath(`/folders/${folderId}`);
+
     return { success: true };
   } catch (error) {
     return {
@@ -81,6 +86,9 @@ export const deleteFolderAction = async (folderId: string) => {
         id: folderId,
       },
     });
+
+    // Invalidate cache so the deleted folder is removed from the list
+    revalidatePath("/folders");
   } catch (error) {
     return {
       success: false,
@@ -90,7 +98,10 @@ export const deleteFolderAction = async (folderId: string) => {
   return { success: true };
 };
 
-export const folderHandedOverAction = async (folderId: string) => {
+export const folderHandedOverAction = async (
+  folderId: string,
+  handed: boolean,
+) => {
   const session = await getSession();
 
   if (!session?.user) {
@@ -109,10 +120,14 @@ export const folderHandedOverAction = async (folderId: string) => {
     await prisma.folder.update({
       where: { id: folderId },
       data: {
-        handedOver: true,
-        handedOverAt: new Date(),
+        handedOver: handed,
+        handedOverAt: handed ? new Date() : undefined,
       },
     });
+
+    // Invalidate cache for both the list and detail pages
+    revalidatePath("/folders");
+    revalidatePath(`/folders/${folderId}`);
 
     return { success: true };
   } catch (error) {
@@ -124,5 +139,4 @@ export const folderHandedOverAction = async (folderId: string) => {
 };
 
 //TODO
-export const folderUnhandedOverAction = async (folderId: string) => {};
 export const generateTransferCodeAction = async (folderId: string) => {};

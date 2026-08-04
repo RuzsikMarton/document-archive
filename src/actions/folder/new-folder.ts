@@ -5,6 +5,7 @@ import { CreateFolderFormType } from "@/types/folder";
 import { getSession } from "@/utils/auth";
 import { CreateFolderSchema } from "@/utils/validation/folder";
 import QRCode from "qrcode";
+import { revalidatePath } from "next/cache";
 
 export const createFolder = async (data: CreateFolderFormType) => {
   const session = await getSession();
@@ -41,6 +42,9 @@ export const createFolder = async (data: CreateFolderFormType) => {
 
       return newFolder;
     });
+
+    // Invalidate the folders page cache so the new folder appears immediately
+    revalidatePath("/folders");
 
     return { success: true, id: folder.id };
   } catch (error) {
