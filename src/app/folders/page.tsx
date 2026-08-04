@@ -8,14 +8,16 @@ const FoldersPage = async (props: {
     search?: string;
     handedOver?: string;
     years?: string;
-    currentPage?: number;
+    currentPage?: string;
+    sortOrder?: "asc" | "desc";
   }>;
 }) => {
   const searchParams = await props.searchParams;
   const search = searchParams?.search || "";
   const handedOver = searchParams?.handedOver;
   const years = searchParams?.years || undefined;
-  const currentPage = searchParams?.currentPage || 1;
+  const currentPage = searchParams?.currentPage || "1";
+  const sortOrder = searchParams?.sortOrder;
 
   return (
     <main className="flex min-h-screen md:min-h-[calc(100vh-4rem)] px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
@@ -44,7 +46,7 @@ const FoldersPage = async (props: {
 
           <TableFilters />
           <Suspense
-            key={search || handedOver || years || currentPage}
+            key={`${search}-${handedOver}-${years}-${currentPage}-${sortOrder}`}
             fallback={<FoldersTableSkeleton />}
           >
             <FoldersTable
@@ -52,6 +54,7 @@ const FoldersPage = async (props: {
               handedOver={handedOver}
               years={years}
               currentPage={currentPage}
+              sortOrder={sortOrder}
             />
           </Suspense>
         </div>

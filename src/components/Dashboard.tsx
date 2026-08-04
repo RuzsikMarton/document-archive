@@ -121,7 +121,11 @@ const Dashboard = ({ folders }: { folders: PrismaFolder[] }) => {
                           {folder.name}
                         </h3>
                         <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 truncate">
-                          {folder.contents}
+                          {folder.contents
+                            ? folder.contents.length > 20
+                              ? folder.contents.slice(0, 25) + "..."
+                              : folder.contents
+                            : ""}
                         </p>
                         <div className="flex items-center gap-3 mt-1 text-xs text-slate-500 dark:text-slate-500">
                           <span>Rok {folder.year}</span>

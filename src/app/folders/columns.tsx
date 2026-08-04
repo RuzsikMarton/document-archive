@@ -1,25 +1,17 @@
 "use client";
 
-import { deleteFolderAction } from "@/actions/folder/folder";
 import FolderTableActions from "@/components/folders/FolderTableActions";
+import SortableHeader from "@/components/folders/SortableHeader";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { Folder } from "@/generated/prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import {
   ArrowUpDown,
-  Eye,
   CheckCircle2,
   XCircle,
-  Trash2,
   ArrowUp,
   ArrowDown,
 } from "lucide-react";
-import Link from "next/link";
 
 export const columns: ColumnDef<Folder>[] = [
   {
@@ -56,21 +48,7 @@ export const columns: ColumnDef<Folder>[] = [
       const sort = column.getIsSorted();
       return (
         <div className="hidden md:block">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            className="hover:bg-slate-100 dark:hover:bg-slate-700 font-semibold -ml-4 text-slate-900 dark:text-slate-50"
-          >
-            <span className="text-sm">Dátum vytvorenia</span>
-
-            {sort === "asc" ? (
-              <ArrowUp className="ml-2 h-4 w-4" />
-            ) : sort === "desc" ? (
-              <ArrowDown className="ml-2 h-4 w-4" />
-            ) : (
-              <ArrowUpDown className="ml-2 h-4 w-4 opacity-50" />
-            )}
-          </Button>
+          <SortableHeader title="Dátum vytvorenia" sortKey="createdAt" />
         </div>
       );
     },

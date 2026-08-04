@@ -77,7 +77,11 @@ const TableFilters = () => {
   };
 
   // Check if there are any active filters
-  const hasActiveFilters = searchParams.toString().length > 0;
+  const hasActiveFilters = (() => {
+    const params = new URLSearchParams(searchParams);
+    params.delete("currentPage");
+    return params.toString().length > 0;
+  })();
 
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-2">

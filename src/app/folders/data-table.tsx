@@ -13,7 +13,6 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-  getSortedRowModel,
   SortingState,
 } from "@tanstack/react-table";
 import { useState } from "react";
@@ -21,11 +20,13 @@ import { useState } from "react";
 interface FoldersDataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  sortOrder: "asc" | "desc";
 }
 
 export function FoldersDataTable<TData, TValue>({
   columns,
   data,
+  sortOrder,
 }: FoldersDataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [isPending, setIsPending] = useState(false);
@@ -34,7 +35,6 @@ export function FoldersDataTable<TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
     state: {
       sorting,

@@ -14,7 +14,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, User, FolderOpen, Building2Icon, Users } from "lucide-react";
+import {
+  LogOut,
+  User,
+  FolderOpen,
+  Building2Icon,
+  Users,
+  Settings,
+} from "lucide-react";
 import Image from "next/image";
 import { PublicSession } from "@/types/auth";
 
@@ -117,6 +124,15 @@ const Header = ({ publicSession }: { publicSession: PublicSession | null }) => {
                       </DropdownMenuGroup>
                     </>
                   )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem
+                      onClick={() => router.push("/account/settings")}
+                    >
+                      <Settings />
+                      Nastavenia účtu
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
                     <DropdownMenuItem
