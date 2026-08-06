@@ -1,16 +1,16 @@
-import SignInForm from "@/components/forms/SignInForm";
+import VerifyEmailContent from "@/components/auth/verify-email-content";
 import { getSession } from "@/utils/auth";
 import { redirect } from "next/navigation";
 
-const SignInPage = async () => {
+const VerifyEmailPage = async () => {
   const session = await getSession();
-
   if (session) redirect("/");
+
   return (
     <main className="flex-center min-h-screen p-6">
-      <SignInForm />
+      <VerifyEmailContent />
     </main>
   );
 };
 
-export default SignInPage;
+export default VerifyEmailPage;

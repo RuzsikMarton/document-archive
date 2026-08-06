@@ -1,5 +1,5 @@
 import { getFolderById } from "@/actions/folder/folder";
-import FolderEditForm from "@/components/forms/FolderEditForm";
+import FolderEditForm from "@/components/forms/folder-edit-form";
 import { notFound } from "next/navigation";
 
 const FolderPage = async ({ params }: { params: Promise<{ id: string }> }) => {

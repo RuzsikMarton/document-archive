@@ -37,7 +37,7 @@ const Header = ({ publicSession }: { publicSession: PublicSession | null }) => {
 
   const handleSignOut = async () => {
     await signOut();
-    router.refresh();
+    router.push("/signin");
   };
 
   return (

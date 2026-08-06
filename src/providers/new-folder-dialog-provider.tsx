@@ -1,6 +1,6 @@
 "use client";
 
-import NewFolderForm from "@/components/forms/NewFolderForm";
+import NewFolderForm from "@/components/forms/new-folder-form";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { createContext, useContext, useMemo, useState } from "react";
 

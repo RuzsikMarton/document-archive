@@ -21,6 +21,8 @@ model Folder {
   createdAt    DateTime  @default(now())
   userId       String
   user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyId    String?
+  company      Company?  @relation(fields: [companyId], references: [id])
 
   @@index([userId])
   @@map("folder")
@@ -30,16 +32,18 @@ model Folder {
 model Company {
   id        String   @id @default(cuid())
   name      String
+  ico       String?  @unique
+  dic       String?  @unique
+  adress    String?
   ownerId   String   @unique
   owner     User     @relation("CompanyOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   employees User[]   @relation("CompanyEmployees")
+  folders   Folder[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 enum Role {
-  OWNER
-  EMPLOYEE
   USER
   ADMIN
 }

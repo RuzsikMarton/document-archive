@@ -28,6 +28,14 @@ export const signInAction = async (formData: SignInFormValues) => {
         message: "Nesprávny email alebo heslo. Skúste to znova.",
       };
     }
+    if (error?.message?.toLowerCase().includes("not verified")) {
+      return {
+        success: false,
+        message:
+          "Váš účet nie je overený. Skontrolujte svoj e-mail a kliknite na odkaz na overenie.",
+      };
+    }
+    console.error("Sign-in error:", error);
     return {
       success: false,
       message: "Neznáma chyba. Prosím skúste to znova neskôr.",

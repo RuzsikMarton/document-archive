@@ -36,13 +36,13 @@ export const signUpSchema = z
     path: ["confirmPassword"],
   });
 
-const resetPasswordSchema = z.object({
-  email: z.email({ message: "Zadajte platný e-mail." }),
+export const forgotPasswordSchema = z.object({
+  email: z.email({ message: "Zadajte platný e-mail." }).trim(),
 });
 
-const resetPasswordConfirmSchema = z
+export const resetPasswordValidationSchema = z
   .object({
-    newPassword: z
+    password: z
       .string()
       .min(8, { message: "Heslo musí mať aspoň 8 znakov." })
       .max(16, { message: "Heslo môže mať maximálne 16 znakov." })
@@ -51,13 +51,13 @@ const resetPasswordConfirmSchema = z
           "Heslo musí obsahovať aspoň 1 veľké písmeno, 1 malé písmeno a 1 číslo.",
       })
       .trim(),
-    confirmNewPassword: z
+    confirmPassword: z
       .string()
       .min(8, { message: "Heslo musí mať aspoň 8 znakov." })
       .max(16, { message: "Heslo môže mať maximálne 16 znakov." })
       .trim(),
   })
-  .refine((data) => data.newPassword === data.confirmNewPassword, {
+  .refine((data) => data.password === data.confirmPassword, {
     message: "Heslá sa nezhodujú.",
-    path: ["confirmNewPassword"],
+    path: ["confirmPassword"],
   });

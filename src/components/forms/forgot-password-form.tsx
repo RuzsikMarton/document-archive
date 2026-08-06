@@ -1,34 +1,45 @@
 "use client";
 
-import { SignInFormValues } from "@/types/auth";
-import { signInSchema } from "@/utils/validation/auth";
-import { useRouter } from "next/navigation";
+import { forgotPasswordSchema } from "@/utils/validation/auth";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
-import { signInAction } from "@/actions/auth/sign-in";
+import z from "zod";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
+import { useState } from "react";
 
-const SignInForm = () => {
-  const router = useRouter();
+const ForgotPasswordForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
     clearErrors,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useForm<SignInFormValues>({ resolver: zodResolver(signInSchema) });
+    formState: { errors },
+  } = useForm<z.infer<typeof forgotPasswordSchema>>({
+    resolver: zodResolver(forgotPasswordSchema),
+  });
 
-  const onSubmit: SubmitHandler<SignInFormValues> = async (data) => {
+  const onSubmit: SubmitHandler<z.infer<typeof forgotPasswordSchema>> = async (
+    data,
+  ) => {
     clearErrors("root");
-    const res = await signInAction(data);
-    if (!res.success) {
-      setError("root", { message: res.message });
-      return;
+    setIsLoading(true);
+    const { error } = await authClient.requestPasswordReset({
+      email: data.email,
+      redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password`,
+    });
+    setIsLoading(false);
+    if (error) {
+      toast.error(
+        error.message ||
+          "Nastala chyba pri odosielaní požiadavky na resetovanie hesla.",
+      );
+    } else {
+      toast.success("Odkaz na resetovanie hesla bol odoslaný na váš email.");
     }
-    router.push("/");
-    router.refresh();
   };
   return (
     <div className="flex flex-col items-center w-full rounded-md bg-card p-6 sm:p-8 max-w-md">
@@ -46,6 +57,12 @@ const SignInForm = () => {
         loading="lazy"
         decoding="async"
       />
+      <div className="text-center mt-2">
+        <h1 className="text-2xl font-bold text-foreground">Zabudnuté heslo</h1>
+        <span className="text-sm text-muted-foreground">
+          Zadajte svoj email, aby ste mohli resetovať heslo.{" "}
+        </span>
+      </div>
       <form
         className="flex flex-col gap-2 w-full mt-4"
         onSubmit={handleSubmit(onSubmit)}
@@ -65,41 +82,20 @@ const SignInForm = () => {
             {errors.email.message}
           </span>
         )}
-
-        <label className="input-label" htmlFor="password">
-          Heslo
-        </label>
-        <input
-          className="input-form"
-          type="password"
-          id="password"
-          placeholder="Vaše heslo"
-          {...register("password")}
-        />
-        {errors.password && (
-          <span className="text-sm text-destructive">
-            {errors.password.message}
-          </span>
-        )}
-        <div className="flex justify-end items-center text-sm text-muted-foreground hover:text-primary/90">
-          <a href="/auth/forgot-password" className="hover:underline">
-            Zabudli ste heslo?{" "}
-          </a>
-        </div>
         {errors.root && (
           <span className="text-sm text-destructive">
             {errors.root.message}
           </span>
         )}
         <Button
-          className="p-4 mt-2 disabled:cursor-not-allowed"
+          className="p-4 mt-4 disabled:cursor-not-allowed"
           type="submit"
-          disabled={isSubmitting}
+          disabled={isLoading}
         >
-          {isSubmitting ? (
+          {isLoading ? (
             <Loader2 className="animate-spin" size={24} />
           ) : (
-            "Prihlásiť sa"
+            "Poslať odkaz na resetovanie hesla"
           )}
         </Button>
       </form>
@@ -115,4 +111,4 @@ const SignInForm = () => {
     </div>
   );
 };
-export default SignInForm;
+export default ForgotPasswordForm;
