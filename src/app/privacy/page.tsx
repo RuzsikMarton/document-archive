@@ -660,14 +660,14 @@ export default function PrivacyPolicyPage() {
 
           <div className="rounded-lg border p-5">
             <p>
-              <strong>Evidio</strong>
+              <strong>Martin Ruzsik</strong>
             </p>
-            <p>Your Name / Company Name</p>
+            <p>Slovakia</p>
             <a
-              href="mailto:contact@evidio.app"
+              href="mailto:marton.ruzsik@icloud.com"
               className="mt-2 inline-block text-primary hover:underline"
             >
-              contact@evidio.app
+              marton.ruzsik@icloud.com
             </a>
           </div>
         </section>

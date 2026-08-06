@@ -79,6 +79,7 @@ const FolderEditForm = ({ folder }: { folder: Folder }) => {
     const res = await updateFolderAction(data, folder.id);
     if (!res.success) {
       toast.error(res.message || "Chyba pri aktualizácii záznamu.");
+      setIsPending(false);
       return;
     }
     setIsPending(false);

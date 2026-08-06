@@ -20,11 +20,11 @@ export function Providers({
       enableSystem
       disableTransitionOnChange
     >
-      <TooltipProvider>
-        <ConditionalLayout publicSession={publicSession}>
+      <ConditionalLayout publicSession={publicSession}>
+        <TooltipProvider>
           <NewFolderDialogProvider>{children}</NewFolderDialogProvider>
-        </ConditionalLayout>
-      </TooltipProvider>
+        </TooltipProvider>
+      </ConditionalLayout>
     </ThemeProvider>
   );
 }

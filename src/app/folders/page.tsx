@@ -1,7 +1,8 @@
-import TableFilters from "@/components/folders/TableFilters";
-import FoldersTable from "@/components/folders/FoldersTable";
+import TableFilters from "@/components/folders/table-filters";
+import FoldersTable from "@/components/folders/folders-table";
 import { Suspense } from "react";
 import FoldersTableSkeleton from "@/components/TableSkeleton";
+import { requireAuth } from "@/utils/auth";
 
 const FoldersPage = async (props: {
   searchParams?: Promise<{
@@ -12,6 +13,7 @@ const FoldersPage = async (props: {
     sortOrder?: "asc" | "desc";
   }>;
 }) => {
+  await requireAuth("/folders");
   const searchParams = await props.searchParams;
   const search = searchParams?.search || "";
   const handedOver = searchParams?.handedOver;

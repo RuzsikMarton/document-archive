@@ -1,7 +1,7 @@
 import { columns } from "@/app/folders/columns";
 import { FoldersDataTable } from "@/app/folders/data-table";
 import { GetFolders } from "@/lib/data/get-folders";
-import FolderPagination from "./FolderPagination";
+import FolderPagination from "./folder-pagination";
 
 type Props = {
   search?: string;

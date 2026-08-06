@@ -21,13 +21,19 @@ import {
   Building2Icon,
   Users,
   Settings,
+  HelpCircle,
 } from "lucide-react";
 import Image from "next/image";
 import { PublicSession } from "@/types/auth";
 
 const Header = ({ publicSession }: { publicSession: PublicSession | null }) => {
-  const { data: session, isPending } = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
+
+  // Use client session for user data, server session for role (avoids hydration issues)
+  const currentUser = publicSession?.user || session?.user;
+  const currentRole = publicSession?.role;
+  const userEmail = session?.user?.email;
 
   const handleSignOut = async () => {
     await signOut();
@@ -69,16 +75,14 @@ const Header = ({ publicSession }: { publicSession: PublicSession | null }) => {
             <ThemeToggle />
 
             {/* Auth Section */}
-            {isPending ? (
-              <div className="h-8 w-20 animate-pulse rounded-md bg-muted" />
-            ) : session?.user ? (
+            {currentUser ? (
               <DropdownMenu>
                 <DropdownMenuTrigger
                   render={<Button variant="outline" size="default"></Button>}
                 >
                   <User className="h-4 w-4" />
                   <span className="hidden sm:inline">
-                    {session.user.name || session.user.email?.split("@")[0]}
+                    {currentUser.name || userEmail?.split("@")[0] || "User"}
                   </span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
@@ -86,11 +90,11 @@ const Header = ({ publicSession }: { publicSession: PublicSession | null }) => {
                     <DropdownMenuLabel>
                       <div className="flex flex-col space-y-1">
                         <p className="text-sm font-medium leading-none">
-                          {session.user.name || "Účet"}
+                          {currentUser.name || "Účet"}
                         </p>
-                        {session.user.email && (
+                        {userEmail && (
                           <p className="text-xs leading-none text-muted-foreground">
-                            {session.user.email}
+                            {userEmail}
                           </p>
                         )}
                       </div>
@@ -103,7 +107,7 @@ const Header = ({ publicSession }: { publicSession: PublicSession | null }) => {
                       Moje Priečinky
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
-                  {publicSession?.role === "ADMIN" && (
+                  {currentRole === "ADMIN" && (
                     <>
                       <DropdownMenuSeparator />
                       <DropdownMenuGroup>
@@ -126,6 +130,10 @@ const Header = ({ publicSession }: { publicSession: PublicSession | null }) => {
                   )}
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
+                    <DropdownMenuItem onClick={() => router.push("/help")}>
+                      <HelpCircle />
+                      Pomocník
+                    </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => router.push("/account/settings")}
                     >

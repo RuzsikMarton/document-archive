@@ -1,17 +1,10 @@
 "use client";
 
-import FolderTableActions from "@/components/folders/FolderTableActions";
-import SortableHeader from "@/components/folders/SortableHeader";
-import { Button } from "@/components/ui/button";
+import FolderTableActions from "@/components/folders/folders-table-actions";
+import SortableHeader from "@/components/folders/sortable-header";
 import { Folder } from "@/generated/prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
-import {
-  ArrowUpDown,
-  CheckCircle2,
-  XCircle,
-  ArrowUp,
-  ArrowDown,
-} from "lucide-react";
+import { CheckCircle2, XCircle } from "lucide-react";
 
 export const columns: ColumnDef<Folder>[] = [
   {

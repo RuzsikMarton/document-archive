@@ -72,7 +72,7 @@ async function LayoutContent({ children }: { children: React.ReactNode }) {
   return (
     <Suspense
       fallback={
-        <div className="">
+        <div className="min-h-screen flex items-center justify-center">
           <div className="flex flex-col items-center justify-center space-y-4">
             <LoaderCircle className="animate-spin" size={48} />
           </div>
@@ -97,8 +97,10 @@ export default function RootLayout({
       className={`${inter.className} scroll-smooth relative`}
     >
       <body className="min-h-full antialiased">
-        <Toaster />
-        <LayoutContent>{children}</LayoutContent>
+        <LayoutContent>
+          <Toaster />
+          {children}
+        </LayoutContent>
       </body>
     </html>
   );
