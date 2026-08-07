@@ -141,7 +141,7 @@ const FolderEditForm = ({ folder }: { folder: Folder }) => {
       });
 
       doc.setFontSize(24);
-      let year = `${folder.year}`;
+      const year = `${folder.year}`;
       let period = "";
       if (folder.monthFrom && folder.monthTo) {
         period += `${folder.monthFrom}-${folder.monthTo}`;

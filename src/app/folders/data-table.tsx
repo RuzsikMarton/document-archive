@@ -27,10 +27,8 @@ interface FoldersDataTableProps<TData, TValue> {
 export function FoldersDataTable<TData, TValue>({
   columns,
   data,
-  sortOrder,
 }: FoldersDataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [isPending, setIsPending] = useState(false);
 
   const table = useReactTable({
     data,

@@ -6,7 +6,6 @@ import {
   Heading,
   Hr,
   Html,
-  Img,
   Link,
   Preview,
   Section,
@@ -116,10 +115,6 @@ const header = {
   textAlign: "center" as const,
   color: "#085efb",
   fontSize: "24px",
-};
-
-const logo = {
-  margin: "0 auto",
 };
 
 const content = {

@@ -109,7 +109,7 @@ export const deleteOwnAccountAction = async () => {
     return { success: false, message: "Neautorizovaný prístup." };
   }
 
-  if (session.role === "ADMIN") {
+  if (session.user.role === "ADMIN") {
     return { success: false, message: "Nemôžete vymazať účet administrátora." };
   }
 

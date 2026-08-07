@@ -3,6 +3,7 @@
 import { Folder as PrismaFolder } from "@/generated/prisma/client";
 import { useNewFolderDialog } from "@/providers/new-folder-dialog-provider";
 import { Plus, FolderOpen, Clock, ChevronRight, Info } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const Dashboard = ({ folders }: { folders: PrismaFolder[] }) => {
@@ -55,7 +56,7 @@ const Dashboard = ({ folders }: { folders: PrismaFolder[] }) => {
             </div>
           </button>
 
-          <a
+          <Link
             href="/folders"
             className="flex items-center gap-3 sm:gap-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-3 sm:p-5 transition-all hover:shadow-md hover:border-slate-300 dark:hover:border-slate-600 group"
           >
@@ -70,9 +71,8 @@ const Dashboard = ({ folders }: { folders: PrismaFolder[] }) => {
                 Kompletný zoznam
               </p>
             </div>
-          </a>
-
-          <a
+          </Link>
+          <Link
             href="/folders?handedOver=false"
             className="flex items-center gap-3 sm:gap-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-3 sm:p-5 transition-all hover:shadow-md hover:border-slate-300 dark:hover:border-slate-600 group"
           >
@@ -87,7 +87,7 @@ const Dashboard = ({ folders }: { folders: PrismaFolder[] }) => {
                 Neodovzdané šanóny
               </p>
             </div>
-          </a>
+          </Link>
         </div>
 
         {/* Table */}
@@ -105,7 +105,7 @@ const Dashboard = ({ folders }: { folders: PrismaFolder[] }) => {
               <div className="flex flex-col items-center text-center justify-center px-4 sm:px-6 py-3 sm:py-4 text-sm text-slate-600 dark:text-slate-400">
                 <Info className="w-5 h-5 my-2 text-slate-400 dark:text-slate-500" />
                 Žiadne záznamy na zobrazenie, vytvorte nový záznam kliknutím na
-                tlačidlo "Pridať" v hornej časti.
+                tlačidlo &quot;Pridať&quot; v hornej časti.
               </div>
             ) : (
               folders.map((folder) => (

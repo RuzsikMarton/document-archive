@@ -6,7 +6,7 @@ import { Input } from "../ui/input";
 import { Funnel, FunnelX, Plus } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import {
   Field,

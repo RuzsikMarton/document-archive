@@ -9,10 +9,7 @@ interface SortableHeaderProps {
   sortKey: string;
 }
 
-export default function SortableHeader({
-  title,
-  sortKey,
-}: SortableHeaderProps) {
+export default function SortableHeader({ title }: SortableHeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,12 +34,12 @@ export default function GlobalNotFound() {
           </div>
 
           {/* Action button */}
-          <a
+          <Link
             href="/"
             className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-8 py-2"
           >
             Späť domov
-          </a>
+          </Link>
 
           {/* Decorative elements */}
           <div className="flex justify-center gap-2 pt-4">
