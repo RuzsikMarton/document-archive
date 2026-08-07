@@ -25,6 +25,7 @@ export const createFolder = async (data: CreateFolderFormType) => {
         data: {
           name: parsedData.data.name,
           year: parsedData.data.year,
+          companyId: session?.user?.companyId || "",
           userId: session?.user?.id || "",
         },
       });

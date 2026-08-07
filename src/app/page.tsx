@@ -1,5 +1,6 @@
 import Dashboard from "@/components/Dashboard";
 import HomeLanding from "@/components/HomeLanding";
+import NoCompany from "@/components/layout/no-company";
 import { Folder } from "@/generated/prisma/client";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -26,7 +27,13 @@ export default async function Home() {
   return (
     <main className="flex min-h-screen md:min-h-[calc(100vh-4rem)] px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
       {session ? (
-        <Dashboard folders={folders} />
+        session.user.companyId || session.user.role === "ADMIN" ? (
+          <Dashboard folders={folders} />
+        ) : (
+          <div className="flex flex-col items-center justify-center w-full">
+            <NoCompany />
+          </div>
+        )
       ) : (
         <div className="flex flex-col items-center justify-center w-full">
           <HomeLanding />

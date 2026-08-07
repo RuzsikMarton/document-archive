@@ -34,6 +34,7 @@ const Header = ({ publicSession }: { publicSession: PublicSession | null }) => {
   const currentUser = publicSession?.user || session?.user;
   const currentRole = publicSession?.role;
   const userEmail = session?.user?.email;
+  const companyId = session?.user?.companyName;
 
   const handleSignOut = async () => {
     await signOut();
@@ -97,6 +98,13 @@ const Header = ({ publicSession }: { publicSession: PublicSession | null }) => {
                             {userEmail}
                           </p>
                         )}
+                        {companyId && (
+                          <p className="text-xs leading-none mt-1 text-muted-foreground">
+                            {companyId
+                              ? `Spoločnosť: ${companyId}`
+                              : "Žiadna spoločnosť"}
+                          </p>
+                        )}
                       </div>
                     </DropdownMenuLabel>
                   </DropdownMenuGroup>
@@ -104,7 +112,20 @@ const Header = ({ publicSession }: { publicSession: PublicSession | null }) => {
                   <DropdownMenuGroup>
                     <DropdownMenuItem onClick={() => router.push("/folders")}>
                       <FolderOpen />
-                      Moje Priečinky
+                      Všetky záznamy
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem onClick={() => router.push("/help")}>
+                      <HelpCircle />
+                      Pomocník
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => router.push("/account/settings")}
+                    >
+                      <Settings />
+                      Nastavenia účtu
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
                   {currentRole === "ADMIN" && (
@@ -120,7 +141,7 @@ const Header = ({ publicSession }: { publicSession: PublicSession | null }) => {
                       </DropdownMenuGroup>
                       <DropdownMenuGroup>
                         <DropdownMenuItem
-                          onClick={() => router.push("/admin/companies")}
+                          onClick={() => router.push("/admin/company")}
                         >
                           <Building2Icon />
                           Manage Companies
@@ -128,19 +149,6 @@ const Header = ({ publicSession }: { publicSession: PublicSession | null }) => {
                       </DropdownMenuGroup>
                     </>
                   )}
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem onClick={() => router.push("/help")}>
-                      <HelpCircle />
-                      Pomocník
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => router.push("/account/settings")}
-                    >
-                      <Settings />
-                      Nastavenia účtu
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
                     <DropdownMenuItem

@@ -5,7 +5,7 @@ export type PublicSession = {
     id: string;
     name: string;
   };
-  role: Role;
+  role?: Role;
 };
 
 export interface SignUpFormValues {

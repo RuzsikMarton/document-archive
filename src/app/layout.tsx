@@ -65,7 +65,7 @@ async function LayoutContent({ children }: { children: React.ReactNode }) {
           id: session.user.id,
           name: session.user.name,
         },
-        role: session.role,
+        role: session.user.role,
       }
     : null;
 

@@ -30,7 +30,7 @@ export const GetFolders = async ({
   try {
     const folders = await prisma.folder.findMany({
       where: {
-        userId: session.user.id,
+        companyId: session.user.companyId,
         name: {
           contains: search || "",
           mode: "insensitive",
@@ -52,7 +52,7 @@ export const GetFolders = async ({
 
     const totalCount = await prisma.folder.count({
       where: {
-        userId: session.user.id,
+        companyId: session.user.companyId,
         name: {
           contains: search || "",
           mode: "insensitive",

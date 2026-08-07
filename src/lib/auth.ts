@@ -19,10 +19,25 @@ async function findUserRoles(userId: string) {
     return user?.role || "USER";
   } catch (error) {
     console.error("Error finding user role:", error);
-    return "USER"; // Default fallback
+    return "USER";
   }
 }
 
+export async function getSessionUserData(userId: string) {
+  return prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      role: true,
+      companyId: true,
+      companyRole: true,
+      company: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+}
 export const auth = betterAuth({
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
   database: prismaAdapter(prisma, {
@@ -70,12 +85,17 @@ export const auth = betterAuth({
   },
   plugins: [
     customSession(async ({ user, session }) => {
-      const role = await findUserRoles(session.userId);
+      const userData = await getSessionUserData(session.userId);
 
       return {
-        role,
         session,
-        user,
+        user: {
+          ...user,
+          role: userData?.role,
+          companyId: userData?.companyId,
+          companyRole: userData?.companyRole,
+          companyName: userData?.company?.name ?? null,
+        },
       };
     }),
     nextCookies(),
