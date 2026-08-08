@@ -115,15 +115,16 @@ const SignUpForm = () => {
           Už máte účet?{" "}
           <Link
             href="/signin"
-            className="underline underline-offset-4 hover:text-primary/90"
+            className="hover:underline underline-offset-4 text-primary"
           >
             Prihlásiť sa
           </Link>
         </div>
       </div>
       <div className="text-balance text-xs text-center text-muted-foreground mt-4 max-w-md *:[a]:underline *:[a]:underline-offset-2 *:[a]:hover:text-primary/90">
-        Registráciou súhlasíte s <Link href="#">Podmienkami používania</Link> a{" "}
-        <Link href="#">Zásadami ochrany osobných údajov</Link>
+        Registráciou súhlasíte s{" "}
+        <Link href="/terms">Podmienkami používania</Link> a{" "}
+        <Link href="/privacy">Zásadami ochrany osobných údajov</Link>
       </div>
     </div>
   );

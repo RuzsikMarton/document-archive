@@ -6,16 +6,6 @@ import { checkFolderOwnership } from "@/utils/folder";
 import { EditFolderSchema } from "@/utils/validation/folder";
 import { revalidatePath } from "next/cache";
 
-export const getFolderById = async (id: string) => {
-  const folder = await prisma.folder.findUnique({
-    where: {
-      id: id,
-    },
-  });
-
-  return folder;
-};
-
 export const updateFolderAction = async (data: any, folderId: string) => {
   const session = await getSession();
 

@@ -43,10 +43,12 @@ import { Loader2, Trash2Icon } from "lucide-react";
 import { toast } from "sonner";
 import { jsPDF } from "jspdf";
 import { EditFolderSchema } from "@/utils/validation/folder";
+import { generateTransferProtocol } from "@/utils/pdf/preberaci-protokol";
+import { FolderWithCompany } from "@/types/folder";
 
 type EditFolderFormType = z.infer<typeof EditFolderSchema>;
 
-const FolderEditForm = ({ folder }: { folder: Folder }) => {
+const FolderEditForm = ({ folder }: { folder: FolderWithCompany }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const { data: session } = useSession();
@@ -160,6 +162,12 @@ const FolderEditForm = ({ folder }: { folder: Folder }) => {
     }
   };
 
+  const handleDownloadTransferProtocol = async () => {
+    generateTransferProtocol({
+      folder: folder,
+    });
+  };
+
   return (
     <div className="space-y-6 p-6 lg:px-16">
       {/* Header with Edit button */}
@@ -171,7 +179,7 @@ const FolderEditForm = ({ folder }: { folder: Folder }) => {
           </span>
         </div>
       </div>
-      {session && session.user?.id === folder.userId && (
+      {session && session.user?.companyId === folder.companyId && (
         <>
           {!isEditing ? (
             <div className="flex justify-between items-center">
@@ -432,9 +440,23 @@ const FolderEditForm = ({ folder }: { folder: Folder }) => {
                 <Switch
                   checked={folder.handedOver}
                   onCheckedChange={handleHandedOverChange}
-                  disabled={folder.handedOver}
+                  disabled={
+                    folder.handedOver ||
+                    !session ||
+                    session.user?.companyId !== folder.companyId
+                  }
                 />
               </div>
+              {session && session.user?.companyId === folder.companyId && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full mt-2"
+                  onClick={handleDownloadTransferProtocol}
+                >
+                  Stiahnuť protokol o odovzdaní
+                </Button>
+              )}
             </FieldGroup>
           </div>
 

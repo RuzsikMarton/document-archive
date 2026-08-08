@@ -158,7 +158,7 @@ export default function TermsPage() {
           </p>
 
           <div className="space-y-1 text-muted-foreground">
-            <p>Martin Ruzsik</p>
+            <p>Marton Ruzsik</p>
             <p>Slovakia</p>
             <p>
               Email:{" "}

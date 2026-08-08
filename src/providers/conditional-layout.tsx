@@ -1,8 +1,8 @@
 "use client";
+import Footer from "@/components/layout/footer";
+import Header from "@/components/layout/header";
 import { PublicSession } from "@/types/auth";
 import { usePathname } from "next/navigation";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
 
 interface ConditionalLayoutProps {
   children: React.ReactNode;

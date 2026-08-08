@@ -1,6 +1,29 @@
 import { getSession } from "@/utils/auth";
 import { prisma } from "../prisma";
 
+export const getFolderById = async (id: string) => {
+  const folder = await prisma.folder.findUnique({
+    where: {
+      id: id,
+    },
+    include: {
+      company: {
+        select: {
+          name: true,
+          ico: true,
+          dic: true,
+          address: true,
+          telephone: true,
+          email: true,
+          website: true,
+        },
+      },
+    },
+  });
+
+  return folder;
+};
+
 export const GetFolders = async ({
   search,
   handedOver,

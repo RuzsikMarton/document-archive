@@ -33,9 +33,12 @@ model Company {
   id   String @id @default(cuid())
   name String
 
-  ico     String? @unique
-  dic     String? @unique
-  address String?
+  ico       String? @unique
+  dic       String? @unique
+  address   String?
+  website   String?
+  telephone String?
+  email     String?
 
   ownerId String @unique
   owner   User   @relation("CompanyOwner", fields: [ownerId], references: [id], onDelete: Cascade)

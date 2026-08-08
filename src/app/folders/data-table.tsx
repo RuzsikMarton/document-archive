@@ -15,7 +15,7 @@ import {
   useReactTable,
   SortingState,
 } from "@tanstack/react-table";
-import { Info } from "lucide-react";
+import { SearchX } from "lucide-react";
 import { useState } from "react";
 
 interface FoldersDataTableProps<TData, TValue> {
@@ -92,7 +92,7 @@ export function FoldersDataTable<TData, TValue>({
                 className="h-24 text-center text-slate-500 dark:text-slate-400 px-4 sm:px-6 py-3 sm:py-4"
               >
                 <div className="flex flex-col items-center justify-center gap-1">
-                  <Info className="w-5 h-5 my-2 text-slate-400 dark:text-slate-500" />
+                  <SearchX className="w-5 h-5 my-2 text-slate-400 dark:text-slate-500" />
                   Žiadne výsledky.
                 </div>
               </TableCell>

@@ -103,7 +103,7 @@ const ForgotPasswordForm = () => {
         Ešte nemáte účet?{" "}
         <a
           href="/signup"
-          className="underline underline-offset-4 hover:text-primary/90"
+          className="hover:underline underline-offset-4 text-primary"
         >
           Zaregistrovať sa
         </a>
