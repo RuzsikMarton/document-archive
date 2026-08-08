@@ -299,14 +299,15 @@ const FolderEditForm = ({ folder }: { folder: FolderWithCompany }) => {
                           disabled={!isEditing}
                           className="disabled:cursor-default"
                         />
+
                         <ComboboxContent>
+                          <ComboboxEmpty>Žiadne výsledky</ComboboxEmpty>
                           <ComboboxList>
-                            <ComboboxEmpty>Žiadne výsledky</ComboboxEmpty>
-                            {years.map((year) => (
+                            {(year) => (
                               <ComboboxItem key={year} value={year}>
                                 {year}
                               </ComboboxItem>
-                            ))}
+                            )}
                           </ComboboxList>
                         </ComboboxContent>
                       </Combobox>
@@ -348,13 +349,13 @@ const FolderEditForm = ({ folder }: { folder: FolderWithCompany }) => {
                             className="disabled:cursor-default"
                           />
                           <ComboboxContent>
+                            <ComboboxEmpty>Žiadne výsledky</ComboboxEmpty>
                             <ComboboxList>
-                              <ComboboxEmpty>Žiadne výsledky</ComboboxEmpty>
-                              {months.map((month) => (
+                              {(month) => (
                                 <ComboboxItem key={month} value={month}>
                                   {month}
                                 </ComboboxItem>
-                              ))}
+                              )}
                             </ComboboxList>
                           </ComboboxContent>
                         </Combobox>
@@ -394,13 +395,13 @@ const FolderEditForm = ({ folder }: { folder: FolderWithCompany }) => {
                             className="disabled:cursor-default"
                           />
                           <ComboboxContent>
+                            <ComboboxEmpty>Žiadne výsledky</ComboboxEmpty>
                             <ComboboxList>
-                              <ComboboxEmpty>Žiadne výsledky</ComboboxEmpty>
-                              {months.map((month) => (
+                              {(month) => (
                                 <ComboboxItem key={month} value={month}>
                                   {month}
                                 </ComboboxItem>
-                              ))}
+                              )}
                             </ComboboxList>
                           </ComboboxContent>
                         </Combobox>
