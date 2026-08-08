@@ -48,6 +48,7 @@ export const updateFolderAction = async (data: any, folderId: string) => {
 
     return { success: true };
   } catch (error) {
+    console.error("Error updating folder:", error);
     return {
       success: false,
       message: "Chyba pri aktualizácii záznamu.",
@@ -80,6 +81,7 @@ export const deleteFolderAction = async (folderId: string) => {
     // Invalidate cache so the deleted folder is removed from the list
     revalidatePath("/folders");
   } catch (error) {
+    console.error("Error deleting folder:", error);
     return {
       success: false,
       message: "Chyba pri odstraňovaní záznamu.",
@@ -121,12 +123,10 @@ export const folderHandedOverAction = async (
 
     return { success: true };
   } catch (error) {
+    console.error("Error updating folder handed over status:", error);
     return {
       success: false,
       message: "Chyba pri aktualizácii záznamu.",
     };
   }
 };
-
-//TODO
-export const generateTransferCodeAction = async (folderId: string) => {};

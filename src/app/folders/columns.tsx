@@ -38,7 +38,6 @@ export const columns: ColumnDef<Folder>[] = [
   {
     accessorKey: "createdAt",
     header: ({ column }) => {
-      const sort = column.getIsSorted();
       return (
         <div className="hidden md:block">
           <SortableHeader title="Dátum vytvorenia" sortKey="createdAt" />

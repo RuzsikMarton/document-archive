@@ -46,6 +46,7 @@ export const createCompanyAction = async (data: CreateCompanyInput) => {
       company,
     };
   } catch (error) {
+    console.error("Error creating company:", error);
     return {
       success: false,
       message: "Chyba pri vytváraní spoločnosti.",
