@@ -17,7 +17,13 @@ import {
   ComboboxList,
   ComboboxItem,
 } from "../ui/combobox";
-import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "../ui/field";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Switch } from "../ui/switch";
@@ -26,7 +32,6 @@ import Image from "next/image";
 
 import { useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
-import { Folder } from "@/generated/prisma/browser";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -45,6 +50,8 @@ import { jsPDF } from "jspdf";
 import { EditFolderSchema } from "@/utils/validation/folder";
 import { generateTransferProtocol } from "@/utils/pdf/preberaci-protokol";
 import { FolderWithCompany } from "@/types/folder";
+
+import "@/lib/fonts/Roboto-Regular-normal";
 
 type EditFolderFormType = z.infer<typeof EditFolderSchema>;
 
@@ -134,6 +141,7 @@ const FolderEditForm = ({ folder }: { folder: FolderWithCompany }) => {
         format: "a4",
       });
       const pageWidth = doc.internal.pageSize.getWidth();
+      doc.setFont("Roboto", "normal");
 
       doc.setFontSize(20);
       const maxWidth = pageWidth - 170;
@@ -502,6 +510,10 @@ const FolderEditForm = ({ folder }: { folder: FolderWithCompany }) => {
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="folder-edit-contents">Obsah</FieldLabel>
+                <FieldDescription>
+                  Obsah záznamu je voliteľný a slúži na lepšiu identifikáciu
+                  dokumentov.
+                </FieldDescription>
                 <Textarea
                   id="folder-edit-contents"
                   {...field}
@@ -514,6 +526,10 @@ const FolderEditForm = ({ folder }: { folder: FolderWithCompany }) => {
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
+                <FieldDescription>
+                  Pre správne zobrazenie v protokole odporúčame maximálne 70
+                  znakov na jeden riadok.
+                </FieldDescription>
               </Field>
             )}
           />

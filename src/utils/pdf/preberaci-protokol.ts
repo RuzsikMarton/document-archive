@@ -2,6 +2,7 @@ import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 
 import "@/lib/fonts/Roboto-Regular-normal";
+import "@/lib/fonts/Roboto-Bold-bold";
 import { FolderWithCompany } from "@/types/folder";
 
 const months = [
@@ -37,14 +38,15 @@ export function generateTransferProtocol({
   // ================= HEADER =================
 
   doc.setLanguage("sk");
-  doc.setFont("Roboto-Regular");
+  doc.setFont("Roboto", "normal");
   doc.setFontSize(16);
 
   doc.text("PREBERACÍ A ODOVZDÁVACÍ PROTOKOL", 14, 18);
 
   doc.setFontSize(12);
 
-  doc.text(folder.id, 195, 18, {
+  doc.setFontSize(9);
+  doc.text(`Protokol č.: ${folder.id}`, 195, 18, {
     align: "right",
   });
 
@@ -56,6 +58,7 @@ export function generateTransferProtocol({
     theme: "grid",
 
     styles: {
+      font: "Roboto",
       fillColor: "#085efb",
       fontSize: 8,
       cellPadding: 3,
@@ -71,9 +74,9 @@ export function generateTransferProtocol({
           folder.company?.name,
           folder.company?.address,
           " ",
-          folder.company?.ico && `ICO: ${folder.company.ico}`,
-          folder.company?.dic && `DIC: ${folder.company.dic}`,
-          folder.company?.dic && `ICDPH: SK${folder.company.dic}`,
+          folder.company?.ico && `IČO: ${folder.company.ico}`,
+          folder.company?.dic && `DIČ: ${folder.company.dic}`,
+          folder.company?.dic && `IČDPH: SK${folder.company.dic}`,
           " ",
           folder.company?.telephone && `Telefón: ${folder.company.telephone}`,
           folder.company?.email && `E-mail: ${folder.company.email}`,
@@ -90,9 +93,9 @@ export function generateTransferProtocol({
           " _______________________________",
           " _______________________________",
           " ",
-          "ICO:  ___________________________",
-          "DIC:  ___________________________",
-          "ICDPH: ___________________________",
+          "IČO:  ___________________________",
+          "DIČ:  ___________________________",
+          "IČDPH: ___________________________",
         ]
           .filter(Boolean)
           .join("\n"),
@@ -101,16 +104,19 @@ export function generateTransferProtocol({
 
     columnStyles: {
       0: {
+        font: "Roboto",
         cellWidth: 72,
         fillColor: "#FFFFFF",
       },
       1: {
+        font: "Roboto",
         cellWidth: 35,
         halign: "center",
         valign: "middle",
         fillColor: "#FFFFFF",
       },
       2: {
+        font: "Roboto",
         cellWidth: 75,
         fillColor: "#FFFFFF",
       },
@@ -125,7 +131,7 @@ export function generateTransferProtocol({
         const size = 22;
 
         const x = data.cell.x + (data.cell.width - size) / 2;
-        const y = data.cell.y + 4;
+        const y = data.cell.y + (data.cell.height - size) / 2;
 
         doc.addImage(folder.qrCodeImage, "PNG", x, y, size, size);
       }
@@ -134,19 +140,12 @@ export function generateTransferProtocol({
 
   // ================= FOLDER =================
 
-  autoTable(doc, {
-    startY: (doc as any).lastAutoTable.finalY + 10,
+  // Split contents into lines and handle pagination
+  const contentsLines = (folder.contents ?? "-").split("\n");
+  const firstPageMaxLines = 20; // First page has metadata
+  const continuationPageMaxLines = 40; // Continuation pages have more space
 
-    theme: "grid",
-
-    styles: { fillColor: "#085efb" },
-    columnStyles: { 0: { fillColor: "#FFFFFF" } },
-
-    head: [["Popis odovzdaného šanónu"]],
-
-    body: [
-      [
-        `
+  const firstPageContent = `
 Názov:
 ${folder.name ?? "-"}
 
@@ -154,22 +153,69 @@ Rok:
 ${folder.year ?? "-"}
 
 Obdobie:
-${period ?? "-"}
+${period}
 
 Obsah:
-${folder.contents ?? "-"}
+${contentsLines.slice(0, firstPageMaxLines).join("\n")}${contentsLines.length > firstPageMaxLines ? "\n\n(pokračuje na ďalšej strane...)" : ""}
+${contentsLines.length <= firstPageMaxLines ? "\nOdovzdávajúci potvrdzuje, že šanón bol odovzdaný kompletný, bez viditeľného poškodenia a obsahuje všetky evidované dokumenty.\n\nPreberajúci týmto potvrdzuje prevzatie uvedeného šanónu v rozsahu a stave uvedenom v tomto protokole." : ""}
+  `;
 
-Odovzdávajúci potvrdzuje, že šanón bol odovzdaný kompletný, bez viditelného poškodenia a obsahuje všetky evidované dokumenty.
+  autoTable(doc, {
+    startY: (doc as any).lastAutoTable.finalY + 10,
 
-Preberajúci potvrdzuje prevzatie uvedeného šanónu.
-        `,
-      ],
-    ],
+    theme: "grid",
+
+    styles: { font: "Roboto", fillColor: "#085efb" },
+    columnStyles: {
+      0: { font: "Roboto", fillColor: "#FFFFFF" },
+    },
+
+    head: [["Popis odovzdaného šanónu"]],
+
+    body: [[firstPageContent.trim()]],
   });
+
+  // If contents is longer than firstPageMaxLines, create additional pages
+  if (contentsLines.length > firstPageMaxLines) {
+    let remainingLines = contentsLines.slice(firstPageMaxLines);
+
+    while (remainingLines.length > 0) {
+      const isLastChunk = remainingLines.length <= continuationPageMaxLines;
+      const chunk = remainingLines.slice(0, continuationPageMaxLines);
+      remainingLines = remainingLines.slice(continuationPageMaxLines);
+
+      // Add new page
+      doc.addPage();
+
+      // Add continuation header
+      doc.setFontSize(12);
+      doc.text("PREBERACÍ A ODOVZDÁVACÍ PROTOKOL (pokračovanie)", 14, 18);
+      doc.setFontSize(9);
+      doc.text(`Protokol č.: ${folder.id}`, 195, 18, {
+        align: "right",
+      });
+
+      // Add contents table
+      const continuationContent = `Obsah (pokračovanie):
+${chunk.join("\n")}${!isLastChunk ? "\n\n(pokračuje na ďalšej strane...)" : ""}
+${isLastChunk ? "\nOdovzdávajúci potvrdzuje, že šanón bol odovzdaný kompletný, bez viditeľného poškodenia a obsahuje všetky evidované dokumenty.\n\nPreberajúci týmto potvrdzuje prevzatie uvedeného šanónu v rozsahu a stave uvedenom v tomto protokole." : ""}`;
+
+      autoTable(doc, {
+        startY: 25,
+        theme: "grid",
+        styles: { font: "Roboto", fillColor: "#085efb" },
+        columnStyles: {
+          0: { font: "Roboto", fillColor: "#FFFFFF" },
+        },
+        head: [["Popis odovzdaného šanónu"]],
+        body: [[continuationContent.trim()]],
+      });
+    }
+  }
 
   // ================= FOOTER =================
 
-  const footerY = (doc as any).lastAutoTable.finalY + 15;
+  const footerY = (doc as any).lastAutoTable.finalY + 10;
 
   doc.setFontSize(10);
 
