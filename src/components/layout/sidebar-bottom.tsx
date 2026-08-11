@@ -10,8 +10,13 @@ import {
 } from "../ui/sidebar";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { usePathname, useSearchParams } from "next/navigation";
 
 const SidebarBottom = ({ ...props }) => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const isGettingStarted =
+    pathname === "/help" && searchParams.get("topic") === "getting-started";
   const disabled = true;
   return (
     <SidebarGroup {...props}>
@@ -20,6 +25,7 @@ const SidebarBottom = ({ ...props }) => {
           <SidebarMenuItem>
             <SidebarMenuButton
               tooltip="Pomocník"
+              isActive={pathname === "/help" && !isGettingStarted}
               render={
                 <Link href="/help">
                   <HelpCircle />
@@ -31,6 +37,7 @@ const SidebarBottom = ({ ...props }) => {
           <SidebarMenuItem className="group-data-[collapsible=icon]:hidden">
             <SidebarMenuButton
               tooltip="Začíname"
+              isActive={isGettingStarted}
               render={
                 <Link href="/help?topic=getting-started">
                   <Rocket />
@@ -42,6 +49,7 @@ const SidebarBottom = ({ ...props }) => {
           <SidebarMenuItem className="group-data-[collapsible=icon]:hidden">
             <SidebarMenuButton
               tooltip="Kontakt"
+              isActive={pathname === "/kontakt"}
               render={
                 <Link href="/kontakt">
                   <Contact />
@@ -55,6 +63,7 @@ const SidebarBottom = ({ ...props }) => {
               tooltip="Nastavenia"
               className={cn(disabled && "pointer-events-none opacity-50")}
               disabled={disabled}
+              isActive={pathname === "/settings"}
               render={disabled ? undefined : <Link href="/settings" />}
             >
               <Settings />

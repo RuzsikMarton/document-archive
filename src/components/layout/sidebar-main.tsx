@@ -1,5 +1,5 @@
 "use client";
-
+import { usePathname, useSearchParams } from "next/navigation";
 import { SidebarUserType } from "@/types/auth";
 import {
   SidebarGroup,
@@ -15,6 +15,11 @@ import Link from "next/link";
 
 const SidebarMain = ({ user }: { user: SidebarUserType }) => {
   const { openDialog } = useNewFolderDialog();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const isPendingFolders =
+    pathname === "/folders" && searchParams.get("handedOver") === "false";
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-4">
@@ -49,6 +54,7 @@ const SidebarMain = ({ user }: { user: SidebarUserType }) => {
           <SidebarMenuItem>
             <SidebarMenuButton
               tooltip="Informačný panel"
+              isActive={pathname === "/"}
               render={
                 <Link href="/">
                   <Gauge />
@@ -60,6 +66,7 @@ const SidebarMain = ({ user }: { user: SidebarUserType }) => {
           <SidebarMenuItem>
             <SidebarMenuButton
               tooltip="Záznamy"
+              isActive={pathname?.startsWith("/folders") && !isPendingFolders}
               render={
                 <Link href="/folders">
                   <FolderOpen />
@@ -71,6 +78,7 @@ const SidebarMain = ({ user }: { user: SidebarUserType }) => {
           <SidebarMenuItem>
             <SidebarMenuButton
               tooltip="Čakajúce"
+              isActive={isPendingFolders}
               render={
                 <Link href="/folders?handedOver=false">
                   <FolderClock />

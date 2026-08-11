@@ -58,13 +58,11 @@ const Header = () => {
 
             <div className="flex items-center gap-2">
               <Link href="/signin">
-                <Button variant="outline" size="sm">
-                  Prihlásiť sa
-                </Button>
+                <Button>Prihlásiť sa</Button>
               </Link>
-              <Link href="/signup">
-                <Button size="sm">Registrovať sa</Button>
-              </Link>
+              {/*<Link href="/signup">
+                <Button variant="outline" size="sm">Registrovať sa</Button>
+              </Link>*/}
             </div>
             {/* Auth Section 
             {currentUser ? (
