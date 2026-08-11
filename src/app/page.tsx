@@ -1,4 +1,4 @@
-import Dashboard from "@/components/dashboard";
+import Dashboard from "@/components/Dashboard";
 import HomeLanding from "@/components/home-landing";
 import NoCompany from "@/components/layout/no-company";
 import SiteHeader from "@/components/layout/site-header";
