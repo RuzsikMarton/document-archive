@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function TermsPage() {
   return (
-    <main className="mx-auto max-w-5xl px-6 py-12">
+    <div className="mx-auto max-w-5xl px-6 py-12">
       <div className="space-y-8">
         <div>
           <h1 className="text-4xl font-bold tracking-tight">
@@ -172,6 +172,6 @@ export default function TermsPage() {
           </div>
         </section>
       </div>
-    </main>
+    </div>
   );
 }

@@ -10,10 +10,7 @@ interface ConditionalLayoutProps {
   publicSession: PublicSession | null;
 }
 
-const ConditionalLayout = ({
-  children,
-  publicSession,
-}: ConditionalLayoutProps) => {
+const ConditionalLayout = ({ children }: ConditionalLayoutProps) => {
   const pathname = usePathname();
 
   // Hide header and footer on these routes
@@ -22,7 +19,7 @@ const ConditionalLayout = ({
 
   return (
     <>
-      {!hideLayout && <Header publicSession={publicSession} />}
+      {!hideLayout && <Header />}
       <div role="main" tabIndex={-1}>
         {children}
       </div>

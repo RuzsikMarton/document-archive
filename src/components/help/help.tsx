@@ -27,14 +27,6 @@ const Help = ({ session }: { session?: any }) => {
             Naučte sa používať aplikáciu Evidio
           </p>
         </div>
-        {session?.session && (
-          <Link href="/folders">
-            <Button variant="outline" size="sm">
-              <ArrowLeft className="size-4" />
-              Späť na záznamy
-            </Button>
-          </Link>
-        )}
       </div>
 
       <Separator />
@@ -372,14 +364,27 @@ const Help = ({ session }: { session?: any }) => {
       {/* Footer */}
       <div className="pt-6 pb-4 text-center text-sm text-muted-foreground">
         <p>
-          Potrebujete ďalšiu pomoc? Kontaktujte správcu systému alebo navštívte{" "}
-          <Link
-            href="/account/settings"
-            className="text-primary hover:underline"
-          >
-            nastavenia účtu
-          </Link>
-          .
+          Potrebujete ďalšiu pomoc? Kontaktujte správcu systému{" "}
+          {session?.session ? (
+            <span>
+              alebo navštívte{" "}
+              <Link
+                href="/account/settings"
+                className="text-primary hover:underline"
+              >
+                nastavenia účtu
+              </Link>
+              .
+            </span>
+          ) : (
+            <span>
+              tu:{" "}
+              <Link href="/kontakt" className="text-primary hover:underline">
+                kontakt
+              </Link>
+              .
+            </span>
+          )}
         </p>
       </div>
     </div>

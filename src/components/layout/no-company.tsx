@@ -78,18 +78,18 @@ const NoCompany = () => {
               Potrebujete pomoc alebo chcete vytvoriť novú spoločnosť?
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link href="/help">
+              <Link href="/help?topic=getting-started">
                 <Button
                   variant="outline"
                   size="lg"
                   className="w-full sm:w-auto"
                 >
-                  Kontaktovať podporu
+                  Prejsť na nápovedu
                 </Button>
               </Link>
-              <Link href="/account/settings">
+              <Link href="/kontakt">
                 <Button size="lg" className="w-full sm:w-auto">
-                  Nastavenia účtu
+                  Kontaktovať podporu
                 </Button>
               </Link>
             </div>

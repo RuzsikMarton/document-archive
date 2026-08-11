@@ -7,9 +7,9 @@ const ForgotPasswordPage = async () => {
 
   if (session) redirect("/");
   return (
-    <main className="flex-center min-h-full p-6 my-24 sm:mt-24 sm:mb-32">
+    <div className="flex-center min-h-full p-6 my-24 sm:mt-24 sm:mb-32">
       <ForgotPasswordForm />
-    </main>
+    </div>
   );
 };
 

@@ -10,7 +10,7 @@ const KontaktInfo = () => {
           Prevádzkovateľ
         </h2>
         <p className="text-foreground font-semibold">Márton Ruzsik</p>
-        <p>Sídlo: Tvrdošovce 94 110, Slovensko</p>
+        <p>Sídlo: Tvrdošovce 941 10, Slovensko</p>
         <p>
           Web:{" "}
           <Link

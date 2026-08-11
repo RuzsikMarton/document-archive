@@ -1,13 +1,32 @@
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+
 const AboutPage = () => {
   return (
-    <main className="max-w-4xl mx-auto px-4 py-12 space-y-10">
-      <header>
-        <h1 className="text-4xl font-bold tracking-tight">O projekte Evidio</h1>
-        <p className="mt-3 text-lg text-muted-foreground">
-          Moderná webová aplikácia na evidenciu, správu a organizáciu fyzických
-          šanónov pomocou QR kódov.
-        </p>
-      </header>
+    <div className="max-w-4xl mx-auto px-4 py-12 space-y-10">
+      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+        <div className="order-2 md:order-1">
+          <h1 className="text-4xl font-bold tracking-tight">
+            O projekte Evidio
+          </h1>
+
+          <p className="mt-3 text-lg text-muted-foreground">
+            Moderná webová aplikácia na evidenciu, správu a organizáciu
+            fyzických šanónov pomocou QR kódov.
+          </p>
+        </div>
+
+        <Link
+          href="/"
+          className="order-1 md:order-2 shrink-0 self-end md:self-start"
+        >
+          <Button variant="outline">
+            <ArrowLeft />
+            Späť na hlavnú stránku
+          </Button>
+        </Link>
+      </div>
 
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold">Čo je Evidio?</h2>
@@ -145,7 +164,7 @@ const AboutPage = () => {
           cieľom vytvoriť spoľahlivý nástroj pre správu firemnej dokumentácie.
         </p>
       </section>
-    </main>
+    </div>
   );
 };
 

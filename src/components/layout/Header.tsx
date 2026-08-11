@@ -1,33 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useSession, signOut } from "@/lib/auth-client";
 import { ThemeToggle } from "../common/ThemeToggle";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  LogOut,
-  User,
-  FolderOpen,
-  Building2Icon,
-  Users,
-  Settings,
-  HelpCircle,
-} from "lucide-react";
 import Image from "next/image";
-import { PublicSession } from "@/types/auth";
 
-const Header = ({ publicSession }: { publicSession: PublicSession | null }) => {
-  const { data: session } = useSession();
+const Header = () => {
+  {
+    /*const { data: session } = useSession();
   const router = useRouter();
 
   // Use client session for user data, server session for role (avoids hydration issues)
@@ -39,7 +19,8 @@ const Header = ({ publicSession }: { publicSession: PublicSession | null }) => {
   const handleSignOut = async () => {
     await signOut();
     router.push("/signin");
-  };
+  };*/
+  }
 
   return (
     <header className="w-full">
@@ -75,7 +56,17 @@ const Header = ({ publicSession }: { publicSession: PublicSession | null }) => {
             {/* Theme Toggle */}
             <ThemeToggle />
 
-            {/* Auth Section */}
+            <div className="flex items-center gap-2">
+              <Link href="/signin">
+                <Button variant="outline" size="sm">
+                  Prihlásiť sa
+                </Button>
+              </Link>
+              <Link href="/signup">
+                <Button size="sm">Registrovať sa</Button>
+              </Link>
+            </div>
+            {/* Auth Section 
             {currentUser ? (
               <DropdownMenu>
                 <DropdownMenuTrigger
@@ -172,7 +163,7 @@ const Header = ({ publicSession }: { publicSession: PublicSession | null }) => {
                   <Button size="sm">Registrovať sa</Button>
                 </Link>
               </div>
-            )}
+            )}*/}
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import SortableHeader from "@/components/folders/sortable-header";
 import { Folder } from "@/generated/prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import { CheckCircle2, XCircle } from "lucide-react";
+import Link from "next/link";
 
 export const columns: ColumnDef<Folder>[] = [
   {
@@ -16,9 +17,12 @@ export const columns: ColumnDef<Folder>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="font-medium text-slate-900 dark:text-slate-50">
+        <Link
+          href={`/folders/${row.original.id}`}
+          className="font-medium text-slate-900 dark:text-slate-50"
+        >
           {row.getValue("name")}
-        </div>
+        </Link>
       );
     },
   },

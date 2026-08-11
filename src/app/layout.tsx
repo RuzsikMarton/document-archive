@@ -6,6 +6,10 @@ import { Providers } from "@/providers/providers";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { Toaster } from "@/components/ui/sonner";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import AppSidebar from "@/components/layout/app-sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -59,27 +63,40 @@ async function LayoutContent({ children }: { children: React.ReactNode }) {
     headers: await headers(),
   });
 
-  const publicSession = session
-    ? {
-        user: {
-          id: session.user.id,
-          name: session.user.name,
-        },
-        role: session.user.role,
-      }
-    : null;
+  const isSignedIn = !!session;
 
   return (
     <Suspense
       fallback={
         <div className="min-h-screen flex items-center justify-center">
-          <div className="flex flex-col items-center justify-center space-y-4">
-            <LoaderCircle className="animate-spin" size={48} />
-          </div>
+          <LoaderCircle className="animate-spin" size={48} />
         </div>
       }
     >
-      <Providers publicSession={publicSession}>{children}</Providers>
+      {isSignedIn ? (
+        <>
+          <SidebarProvider
+            style={
+              {
+                "--sidebar-width": "calc(var(--spacing) * 72)",
+                "--header-height": "calc(var(--spacing) * 12)",
+              } as React.CSSProperties
+            }
+          >
+            <AppSidebar user={session.user} />
+            <SidebarInset>
+              <main className="w-full"> {children}</main>
+            </SidebarInset>
+          </SidebarProvider>
+        </>
+      ) : (
+        <>
+          <Header />
+
+          <main>{children}</main>
+          <Footer />
+        </>
+      )}
     </Suspense>
   );
 }
@@ -97,10 +114,10 @@ export default function RootLayout({
       className={`${inter.className} scroll-smooth relative`}
     >
       <body className="min-h-full antialiased">
-        <LayoutContent>
+        <Providers>
           <Toaster />
-          {children}
-        </LayoutContent>
+          <LayoutContent>{children}</LayoutContent>
+        </Providers>
       </body>
     </html>
   );

@@ -7,9 +7,9 @@ const SignUpPage = async () => {
 
   if (session) redirect("/");
   return (
-    <main className="flex-center min-h-screen p-6">
+    <div className="flex-center min-h-screen p-6">
       <SignUpForm />
-    </main>
+    </div>
   );
 };
 

@@ -12,30 +12,6 @@ const Dashboard = ({ folders }: { folders: PrismaFolder[] }) => {
   return (
     <div className="flex w-full 2xl:w-3/4">
       <div className="sm:px-6 max-w-screen-sm sm:max-w-7xl xl:max-w-350 w-full">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-10 pb-4 sm:pb-6 border-b gap-3 sm:gap-0">
-          <div>
-            <h1 className="text-xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
-              Archív dokumentov
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
-              Centralizovaný systém správy šanónov
-            </p>
-          </div>
-          <div className="text-left sm:text-right">
-            <p className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 font-medium">
-              {new Date().toLocaleDateString("sk-SK", {
-                weekday: "long",
-                day: "numeric",
-                month: "short",
-              })}
-            </p>
-            <p className="text-base sm:text-xl font-semibold text-slate-900 dark:text-slate-50 mt-0.5">
-              {new Date().getFullYear()}
-            </p>
-          </div>
-        </div>
-
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-10">
           <button

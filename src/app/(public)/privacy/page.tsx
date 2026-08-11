@@ -2,7 +2,7 @@
 
 export default function PrivacyPolicyPage() {
   return (
-    <main className="mx-auto max-w-5xl px-6 py-12">
+    <div className="mx-auto max-w-5xl px-6 py-12">
       <div className="space-y-12">
         {/* Header */}
         <section>
@@ -672,6 +672,6 @@ export default function PrivacyPolicyPage() {
           </div>
         </section>
       </div>
-    </main>
+    </div>
   );
 }
