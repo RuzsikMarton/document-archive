@@ -28,7 +28,7 @@ const FoldersPage = async (props: {
       {session?.session && <SiteHeader title={"Všetky záznamy"} />}
       <div className="flex min-h-screen md:min-h-[calc(100vh-4rem)] px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
         {session?.user.companyId ? (
-          <div className="flex w-full 2xl:w-3/4">
+          <div className="flex w-full">
             <div className="sm:px-6 max-w-screen-sm sm:max-w-7xl xl:max-w-350 w-full">
               <TableFilters />
               <Suspense

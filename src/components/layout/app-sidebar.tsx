@@ -52,7 +52,6 @@ const AppSidebar = ({ user }: { user: SidebarUserType }) => {
                     <span className="truncate text-xs text-primary">
                       Vytvoriť alebo pripojiť sa
                     </span>
-                    <ChevronRight className="ml-auto size-4 text-muted-foreground" />
                   </Link>
                 )}
               </div>

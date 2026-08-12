@@ -10,8 +10,8 @@ const Dashboard = ({ folders }: { folders: PrismaFolder[] }) => {
   const { openDialog } = useNewFolderDialog();
   const router = useRouter();
   return (
-    <div className="flex w-full 2xl:w-3/4">
-      <div className="sm:px-6 max-w-screen-sm sm:max-w-7xl xl:max-w-350 w-full">
+    <div className="flex xl:justify-center w-full">
+      <div className="sm:px-6 max-w-screen-sm sm:max-w-screen xl:max-w-7xl w-full">
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-10">
           <button

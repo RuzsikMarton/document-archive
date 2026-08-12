@@ -48,8 +48,8 @@ import { Loader2, Trash2Icon } from "lucide-react";
 import { toast } from "sonner";
 import { jsPDF } from "jspdf";
 import { EditFolderSchema } from "@/utils/validation/folder";
-import { generateTransferProtocol } from "@/utils/pdf/preberaci-protokol";
 import { FolderWithCompany } from "@/types/folder";
+import { TransferProtocolDialog } from "./transfer-protocol-form";
 
 import "@/lib/fonts/Roboto-Regular-normal";
 
@@ -170,74 +170,66 @@ const FolderEditForm = ({ folder }: { folder: FolderWithCompany }) => {
     }
   };
 
-  const handleDownloadTransferProtocol = async () => {
-    generateTransferProtocol({
-      folder: folder,
-    });
-  };
-
   return (
     <div className="space-y-6 p-6 lg:px-16">
       {/* Header with Edit button */}
-      <div className="flex justify-between items-center">
-        <div>
-          <span className="text-2xl font-bold">Detaily záznamu</span>
-          <span className="text-2xl font-base hidden md:inline">
-            : {folder.id}
-          </span>
+      <div className="space-y-1">
+        <h1 className="text-2xl font-semibold tracking-tight">
+          Detaily záznamu
+        </h1>
+
+        <div className="text-sm text-muted-foreground">
+          ID záznamu: <span className="font-mono">{folder.id}</span>
         </div>
       </div>
       {session && session.user?.companyId === folder.companyId && (
         <>
           {!isEditing ? (
-            <div className="flex justify-between items-center">
-              <div>
-                {/*<span></span>
-                <Button>Generovať transfer kód</Button>*/}
-              </div>
-              <div className="flex gap-2">
-                <Button className="hidden"></Button>
+            <div className="flex flex-wrap justify-end gap-2">
+              <>
                 <Button
+                  type="button"
                   className="dark:text-black"
                   onClick={() => setIsEditing(true)}
                 >
                   Upraviť
                 </Button>
-                <AlertDialog>
-                  <AlertDialogTrigger
-                    render={<Button variant="destructive">Zmazať</Button>}
-                  />
-                  <AlertDialogContent size="sm">
-                    <AlertDialogHeader>
-                      <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
-                        <Trash2Icon />
-                      </AlertDialogMedia>
-                      <AlertDialogTitle>Zmazať záznam?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Ste si istý, že chcete zmazať tento záznam? Táto akcia
-                        je nevratná a všetky údaje budú nenávratne odstránené.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel variant="outline">
-                        Zrušiť
-                      </AlertDialogCancel>
-                      <AlertDialogAction
-                        variant="destructive"
-                        render={
-                          <Button onClick={handleDelete} disabled={isPending}>
-                            {isPending ? (
-                              <Loader2 className="animate-spin" />
-                            ) : (
-                              "Zmazať"
-                            )}
-                          </Button>
-                        }
-                      />
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </div>
+              </>
+              <TransferProtocolDialog folder={folder} />
+              <AlertDialog>
+                <AlertDialogTrigger
+                  render={<Button variant="destructive">Zmazať</Button>}
+                />
+                <AlertDialogContent size="sm">
+                  <AlertDialogHeader>
+                    <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
+                      <Trash2Icon />
+                    </AlertDialogMedia>
+                    <AlertDialogTitle>Zmazať záznam?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Ste si istý, že chcete zmazať tento záznam? Táto akcia je
+                      nevratná a všetky údaje budú nenávratne odstránené.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel variant="outline">
+                      Zrušiť
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      variant="destructive"
+                      render={
+                        <Button onClick={handleDelete} disabled={isPending}>
+                          {isPending ? (
+                            <Loader2 className="animate-spin" />
+                          ) : (
+                            "Zmazať"
+                          )}
+                        </Button>
+                      }
+                    />
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           ) : (
             <div className="flex justify-end gap-2">
@@ -456,16 +448,6 @@ const FolderEditForm = ({ folder }: { folder: FolderWithCompany }) => {
                   }
                 />
               </div>
-              {session && session.user?.companyId === folder.companyId && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full mt-2"
-                  onClick={handleDownloadTransferProtocol}
-                >
-                  Stiahnuť protokol o odovzdaní
-                </Button>
-              )}
             </FieldGroup>
           </div>
 
@@ -482,14 +464,16 @@ const FolderEditForm = ({ folder }: { folder: FolderWithCompany }) => {
                       className="object-contain p-4"
                     />
                   </div>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="w-full"
-                    onClick={handleDownloadQR}
-                  >
-                    Stiahnuť QR kód
-                  </Button>
+                  {session && session.user?.companyId === folder.companyId && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full"
+                      onClick={handleDownloadQR}
+                    >
+                      Stiahnuť QR kód
+                    </Button>
+                  )}
                 </div>
               ) : (
                 <div className="aspect-square w-full border rounded-lg flex items-center justify-center bg-muted">

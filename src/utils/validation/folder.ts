@@ -46,3 +46,9 @@ export const EditFolderSchema = z
       path: ["monthFrom"],
     },
   );
+
+export const TransferProtocolSchema = z.object({
+  address: z.string().min(1, { message: "Adresa je povinná" }),
+  ico: z.string().optional(),
+  dic: z.string().optional(),
+});

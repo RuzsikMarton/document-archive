@@ -22,8 +22,14 @@ const months = [
 
 export function generateTransferProtocol({
   folder,
+  address,
+  ico,
+  dic,
 }: {
   folder: FolderWithCompany;
+  address?: string;
+  ico?: string;
+  dic?: string;
 }) {
   const period =
     folder.monthFrom && folder.monthTo
@@ -89,13 +95,11 @@ export function generateTransferProtocol({
 
         [
           folder.name,
-          " ",
-          " _______________________________",
-          " _______________________________",
-          " ",
-          "IČO:  ___________________________",
-          "DIČ:  ___________________________",
-          "IČDPH: ___________________________",
+          address ? `${address}` : "_______________________________",
+          address ? " " : " _______________________________",
+          ico ? `IČO: ${ico}` : "IČO:  ___________________________",
+          dic && `DIČ: ${dic}`,
+          dic && `IČDPH: SK${dic}`,
         ]
           .filter(Boolean)
           .join("\n"),
