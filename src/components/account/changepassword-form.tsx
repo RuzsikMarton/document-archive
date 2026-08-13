@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Loader2, Lock } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { changePasswordSchema } from "@/utils/validation/profile";
@@ -40,22 +40,11 @@ const ChangePasswordForm = () => {
     setIsUpdating(false);
   };
   return (
-    <section className="space-y-4">
+    <section className="rounded-lg border bg-slate-100 dark:bg-card p-6 space-y-4">
       <div className="flex items-center gap-3">
-        <div className="p-2 rounded-lg bg-purple-500/10 text-purple-500 dark:bg-purple-500/20">
-          <Lock className="size-5" />
-        </div>
-        <div>
-          <h2 className="text-xl font-semibold">Heslo a bezpečnosť</h2>
-          <p className="text-sm text-muted-foreground">
-            Aktualizujte svoje heslo, aby bol váš účet bezpečný
-          </p>
-        </div>
+        <h2 className="text-xl font-semibold">Heslo a bezpečnosť</h2>
       </div>
-      <form
-        className="rounded-lg border bg-slate-100 dark:bg-card p-6 space-y-4"
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <FieldGroup>
           <Controller
             name="currentPassword"
@@ -73,7 +62,7 @@ const ChangePasswordForm = () => {
                     id="current-password"
                     type="password"
                     aria-invalid={fieldState.invalid}
-                    placeholder="Zadajte aktuálne heslo"
+                    placeholder="Aktuálne heslo"
                     {...field}
                   />
                   {fieldState.invalid && (
@@ -97,7 +86,7 @@ const ChangePasswordForm = () => {
                     id="new-password"
                     type="password"
                     aria-invalid={fieldState.invalid}
-                    placeholder="Zadajte nové heslo"
+                    placeholder="Nové heslo"
                     {...field}
                   />
                   {fieldState.invalid && (

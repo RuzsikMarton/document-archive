@@ -1,18 +1,16 @@
 import z from "zod";
 
-export const updateProfileNameSchema = z.object({
+export const updateProfileSchema = z.object({
   name: z
     .string()
     .min(1, { message: "Meno je povinné." })
     .max(50, { message: "Meno môže mať maximálne 50 znakov." })
     .trim(),
-});
-
-export const updateProfileEmailSchema = z.object({
   email: z
     .email({ message: "Neplatný formát e-mailu." })
     .max(100, { message: "E-mail môže mať maximálne 100 znakov." })
-    .trim(),
+    .trim()
+    .optional(),
 });
 
 export const changePasswordSchema = z

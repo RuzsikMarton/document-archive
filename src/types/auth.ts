@@ -8,15 +8,18 @@ export type PublicSession = {
   role?: Role;
 };
 
-export type SidebarUserType = {
-  id: string;
-  name: string;
-  email: string;
-  image?: string | null;
-  role?: Role;
-  companyId?: string | null;
-  companyRole?: CompanyRole | null;
+export type SessionUserType = {
+  role: Role | undefined;
+  companyId: string | null | undefined;
+  companyRole: CompanyRole | null | undefined;
   companyName: string | null;
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  email: string;
+  emailVerified: boolean;
+  name: string;
+  image?: string | null | undefined;
 };
 
 export interface SignUpFormValues {

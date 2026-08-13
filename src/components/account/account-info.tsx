@@ -1,26 +1,16 @@
 "use client";
 
-import {
-  Building2,
-  Calendar,
-  Copy,
-  CopyCheck,
-  Info,
-  Mail,
-  Shield,
-} from "lucide-react";
+import { Calendar, Copy, CopyCheck, Shield, UserShield } from "lucide-react";
 import { useState } from "react";
 
 const AccountInfo = ({
   userId,
   createdAt,
-  emailVerified,
-  companyName,
+  role,
 }: {
   userId: string;
   createdAt: Date;
-  emailVerified: boolean;
-  companyName: string | null;
+  role: "ADMIN" | "USER" | undefined;
 }) => {
   const [copied, setCopied] = useState(false);
   const handleCopy = async (text: string) => {
@@ -30,18 +20,8 @@ const AccountInfo = ({
   };
   return (
     <section className="space-y-4">
-      <div className="flex items-center gap-3">
-        <div className="p-2 rounded-lg bg-primary/10 text-primary dark:bg-primary/20">
-          <Info className="size-5" />
-        </div>
-        <div>
-          <h2 className="text-xl font-semibold">Informácie o účte</h2>
-          <p className="text-sm text-muted-foreground">
-            Zobraziť informácie o svojom účte
-          </p>
-        </div>
-      </div>
       <div className="rounded-lg border bg-slate-100 dark:bg-card p-6 space-y-4">
+        <h2 className="text-xl font-semibold">Informácie o účte</h2>
         <div className="flex items-center justify-between py-3 border-b">
           <div className="flex items-center gap-2">
             <Shield className="size-4 text-muted-foreground" />
@@ -60,7 +40,7 @@ const AccountInfo = ({
         <div className="flex items-center justify-between py-3 border-b">
           <div className="flex items-center gap-2">
             <Calendar className="size-4 text-muted-foreground" />
-            <span className="text-sm font-medium">Člen od</span>
+            <span className="text-sm font-medium">Členom od</span>
           </div>
           <span className="text-sm text-muted-foreground">
             {new Date(createdAt).toLocaleDateString("en-US", {
@@ -70,22 +50,14 @@ const AccountInfo = ({
             })}
           </span>
         </div>
-        <div className="flex items-center justify-between py-3 border-b">
-          <div className="flex items-center gap-2">
-            <Mail className="size-4 text-muted-foreground" />
-            <span className="text-sm font-medium">Email overený</span>
-          </div>
-          <span className="text-sm text-muted-foreground">
-            {emailVerified ? "Áno" : "Nie"}
-          </span>
-        </div>
+
         <div className="flex items-center justify-between py-3">
           <div className="flex items-center gap-2">
-            <Building2 className="size-4 text-muted-foreground" />
-            <span className="text-sm font-medium">Organizácia / Tím</span>
+            <UserShield className="size-4 text-muted-foreground" />
+            <span className="text-sm font-medium">Rola</span>
           </div>
           <span className="text-sm text-muted-foreground">
-            {companyName || "-"}
+            {role === "ADMIN" ? "Administrátor" : "Používateľ"}
           </span>
         </div>
       </div>

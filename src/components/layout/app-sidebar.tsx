@@ -14,10 +14,10 @@ import {
 import SidebarBottom from "./sidebar-bottom";
 import SidebarMain from "./sidebar-main";
 import SidebarUser from "./sidebar-user";
-import { SidebarUserType } from "@/types/auth";
 import Link from "next/link";
+import { SessionUserType } from "@/types/auth";
 
-const AppSidebar = ({ user }: { user: SidebarUserType }) => {
+const AppSidebar = ({ user }: { user: SessionUserType }) => {
   return (
     <Sidebar collapsible="icon" variant="inset">
       <SidebarHeader>
@@ -39,7 +39,7 @@ const AppSidebar = ({ user }: { user: SidebarUserType }) => {
                     </span>
 
                     <span className="truncate text-xs text-muted-foreground">
-                      {user.companyRole === "OWNER" ? "Vlastník" : "Člen"}
+                      {user.companyRole === "OWNER" ? "Majiteľ" : "Zamestnanec"}
                     </span>
                   </>
                 ) : (

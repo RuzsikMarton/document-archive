@@ -5,20 +5,19 @@ import { prisma } from "@/lib/prisma";
 import { getSession } from "@/utils/auth";
 import {
   changePasswordSchema,
-  updateProfileEmailSchema,
-  updateProfileNameSchema,
+  updateProfileSchema,
 } from "@/utils/validation/profile";
 import { headers } from "next/headers";
 import z from "zod";
 
-export const updateProfileAction = async (name: string) => {
+export const updateProfileAction = async (name: string, email?: string) => {
   const session = await getSession();
 
   if (!session) {
     return { success: false, message: "Neautorizovaný prístup." };
   }
 
-  const parsedData = updateProfileNameSchema.safeParse({ name });
+  const parsedData = updateProfileSchema.safeParse({ name, email });
 
   if (!parsedData.success) {
     return {
@@ -28,42 +27,45 @@ export const updateProfileAction = async (name: string) => {
   }
 
   try {
+    const data: {
+      name: string;
+      email?: string;
+      emailVerified?: boolean;
+    } = {
+      name: parsedData.data.name,
+    };
+
+    if (email !== undefined) {
+      if (session.user.emailVerified) {
+        return {
+          success: false,
+          message: "Overený email nie je možné zmeniť.",
+        };
+      }
+
+      if (email !== session.user.email) {
+        data.email = email;
+        data.emailVerified = false;
+      }
+    }
+
     await prisma.user.update({
-      where: { id: session.user.id },
-      data: { name },
+      where: {
+        id: session.user.id,
+      },
+      data,
     });
-    return { success: true };
+
+    return {
+      success: true,
+    };
   } catch (error) {
     console.error("Error updating profile:", error);
-    return { success: false, message: "Nepodarilo sa aktualizovať profil." };
-  }
-};
 
-export const updateEmailAction = async (email: string) => {
-  const session = await getSession();
-
-  if (!session) {
-    return { success: false, message: "Neautorizovaný prístup." };
-  }
-
-  const parsedData = updateProfileEmailSchema.safeParse({ email });
-
-  if (!parsedData.success) {
     return {
       success: false,
-      message: "Neplatné údaje.",
+      message: "Nepodarilo sa aktualizovať profil.",
     };
-  }
-
-  try {
-    await prisma.user.update({
-      where: { id: session.user.id },
-      data: { email },
-    });
-    return { success: true };
-  } catch (error) {
-    console.error("Error updating profile:", error);
-    return { success: false, message: "Nepodarilo sa aktualizovať email." };
   }
 };
 

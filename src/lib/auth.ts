@@ -73,6 +73,19 @@ export const auth = betterAuth({
       });
     },
   },
+  rateLimit: {
+    enabled: true,
+    customRules: {
+      "/send-verification-email": {
+        window: 60 * 60 * 24, // 1 day
+        max: 3,
+      },
+      "/send-reset-password": {
+        window: 60 * 60 * 24, // 1 day
+        max: 3,
+      },
+    },
+  },
   user: {
     changeEmail: {
       enabled: true,

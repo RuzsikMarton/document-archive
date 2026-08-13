@@ -1,6 +1,6 @@
 "use client";
 import { usePathname, useSearchParams } from "next/navigation";
-import { SidebarUserType } from "@/types/auth";
+import { SessionUserType } from "@/types/auth";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -13,7 +13,7 @@ import { FolderClock, FolderOpen, Gauge, Plus } from "lucide-react";
 import { ThemeToggle } from "../common/ThemeToggle";
 import Link from "next/link";
 
-const SidebarMain = ({ user }: { user: SidebarUserType }) => {
+const SidebarMain = ({ user }: { user: SessionUserType }) => {
   const { openDialog } = useNewFolderDialog();
   const pathname = usePathname();
   const searchParams = useSearchParams();

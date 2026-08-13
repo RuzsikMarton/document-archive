@@ -23,11 +23,11 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "../ui/sidebar";
-import { SidebarUserType } from "@/types/auth";
+import { SessionUserType } from "@/types/auth";
 import { useRouter } from "next/navigation";
 import { signOut } from "@/lib/auth-client";
 
-const SidebarUser = ({ user }: { user: SidebarUserType }) => {
+const SidebarUser = ({ user }: { user: SessionUserType }) => {
   const router = useRouter();
   const { isMobile } = useSidebar();
 
@@ -85,9 +85,7 @@ const SidebarUser = ({ user }: { user: SidebarUserType }) => {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem
-                onClick={() => router.push("/account/settings")}
-              >
+              <DropdownMenuItem onClick={() => router.push("/account")}>
                 <UserCircle2 />
                 Nastavenia účtu
               </DropdownMenuItem>

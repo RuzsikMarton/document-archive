@@ -70,7 +70,7 @@ export function TransferProtocolDialog({
 
           <DialogDescription>
             Pre správnosť údajov o preberajúcej (prijímajúcej) firme v dokladoch
-            je potrebné vyplniť adresu, mesto a IČO. Tieto údaje sa následne
+            je potrebné vyplniť sídlo, IČO a DIČ. Tieto údaje sa následne
             zobrazia v preberacom protokole.
           </DialogDescription>
         </DialogHeader>
@@ -81,9 +81,12 @@ export function TransferProtocolDialog({
         >
           <FieldGroup>
             <Field>
-              <FieldLabel>Adresa</FieldLabel>
+              <FieldLabel>Sídlo</FieldLabel>
 
-              <Input {...form.register("address")} placeholder="Adresa" />
+              <Input
+                {...form.register("address")}
+                placeholder="Sídlo preberajúcej firmy"
+              />
 
               {form.formState.errors.address && (
                 <FieldError errors={[form.formState.errors.address]} />
