@@ -12,6 +12,20 @@ export const createFolder = async (data: CreateFolderFormType) => {
 
   const parsedData = CreateFolderSchema.safeParse(data);
 
+  if (!session) {
+    return {
+      success: false,
+      message: "Nie ste prihlásený.",
+    };
+  }
+
+  if (!session.session?.activeOrganizationId) {
+    return {
+      success: false,
+      message: "Nie ste prihlásený do žiadnej organizácie.",
+    };
+  }
+
   if (!parsedData.success) {
     return {
       success: false,
@@ -25,7 +39,7 @@ export const createFolder = async (data: CreateFolderFormType) => {
         data: {
           name: parsedData.data.name,
           year: parsedData.data.year,
-          companyId: session?.user?.companyId || "",
+          organizationId: session?.session?.activeOrganizationId || "",
           userId: session?.user?.id || "",
         },
       });

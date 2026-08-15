@@ -3,7 +3,7 @@ import autoTable from "jspdf-autotable";
 
 import "@/lib/fonts/Roboto-Regular-normal";
 import "@/lib/fonts/Roboto-Bold-bold";
-import { FolderWithCompany } from "@/types/folder";
+import { FolderWithOrganization } from "@/types/folder";
 
 const months = [
   "Január",
@@ -26,7 +26,7 @@ export function generateTransferProtocol({
   ico,
   dic,
 }: {
-  folder: FolderWithCompany;
+  folder: FolderWithOrganization;
   address?: string;
   ico?: string;
   dic?: string;
@@ -77,16 +77,24 @@ export function generateTransferProtocol({
     body: [
       [
         [
-          folder.company?.name,
-          folder.company?.address,
+          folder.organization?.name,
+          folder.organization?.address &&
+            `${folder.organization.address}${
+              folder.organization.city ? `, ${folder.organization.city}` : ""
+            }${
+              folder.organization.postalCode
+                ? `, ${folder.organization.postalCode}`
+                : ""
+            }`,
           " ",
-          folder.company?.ico && `IČO: ${folder.company.ico}`,
-          folder.company?.dic && `DIČ: ${folder.company.dic}`,
-          folder.company?.dic && `IČDPH: SK${folder.company.dic}`,
+          folder.organization?.ico && `IČO: ${folder.organization.ico}`,
+          folder.organization?.dic && `DIČ: ${folder.organization.dic}`,
+          folder.organization?.dic && `IČDPH: SK${folder.organization.dic}`,
           " ",
-          folder.company?.telephone && `Telefón: ${folder.company.telephone}`,
-          folder.company?.email && `E-mail: ${folder.company.email}`,
-          folder.company?.website && `Web: ${folder.company.website}`,
+          folder.organization?.telephone &&
+            `Telefón: ${folder.organization.telephone}`,
+          folder.organization?.email && `E-mail: ${folder.organization.email}`,
+          folder.organization?.website && `Web: ${folder.organization.website}`,
         ]
           .filter(Boolean)
           .join("\n"),
@@ -224,7 +232,7 @@ ${isLastChunk ? "\nOdovzdávajúci potvrdzuje, že šanón bol odovzdaný komple
   doc.setFontSize(10);
 
   doc.text(
-    `${folder.company?.address}, ${new Date().toLocaleDateString("sk-SK")}`,
+    `${folder.organization?.address ? `${folder.organization.address} ` : ""}${folder.organization?.city ? `${folder.organization.city}, ` : ""}${new Date().toLocaleDateString("sk-SK")}`,
     14,
     footerY,
   );

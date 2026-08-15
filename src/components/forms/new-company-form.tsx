@@ -28,7 +28,7 @@ const NewCompanyForm = () => {
     formState: { isSubmitting },
   } = useForm({
     resolver: zodResolver(newCompanySchema),
-    defaultValues: { name: "", ownerId: "" },
+    defaultValues: { name: "", ownerId: "", slug: "" },
   });
 
   const onSumbit: SubmitHandler<z.infer<typeof newCompanySchema>> = async (
@@ -67,6 +67,26 @@ const NewCompanyForm = () => {
                     {...field}
                     aria-invalid={fieldState.invalid}
                     placeholder="Zadajte názov"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+            <Controller
+              name="slug"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid} className="mt-4">
+                  <FieldLabel htmlFor="new-company-form-slug">
+                    Slug spoločnosti
+                  </FieldLabel>
+                  <Input
+                    id="new-company-form-slug"
+                    {...field}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="Zadajte slug"
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />

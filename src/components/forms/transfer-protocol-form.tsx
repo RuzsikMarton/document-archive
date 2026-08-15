@@ -20,7 +20,7 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
-import { FolderWithCompany } from "@/types/folder";
+import { FolderWithOrganization } from "@/types/folder";
 import { generateTransferProtocol } from "@/utils/pdf/preberaci-protokol";
 import { FileDown } from "lucide-react";
 import { TransferProtocolSchema } from "@/utils/validation/folder";
@@ -28,7 +28,7 @@ import { TransferProtocolSchema } from "@/utils/validation/folder";
 type TransferProtocolForm = z.infer<typeof TransferProtocolSchema>;
 
 interface TransferProtocolDialogProps {
-  folder: FolderWithCompany;
+  folder: FolderWithOrganization;
 }
 
 export function TransferProtocolDialog({

@@ -32,14 +32,16 @@ const AppSidebar = ({ user }: { user: SessionUserType }) => {
               </div>
 
               <div className="grid flex-1 text-left text-sm leading-tight">
-                {user.companyId ? (
+                {user.organization ? (
                   <>
                     <span className="truncate font-semibold">
-                      {user.companyName}
+                      {user.organization.name}
                     </span>
 
                     <span className="truncate text-xs text-muted-foreground">
-                      {user.companyRole === "OWNER" ? "Majiteľ" : "Zamestnanec"}
+                      {user.organization.role === "owner"
+                        ? "Majiteľ"
+                        : "Zamestnanec"}
                     </span>
                   </>
                 ) : (
@@ -55,7 +57,7 @@ const AppSidebar = ({ user }: { user: SessionUserType }) => {
                   </Link>
                 )}
               </div>
-              {!user.companyId && (
+              {!user.organization && (
                 <ChevronRight className="ml-auto size-4 text-muted-foreground" />
               )}
             </SidebarMenuButton>

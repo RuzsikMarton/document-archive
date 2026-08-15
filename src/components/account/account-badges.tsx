@@ -8,8 +8,8 @@ const AccountBadges = ({ user }: { user: SessionUserType }) => {
   const hasBadges =
     user.emailVerified ||
     user.role === "ADMIN" ||
-    user.companyRole === "OWNER" ||
-    user.companyId;
+    user.organization?.role === "owner" ||
+    user.organization?.id;
 
   return (
     <section className="rounded-lg border bg-slate-100 dark:bg-card p-6 space-y-4">
@@ -66,7 +66,7 @@ const AccountBadges = ({ user }: { user: SessionUserType }) => {
                 <TooltipContent>Administrátor</TooltipContent>
               </Tooltip>
             )}
-            {user.companyRole === "OWNER" && (
+            {user.organization?.role === "owner" && (
               <Tooltip>
                 <TooltipTrigger
                   render={
@@ -82,7 +82,7 @@ const AccountBadges = ({ user }: { user: SessionUserType }) => {
                 <TooltipContent>Majiteľ spoločnosti</TooltipContent>
               </Tooltip>
             )}
-            {user.companyId && (
+            {user.organization?.id && (
               <Tooltip>
                 <TooltipTrigger
                   render={

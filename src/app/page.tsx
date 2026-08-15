@@ -13,10 +13,11 @@ export default async function Home() {
   });
 
   let folders: Folder[] | null = [];
-  if (session) {
+  if (session && session.session.activeOrganizationId) {
     folders = await prisma.folder.findMany({
       where: {
         userId: session.user.id,
+        organizationId: session.session.activeOrganizationId,
       },
       orderBy: {
         createdAt: "desc",
@@ -28,7 +29,8 @@ export default async function Home() {
   return (
     <>
       {session ? (
-        session.user.companyId || session.user.role === "ADMIN" ? (
+        session.session.activeOrganizationId ||
+        session.user.role === "ADMIN" ? (
           <>
             <SiteHeader title="Informačný panel" />
             <div className="flex min-h-[calc(100vh-4rem)] px-4 py-4 sm:px-6 sm:py-6 lg:px-8">

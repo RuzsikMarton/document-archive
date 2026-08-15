@@ -17,10 +17,10 @@ export default function TermsPage() {
           <h2 className="text-2xl font-semibold">1. Introduction</h2>
 
           <p className="text-muted-foreground leading-7">
-            Welcome to Evidio ("Service"), a web application for organizing and
-            managing document folders and related information. By accessing or
-            using the Service, you agree to be bound by these Terms of Service
-            and our{" "}
+            Welcome to Evidio (&quot;Service&quot;), a web application for
+            organizing and managing document folders and related information. By
+            accessing or using the Service, you agree to be bound by these Terms
+            of Service and our{" "}
             <Link href="/privacy" className="text-primary hover:underline">
               Privacy Policy
             </Link>
@@ -89,12 +89,12 @@ export default function TermsPage() {
           </h2>
 
           <p className="text-muted-foreground leading-7">
-            The Service is provided on an "as is" and "as available" basis,
-            without warranties of any kind, whether express or implied. We do
-            not guarantee that the Service will be uninterrupted, error-free,
-            secure, or available at all times. Maintenance, technical issues, or
-            circumstances beyond our control may result in temporary service
-            interruptions.
+            The Service is provided on an &quot;as is&quot; and &quot;as
+            available&quot; basis, without warranties of any kind, whether
+            express or implied. We do not guarantee that the Service will be
+            uninterrupted, error-free, secure, or available at all times.
+            Maintenance, technical issues, or circumstances beyond our control
+            may result in temporary service interruptions.
           </p>
         </section>
 

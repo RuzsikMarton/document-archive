@@ -2,6 +2,7 @@ import z from "zod";
 
 export const newCompanySchema = z.object({
   name: z.string().min(1, "Názov spoločnosti je povinný"),
+  slug: z.string().min(1, "Slug spoločnosti je povinný"),
   ownerId: z
     .string()
     .min(1, "ID vlastníka je povinné")

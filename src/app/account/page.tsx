@@ -7,7 +7,7 @@ import DeleteAccountSection from "@/components/account/deleta-account-section";
 import AccountBadges from "@/components/account/account-badges";
 import AccountCompany from "@/components/account/account-company";
 
-const AccountPage = async ({}: {}) => {
+const AccountPage = async () => {
   const session = await requireAuth("/account/settings");
 
   return (

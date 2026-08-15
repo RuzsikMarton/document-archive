@@ -1,11 +1,12 @@
 "use server";
 
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { CreateCompanyInput } from "@/types/company";
+import { CreateOrganizationInput } from "@/types/company";
 import { getSession } from "@/utils/auth";
 import { newCompanySchema } from "@/utils/validation/company";
 
-export const createCompanyAction = async (data: CreateCompanyInput) => {
+export const createCompanyAction = async (data: CreateOrganizationInput) => {
   const session = await getSession();
 
   if (!session || session.user.role !== "ADMIN") {
@@ -25,20 +26,14 @@ export const createCompanyAction = async (data: CreateCompanyInput) => {
 
   try {
     const company = await prisma.$transaction(async (tx) => {
-      const company = await tx.company.create({
-        data: {
+      const company = await auth.api.createOrganization({
+        body: {
           name: parsedData.data.name,
-          ownerId: parsedData.data.ownerId,
+          slug: parsedData.data.slug,
+          userId: parsedData.data.ownerId,
         },
       });
 
-      await tx.user.update({
-        where: { id: parsedData.data.ownerId },
-        data: {
-          companyId: company.id,
-          companyRole: "OWNER",
-        },
-      });
       return company;
     });
     return {

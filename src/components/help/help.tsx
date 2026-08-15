@@ -4,7 +4,6 @@ import {
   FolderPlus,
   Search,
   Trash2,
-  ArrowLeft,
   Download,
   Edit,
   Filter,
@@ -13,7 +12,6 @@ import {
   QrCode,
 } from "lucide-react";
 import Link from "next/link";
-import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 
 const Help = ({ session }: { session?: any }) => {
@@ -79,7 +77,7 @@ const Help = ({ session }: { session?: any }) => {
               <li className="text-base">
                 Kliknite na tlačidlo{" "}
                 <span className="font-semibold text-primary">
-                  "Nový záznam" / "Pridať záznam"
+                  &quot;Nový záznam&quot; / &quot;Pridať záznam&quot;
                 </span>{" "}
                 v lavom hornom rohu
               </li>
@@ -96,7 +94,8 @@ const Help = ({ session }: { session?: any }) => {
                 </ul>
               </li>
               <li className="text-base">
-                Kliknite na <span className="font-semibold">"Vytvoriť"</span>
+                Kliknite na{" "}
+                <span className="font-semibold">&quot;Vytvoriť&quot;</span>
               </li>
               <li className="text-base">
                 Automaticky budete presmerovaní na detail záznamu, kde môžete
@@ -173,7 +172,7 @@ const Help = ({ session }: { session?: any }) => {
               <li className="text-base">Kliknite na záznam v zozname</li>
               <li className="text-base">
                 Na detailnej stránke kliknite na tlačidlo{" "}
-                <span className="font-semibold">"Upraviť"</span>
+                <span className="font-semibold">&quot;Upraviť&quot;</span>
               </li>
               <li className="text-base">
                 Upravte požadované údaje:
@@ -194,7 +193,7 @@ const Help = ({ session }: { session?: any }) => {
               </li>
               <li className="text-base">
                 Kliknite na{" "}
-                <span className="font-semibold">"Uložiť zmeny"</span>
+                <span className="font-semibold">&quot;Uložiť zmeny&quot;</span>
               </li>
             </ol>
           </div>

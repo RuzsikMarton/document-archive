@@ -4,7 +4,7 @@ import { SessionUserType } from "@/types/auth";
 import { Building2, Briefcase, Crown, Users } from "lucide-react";
 
 const AccountCompany = ({ user }: { user: SessionUserType }) => {
-  const hasCompany = user.companyId && user.companyName;
+  const hasCompany = user.organization?.id && user.organization?.organizationId;
 
   return (
     <section className="rounded-lg border bg-slate-100 dark:bg-card p-6 space-y-4">
@@ -18,7 +18,7 @@ const AccountCompany = ({ user }: { user: SessionUserType }) => {
               <span className="text-sm font-medium">Názov spoločnosti</span>
             </div>
             <span className="text-sm text-muted-foreground font-medium">
-              {user.companyName}
+              {user.organization?.name || "Neznáma spoločnosť"}
             </span>
           </div>
 
@@ -28,7 +28,7 @@ const AccountCompany = ({ user }: { user: SessionUserType }) => {
               <span className="text-sm font-medium">Rola v spoločnosti</span>
             </div>
             <div className="flex items-center gap-2">
-              {user.companyRole === "OWNER" ? (
+              {user.organization?.role === "owner" ? (
                 <>
                   <Crown className="size-4 text-amber-500" />
                   <span className="text-sm text-muted-foreground font-medium">

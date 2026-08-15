@@ -8,48 +8,25 @@ datasource db {
 }
 
 model Folder {
-  id           String    @id @default(cuid())
-  name         String
-  qrCodeImage  String?
-  year         Int
-  monthFrom    Int?
-  monthTo      Int?
-  contents     String?
-  transferCode String?
-  handedOver   Boolean   @default(false)
-  handedOverAt DateTime?
-  createdAt    DateTime  @default(now())
-  userId       String
-  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  companyId    String?
-  company      Company?  @relation(fields: [companyId], references: [id])
+  id             String        @id @default(cuid())
+  name           String
+  qrCodeImage    String?
+  year           Int
+  monthFrom      Int?
+  monthTo        Int?
+  contents       String?
+  transferCode   String?
+  handedOver     Boolean       @default(false)
+  handedOverAt   DateTime?
+  createdAt      DateTime      @default(now())
+  userId         String
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
 
   @@index([userId])
+  @@index([organizationId])
   @@map("folder")
-}
-
-//Company model for later use, to be able to assign users to a company and have a company owner
-model Company {
-  id   String @id @default(cuid())
-  name String
-
-  ico       String? @unique
-  dic       String? @unique
-  address   String?
-  website   String?
-  telephone String?
-  email     String?
-
-  ownerId String @unique
-  owner   User   @relation("CompanyOwner", fields: [ownerId], references: [id], onDelete: Cascade)
-
-  employees User[]   @relation("CompanyEmployees")
-  folders   Folder[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("company")
 }
 
 enum Role {
@@ -57,22 +34,13 @@ enum Role {
   ADMIN
 }
 
-enum CompanyRole {
-  OWNER
-  EMPLOYEE
-}
-
 model User {
-  id            String       @id
+  id            String  @id
   name          String
   email         String
-  emailVerified Boolean      @default(false)
+  emailVerified Boolean @default(false)
   image         String?
-  role          Role         @default(USER)
-  companyId     String?
-  company       Company?     @relation("CompanyEmployees", fields: [companyId], references: [id], onDelete: SetNull)
-  companyRole   CompanyRole?
-  ownedCompany  Company?     @relation("CompanyOwner")
+  role          Role    @default(USER)
 
   folders Folder[]
 
@@ -80,6 +48,9 @@ model User {
   accounts  Account[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  members     Member[]
+  invitations Invitation[]
 
   @@unique([email])
   @@map("user")
@@ -95,6 +66,8 @@ model Session {
   userAgent String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  activeOrganizationId String?
 
   @@unique([token])
   @@index([userId])
@@ -131,4 +104,58 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model Organization {
+  id          String       @id
+  name        String
+  slug        String
+  logo        String?
+  ico         String?
+  dic         String?
+  city        String?
+  address     String?
+  postalCode  String?
+  telephone   String?
+  email       String?
+  website     String?
+  createdAt   DateTime
+  metadata    String?
+  members     Member[]
+  invitations Invitation[]
+  folders     Folder[]
+
+  @@unique([slug])
+  @@map("organization")
+}
+
+model Member {
+  id             String       @id
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           String       @default("member")
+  createdAt      DateTime
+
+  @@index([organizationId])
+  @@index([userId])
+  @@map("member")
+}
+
+model Invitation {
+  id             String       @id
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           String?
+  status         String       @default("pending")
+  expiresAt      DateTime
+  createdAt      DateTime     @default(now())
+  inviterId      String
+  user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([email])
+  @@map("invitation")
 }

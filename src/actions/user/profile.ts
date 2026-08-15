@@ -92,7 +92,7 @@ export const changePasswordAction = async (
       body: {
         currentPassword: parsedData.data.currentPassword,
         newPassword: parsedData.data.newPassword,
-        revokeOtherSessions: true,
+        revokeOtherSessions: false,
       },
       headers: await headers(),
     });

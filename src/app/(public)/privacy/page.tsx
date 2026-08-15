@@ -13,16 +13,17 @@ export default function PrivacyPolicyPage() {
           </p>
 
           <p className="mt-6 leading-7 text-muted-foreground">
-            This Privacy Policy explains how <strong>Evidio</strong> ("we",
-            "our", or "us") collects, uses, stores, and protects your personal
-            data when you use our document management platform.
+            This Privacy Policy explains how <strong>Evidio</strong>{" "}
+            (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) collects, uses,
+            stores, and protects your personal data when you use our document
+            management platform.
           </p>
 
           <p className="mt-4 leading-7 text-muted-foreground">
             We are committed to protecting your privacy and processing your
             personal data in accordance with the General Data Protection
-            Regulation (EU) 2016/679 ("GDPR") and other applicable data
-            protection laws.
+            Regulation (EU) 2016/679 (&quot;GDPR&quot;) and other applicable
+            data protection laws.
           </p>
         </section>
 
@@ -592,7 +593,7 @@ export default function PrivacyPolicyPage() {
 
             <li>Right to rectify inaccurate or incomplete data.</li>
 
-            <li>Right to erasure ("Right to be Forgotten").</li>
+            <li>Right to erasure (&quot;Right to be Forgotten&quot;).</li>
 
             <li>Right to restrict processing.</li>
 
@@ -618,7 +619,9 @@ export default function PrivacyPolicyPage() {
 
         {/* Children's Privacy */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">16. Children's Privacy</h2>
+          <h2 className="text-2xl font-semibold">
+            16. Children&apos;s Privacy
+          </h2>
 
           <p className="leading-7 text-muted-foreground">
             Evidio is not intended for children under the age of 16.

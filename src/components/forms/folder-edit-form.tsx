@@ -48,14 +48,14 @@ import { Loader2, Trash2Icon } from "lucide-react";
 import { toast } from "sonner";
 import { jsPDF } from "jspdf";
 import { EditFolderSchema } from "@/utils/validation/folder";
-import { FolderWithCompany } from "@/types/folder";
+import { FolderWithOrganization } from "@/types/folder";
 import { TransferProtocolDialog } from "./transfer-protocol-form";
 
 import "@/lib/fonts/Roboto-Regular-normal";
 
 type EditFolderFormType = z.infer<typeof EditFolderSchema>;
 
-const FolderEditForm = ({ folder }: { folder: FolderWithCompany }) => {
+const FolderEditForm = ({ folder }: { folder: FolderWithOrganization }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const { data: session } = useSession();
@@ -182,72 +182,73 @@ const FolderEditForm = ({ folder }: { folder: FolderWithCompany }) => {
           ID záznamu: <span className="font-mono">{folder.id}</span>
         </div>
       </div>
-      {session && session.user?.companyId === folder.companyId && (
-        <>
-          {!isEditing ? (
-            <div className="flex flex-wrap justify-end gap-2">
-              <>
+      {session &&
+        session.session.activeOrganizationId === folder.organizationId && (
+          <>
+            {!isEditing ? (
+              <div className="flex flex-wrap justify-end gap-2">
+                <>
+                  <Button
+                    type="button"
+                    className="dark:text-black"
+                    onClick={() => setIsEditing(true)}
+                  >
+                    Upraviť
+                  </Button>
+                </>
+                <TransferProtocolDialog folder={folder} />
+                <AlertDialog>
+                  <AlertDialogTrigger
+                    render={<Button variant="destructive">Zmazať</Button>}
+                  />
+                  <AlertDialogContent size="sm">
+                    <AlertDialogHeader>
+                      <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
+                        <Trash2Icon />
+                      </AlertDialogMedia>
+                      <AlertDialogTitle>Zmazať záznam?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Ste si istý, že chcete zmazať tento záznam? Táto akcia
+                        je nevratná a všetky údaje budú nenávratne odstránené.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel variant="outline">
+                        Zrušiť
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        variant="destructive"
+                        render={
+                          <Button onClick={handleDelete} disabled={isPending}>
+                            {isPending ? (
+                              <Loader2 className="animate-spin" />
+                            ) : (
+                              "Zmazať"
+                            )}
+                          </Button>
+                        }
+                      />
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            ) : (
+              <div className="flex justify-end gap-2">
                 <Button
-                  type="button"
+                  type="submit"
                   className="dark:text-black"
-                  onClick={() => setIsEditing(true)}
+                  form="folder-edit-form"
+                  disabled={isPending}
                 >
-                  Upraviť
+                  {isPending ? <Loader2 className="animate-spin" /> : "Uložiť"}
                 </Button>
-              </>
-              <TransferProtocolDialog folder={folder} />
-              <AlertDialog>
-                <AlertDialogTrigger
-                  render={<Button variant="destructive">Zmazať</Button>}
-                />
-                <AlertDialogContent size="sm">
-                  <AlertDialogHeader>
-                    <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
-                      <Trash2Icon />
-                    </AlertDialogMedia>
-                    <AlertDialogTitle>Zmazať záznam?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Ste si istý, že chcete zmazať tento záznam? Táto akcia je
-                      nevratná a všetky údaje budú nenávratne odstránené.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel variant="outline">
-                      Zrušiť
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                      variant="destructive"
-                      render={
-                        <Button onClick={handleDelete} disabled={isPending}>
-                          {isPending ? (
-                            <Loader2 className="animate-spin" />
-                          ) : (
-                            "Zmazať"
-                          )}
-                        </Button>
-                      }
-                    />
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
-          ) : (
-            <div className="flex justify-end gap-2">
-              <Button
-                type="submit"
-                className="dark:text-black"
-                form="folder-edit-form"
-                disabled={isPending}
-              >
-                {isPending ? <Loader2 className="animate-spin" /> : "Uložiť"}
-              </Button>
-              <Button variant="outline" onClick={handleCancel}>
-                Zrušiť
-              </Button>
-            </div>
-          )}
-        </>
-      )}
+                <Button variant="outline" onClick={handleCancel}>
+                  Zrušiť
+                </Button>
+              </div>
+            )}
+          </>
+        )}
       <form id="folder-edit-form" onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column - Form Fields */}
@@ -444,7 +445,8 @@ const FolderEditForm = ({ folder }: { folder: FolderWithCompany }) => {
                   disabled={
                     folder.handedOver ||
                     !session ||
-                    session.user?.companyId !== folder.companyId
+                    session.session.activeOrganizationId !==
+                      folder.organizationId
                   }
                 />
               </div>
@@ -464,16 +466,18 @@ const FolderEditForm = ({ folder }: { folder: FolderWithCompany }) => {
                       className="object-contain p-4"
                     />
                   </div>
-                  {session && session.user?.companyId === folder.companyId && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="w-full"
-                      onClick={handleDownloadQR}
-                    >
-                      Stiahnuť QR kód
-                    </Button>
-                  )}
+                  {session &&
+                    session.session.activeOrganizationId ===
+                      folder.organizationId && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="w-full"
+                        onClick={handleDownloadQR}
+                      >
+                        Stiahnuť QR kód
+                      </Button>
+                    )}
                 </div>
               ) : (
                 <div className="aspect-square w-full border rounded-lg flex items-center justify-center bg-muted">

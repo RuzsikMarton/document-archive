@@ -1,4 +1,4 @@
-import { CompanyRole, Role } from "@/generated/prisma/enums";
+import { Role } from "@/generated/prisma/enums";
 
 export type PublicSession = {
   user?: {
@@ -8,11 +8,16 @@ export type PublicSession = {
   role?: Role;
 };
 
+type SessionOrganization = {
+  id: string;
+  name: string;
+  slug: string;
+  role: string;
+  organizationId: string;
+};
+
 export type SessionUserType = {
   role: Role | undefined;
-  companyId: string | null | undefined;
-  companyRole: CompanyRole | null | undefined;
-  companyName: string | null;
   id: string;
   createdAt: Date;
   updatedAt: Date;
@@ -20,6 +25,7 @@ export type SessionUserType = {
   emailVerified: boolean;
   name: string;
   image?: string | null | undefined;
+  organization: SessionOrganization | null;
 };
 
 export interface SignUpFormValues {

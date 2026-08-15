@@ -21,3 +21,26 @@ export const checkFolderOwnership = async (
     success: true,
   };
 };
+
+export const checkFolderAccess = async (
+  organizationId: string,
+  folderId: string,
+) => {
+  const folder = await prisma.folder.findUnique({
+    where: {
+      id: folderId,
+      organizationId,
+    },
+  });
+
+  if (!folder || folder.organizationId !== organizationId) {
+    return {
+      success: false,
+      message: "Nemáte oprávnenie pristupovať k tomuto záznamu.",
+    };
+  }
+
+  return {
+    success: true,
+  };
+};

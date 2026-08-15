@@ -74,7 +74,10 @@ const GettingStarted = () => {
           </p>
           <ol className="list-decimal list-inside space-y-2 text-muted-foreground ml-4">
             <li>Prejdite do administračného panelu spoločnosti</li>
-            <li>Kliknite na "Pridať zamestnanca" alebo "Pozvať používateľa"</li>
+            <li>
+              Kliknite na &quot;Pridať zamestnanca&quot; alebo &quot;Pozvať
+              používateľa&quot;
+            </li>
             <li>Zadajte emailovú adresu zamestnanca</li>
             <li>Nastavte prístupové oprávnenia</li>
             <li>Odošlite pozvánku</li>

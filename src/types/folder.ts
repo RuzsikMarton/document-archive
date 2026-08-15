@@ -5,16 +5,18 @@ export type CreateFolderFormType = {
   year: number;
 };
 
-type FolderCompany = {
+type FolderOrganization = {
   name: string;
   ico: string | null;
   dic: string | null;
   address: string | null;
+  city: string | null;
+  postalCode: string | null;
   telephone: string | null;
   email: string | null;
   website: string | null;
 };
 
-export type FolderWithCompany = Folder & {
-  company: FolderCompany | null;
+export type FolderWithOrganization = Folder & {
+  organization: FolderOrganization | null;
 };

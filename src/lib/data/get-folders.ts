@@ -7,12 +7,14 @@ export const getFolderById = async (id: string) => {
       id: id,
     },
     include: {
-      company: {
+      organization: {
         select: {
           name: true,
           ico: true,
           dic: true,
           address: true,
+          city: true,
+          postalCode: true,
           telephone: true,
           email: true,
           website: true,
@@ -47,13 +49,21 @@ export const GetFolders = async ({
     };
   }
 
+  if (!session.session.activeOrganizationId) {
+    return {
+      success: false,
+      message:
+        "Nemáte priradenú žiadnu organizáciu. Prosím kontaktujte administrátora.",
+    };
+  }
+
   const skip =
     currentPage && currentPage > 1 ? (currentPage - 1) * pageSize : 0;
 
   try {
     const folders = await prisma.folder.findMany({
       where: {
-        companyId: session.user.companyId,
+        organizationId: session.session.activeOrganizationId,
         name: {
           contains: search || "",
           mode: "insensitive",
@@ -75,7 +85,7 @@ export const GetFolders = async ({
 
     const totalCount = await prisma.folder.count({
       where: {
-        companyId: session.user.companyId,
+        organizationId: session.session.activeOrganizationId,
         name: {
           contains: search || "",
           mode: "insensitive",

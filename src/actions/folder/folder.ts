@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/utils/auth";
-import { checkFolderOwnership } from "@/utils/folder";
+import { checkFolderAccess } from "@/utils/folder";
 import { EditFolderSchema } from "@/utils/validation/folder";
 import { revalidatePath } from "next/cache";
 
@@ -16,7 +16,16 @@ export const updateFolderAction = async (data: any, folderId: string) => {
     };
   }
 
-  const check = await checkFolderOwnership(session.user.id, folderId);
+  const organizationId = session.session.activeOrganizationId;
+
+  if (!organizationId) {
+    return {
+      success: false,
+      message: "Nemáte aktívnu organizáciu.",
+    };
+  }
+
+  const check = await checkFolderAccess(organizationId, folderId);
   if (!check.success) {
     return check;
   }
@@ -66,7 +75,16 @@ export const deleteFolderAction = async (folderId: string) => {
     };
   }
 
-  const check = await checkFolderOwnership(session.user.id, folderId);
+  const organizationId = session.session.activeOrganizationId;
+
+  if (!organizationId) {
+    return {
+      success: false,
+      message: "Nemáte aktívnu organizáciu.",
+    };
+  }
+
+  const check = await checkFolderAccess(organizationId, folderId);
   if (!check.success) {
     return check;
   }
@@ -103,7 +121,16 @@ export const folderHandedOverAction = async (
     };
   }
 
-  const check = await checkFolderOwnership(session.user.id, folderId);
+  const organizationId = session.session.activeOrganizationId;
+
+  if (!organizationId) {
+    return {
+      success: false,
+      message: "Nemáte aktívnu organizáciu.",
+    };
+  }
+
+  const check = await checkFolderAccess(organizationId, folderId);
   if (!check.success) {
     return check;
   }
