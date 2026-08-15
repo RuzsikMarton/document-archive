@@ -73,10 +73,10 @@ const SidebarUser = ({ user }: { user: SessionUserType }) => {
                       {user.email}
                     </p>
                   )}
-                  {user.companyId && (
+                  {user.organization && (
                     <p className="text-xs leading-none mt-1 text-muted-foreground">
-                      {user.companyId
-                        ? `Spoločnosť: ${user.companyName}`
+                      {user.organization.id
+                        ? `Spoločnosť: ${user.organization.name}`
                         : "Žiadna spoločnosť"}
                     </p>
                   )}
