@@ -16,6 +16,8 @@ import SidebarMain from "./sidebar-main";
 import SidebarUser from "./sidebar-user";
 import Link from "next/link";
 import { SessionUserType } from "@/types/auth";
+import OrganizationSidebar from "./sidebar-organization";
+import AdminSidebar from "./sidebar-admin";
 
 const AppSidebar = ({ user }: { user: SessionUserType }) => {
   return (
@@ -66,7 +68,18 @@ const AppSidebar = ({ user }: { user: SessionUserType }) => {
       </SidebarHeader>
       <SidebarContent>
         <SidebarMain user={user} />
-        <SidebarSeparator />
+        {user.organization?.id && (
+          <>
+            <SidebarSeparator />
+            <OrganizationSidebar role={user.organization.role} />
+          </>
+        )}
+        {user.role === "ADMIN" && (
+          <>
+            <SidebarSeparator />
+            <AdminSidebar />
+          </>
+        )}
         <SidebarBottom className="mt-auto" />
       </SidebarContent>
 

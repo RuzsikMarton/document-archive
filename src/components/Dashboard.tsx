@@ -1,17 +1,30 @@
 "use client";
 
-import { Folder as PrismaFolder } from "@/generated/prisma/client";
 import { useNewFolderDialog } from "@/providers/new-folder-dialog-provider";
 import { Plus, FolderOpen, Clock, ChevronRight, Info } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import DashboardCards from "./dashboard-cards";
+import { DashboardFolder } from "@/types/folder";
 
-const Dashboard = ({ folders }: { folders: PrismaFolder[] }) => {
+interface DashboardProps {
+  folders: DashboardFolder[];
+  stats: {
+    total: number;
+    handedOver: number;
+    notHandedOver: number;
+  };
+}
+
+const Dashboard = ({ folders, stats }: DashboardProps) => {
   const { openDialog } = useNewFolderDialog();
   const router = useRouter();
   return (
     <div className="flex xl:justify-center w-full">
       <div className="sm:px-6 max-w-screen-sm sm:max-w-screen xl:max-w-7xl w-full">
+        {/* Statistics Cards */}
+        <DashboardCards stats={stats} />
+
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-10">
           <button
@@ -112,6 +125,9 @@ const Dashboard = ({ folders }: { folders: PrismaFolder[] }) => {
                               month: "short",
                             })}
                           </span>
+                        </div>
+                        <div className="hidden md:flex items-center gap-3 mt-1 text-xs text-slate-500 dark:text-slate-500">
+                          <span>Vytvoril: {folder.user.name}</span>
                         </div>
                       </div>
                     </div>

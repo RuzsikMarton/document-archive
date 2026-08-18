@@ -1,4 +1,4 @@
-import { Folder } from "@/generated/prisma/client";
+import { Folder, Prisma } from "@/generated/prisma/client";
 
 export type CreateFolderFormType = {
   name: string;
@@ -20,3 +20,13 @@ type FolderOrganization = {
 export type FolderWithOrganization = Folder & {
   organization: FolderOrganization | null;
 };
+
+export type DashboardFolder = Prisma.FolderGetPayload<{
+  include: {
+    user: {
+      select: {
+        name: true;
+      };
+    };
+  };
+}>;

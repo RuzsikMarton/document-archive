@@ -2,9 +2,9 @@
 
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { CreateOrganizationInput } from "@/types/company";
+import { CreateOrganizationInput } from "@/types/organization";
 import { getSession } from "@/utils/auth";
-import { newCompanySchema } from "@/utils/validation/company";
+import { newOrganizationSchema } from "@/utils/validation/organization";
 
 export const createCompanyAction = async (data: CreateOrganizationInput) => {
   const session = await getSession();
@@ -16,7 +16,7 @@ export const createCompanyAction = async (data: CreateOrganizationInput) => {
     };
   }
 
-  const parsedData = newCompanySchema.safeParse(data);
+  const parsedData = newOrganizationSchema.safeParse(data);
   if (!parsedData.success) {
     return {
       success: false,

@@ -84,7 +84,7 @@ async function LayoutContent({ children }: { children: React.ReactNode }) {
             }
           >
             <AppSidebar user={session.user} />
-            <SidebarInset>
+            <SidebarInset className="md:mr-4!">
               <main className="w-full"> {children}</main>
             </SidebarInset>
           </SidebarProvider>

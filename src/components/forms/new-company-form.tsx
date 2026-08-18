@@ -11,12 +11,12 @@ import {
 import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { newCompanySchema } from "@/utils/validation/company";
+import { newOrganizationSchema } from "@/utils/validation/organization";
 import z from "zod";
 import { Input } from "../ui/input";
 import { Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
-import { createCompanyAction } from "@/actions/company/admin-company";
+import { createCompanyAction } from "@/actions/organization/admin-company";
 import { toast } from "sonner";
 
 const NewCompanyForm = () => {
@@ -27,11 +27,11 @@ const NewCompanyForm = () => {
     clearErrors,
     formState: { isSubmitting },
   } = useForm({
-    resolver: zodResolver(newCompanySchema),
+    resolver: zodResolver(newOrganizationSchema),
     defaultValues: { name: "", ownerId: "", slug: "" },
   });
 
-  const onSumbit: SubmitHandler<z.infer<typeof newCompanySchema>> = async (
+  const onSumbit: SubmitHandler<z.infer<typeof newOrganizationSchema>> = async (
     data,
   ) => {
     clearErrors();

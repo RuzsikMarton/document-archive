@@ -4,6 +4,7 @@ import { SessionUserType } from "@/types/auth";
 import {
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -22,24 +23,15 @@ const SidebarMain = ({ user }: { user: SessionUserType }) => {
     pathname === "/folders" && searchParams.get("handedOver") === "false";
   return (
     <SidebarGroup>
-      <SidebarGroupContent className="flex flex-col gap-4">
-        <SidebarMenu>
+      <SidebarGroupContent className="flex flex-col">
+        <SidebarMenu className="mb-2">
           <SidebarMenuItem className="flex items-center gap-2">
             <SidebarMenuButton
               tooltip="Nový záznam"
               onClick={openDialog}
-              className="duration-200 ease-linear
-    justify-center
-    bg-primary text-primary-foreground
-    hover:bg-primary/90 hover:text-primary-foreground
-
-    group-data-[collapsible=icon]:size-8
-    group-data-[collapsible=icon]:justify-center
-    group-data-[collapsible=icon]:p-0
-  "
+              className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground duration-200 ease-linear justify-center group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2!"
             >
               <Plus />
-
               <span className="group-data-[collapsible=icon]:hidden">
                 Nový záznam
               </span>
@@ -50,6 +42,7 @@ const SidebarMain = ({ user }: { user: SessionUserType }) => {
             </div>
           </SidebarMenuItem>
         </SidebarMenu>
+        <SidebarGroupLabel>Navigácia</SidebarGroupLabel>
         <SidebarMenu className="flex flex-col gap-2">
           <SidebarMenuItem>
             <SidebarMenuButton
