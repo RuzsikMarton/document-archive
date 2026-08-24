@@ -10,7 +10,7 @@ export const checkFolderOwnership = async (
     },
   });
 
-  if (!folder || folder.userId !== userId) {
+  if (!folder || folder.memberId !== userId) {
     return {
       success: false,
       message: "Nemáte oprávnenie upravovať tento záznam.",
