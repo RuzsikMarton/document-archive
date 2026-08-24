@@ -1,3 +1,4 @@
+import { Prisma } from "@/generated/prisma/browser";
 import { editOrganizationSchema } from "@/utils/validation/organization";
 import z from "zod";
 
@@ -18,3 +19,14 @@ export interface OrganizationStats {
 }
 
 export type OrganizationStatsResult = OrganizationStats | null;
+
+export type EmployeeOrganizationResult = Prisma.MemberGetPayload<{
+  include: {
+    user: {
+      select: {
+        name: true;
+        email: true;
+      };
+    };
+  };
+}>;

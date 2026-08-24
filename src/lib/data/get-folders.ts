@@ -30,13 +30,13 @@ export const GetFolders = async ({
   search,
   handedOver,
   years,
-  currentPage,
+  page,
   sortOrder,
 }: {
   search?: string;
   handedOver?: string;
   years?: string;
-  currentPage?: number;
+  page?: number;
   sortOrder?: "asc" | "desc";
 }) => {
   const session = await getSession();
@@ -57,8 +57,7 @@ export const GetFolders = async ({
     };
   }
 
-  const skip =
-    currentPage && currentPage > 1 ? (currentPage - 1) * pageSize : 0;
+  const skip = page && page > 1 ? (page - 1) * pageSize : 0;
 
   try {
     const folders = await prisma.folder.findMany({

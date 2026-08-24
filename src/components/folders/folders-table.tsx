@@ -1,13 +1,13 @@
 import { columns } from "@/app/folders/columns";
 import { FoldersDataTable } from "@/app/folders/data-table";
 import { GetFolders } from "@/lib/data/get-folders";
-import FolderPagination from "./folder-pagination";
+import TablePagination from "../common/table-pagination";
 
 type Props = {
   search?: string;
   handedOver?: string;
   years?: string;
-  currentPage?: string;
+  page?: string;
   sortOrder?: "asc" | "desc";
 };
 
@@ -16,7 +16,7 @@ const FoldersTable = async (props: Props) => {
     search: props.search,
     handedOver: props.handedOver,
     years: props.years,
-    currentPage: Number(props.currentPage),
+    page: Number(props.page),
     sortOrder: props.sortOrder,
   });
   return (
@@ -26,10 +26,10 @@ const FoldersTable = async (props: Props) => {
         data={result.data || []}
         sortOrder={props.sortOrder || "desc"}
       />
-      <FolderPagination
+      <TablePagination
         totalCount={result.totalCount || 0}
         pageSize={25}
-        page={Number(props.currentPage) || 1}
+        page={Number(props.page) || 1}
       />
     </div>
   );

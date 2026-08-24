@@ -2,7 +2,7 @@
 
 import { SignInFormValues } from "@/types/auth";
 import { signInSchema } from "@/utils/validation/auth";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
@@ -12,6 +12,9 @@ import Link from "next/link";
 
 const SignInForm = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const inviteId = searchParams?.get("inviteId");
+  const email = searchParams?.get("email");
 
   const {
     register,
@@ -19,7 +22,10 @@ const SignInForm = () => {
     clearErrors,
     setError,
     formState: { errors, isSubmitting },
-  } = useForm<SignInFormValues>({ resolver: zodResolver(signInSchema) });
+  } = useForm<SignInFormValues>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: { email: email || "" },
+  });
 
   const onSubmit: SubmitHandler<SignInFormValues> = async (data) => {
     clearErrors("root");
@@ -28,8 +34,12 @@ const SignInForm = () => {
       setError("root", { message: res.message });
       return;
     }
-    router.push("/");
-    router.refresh();
+    if (inviteId) {
+      router.push(`/api/accept-invitation/${inviteId}`);
+    } else {
+      router.push("/");
+      router.refresh();
+    }
   };
   return (
     <div className="flex flex-col items-center w-full">
@@ -108,7 +118,11 @@ const SignInForm = () => {
         <div className="text-center text-sm text-muted-foreground mt-4 ">
           Ešte nemáte účet?{" "}
           <a
-            href="/signup"
+            href={
+              inviteId && email
+                ? `/signup?inviteId=${inviteId}&email=${email}`
+                : "/signup"
+            }
             className="hover:underline underline-offset-4 text-primary"
           >
             Zaregistrovať sa

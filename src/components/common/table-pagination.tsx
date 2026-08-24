@@ -13,17 +13,17 @@ import {
 import { usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-interface FolderPaginationProps {
+interface TablePaginationProps {
   totalCount: number;
   pageSize: number;
   page: number;
 }
 
-const FolderPagination = ({
+const TablePagination = ({
   totalCount,
   pageSize,
   page,
-}: FolderPaginationProps) => {
+}: TablePaginationProps) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -31,9 +31,9 @@ const FolderPagination = ({
 
   const buildLink = useCallback(
     (newPage: number) => {
-      if (!searchParams) return `${pathname}?currentPage=${newPage}`;
+      if (!searchParams) return `${pathname}?page=${newPage}`;
       const params = new URLSearchParams(searchParams.toString());
-      params.set("currentPage", newPage.toString());
+      params.set("page", newPage.toString());
       return `${pathname}?${params.toString()}`;
     },
     [pathname, searchParams],
@@ -75,14 +75,6 @@ const FolderPagination = ({
       const start = Math.max(2, page - 1);
       const end = Math.min(page + 1, totalPageCount - 1);
 
-      console.log({
-        page,
-        totalPageCount,
-        totalMinusOne: totalPageCount - 1,
-        pagePlusOne: page + 1,
-        end,
-      });
-
       for (let i = start; i <= end; i++) {
         items.push(createPageNumber(i));
       }
@@ -123,4 +115,4 @@ const FolderPagination = ({
   );
 };
 
-export default FolderPagination;
+export default TablePagination;

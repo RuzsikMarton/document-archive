@@ -11,29 +11,30 @@ import {
 import {
   ColumnDef,
   flexRender,
-  getCoreRowModel,
-  useReactTable,
-  SortingState,
+  type RowData,
+  type SortingState,
+  useTable,
 } from "@tanstack/react-table";
 import { SearchX } from "lucide-react";
 import { useState } from "react";
+import { DataTableFeatures, features } from "./data-table-features";
 
-interface FoldersDataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+interface FoldersDataTableProps<TData extends RowData> {
+  columns: ColumnDef<DataTableFeatures, TData>[];
   data: TData[];
   sortOrder: "asc" | "desc";
 }
 
-export function FoldersDataTable<TData, TValue>({
+export function FoldersDataTable<TData extends RowData>({
   columns,
   data,
-}: FoldersDataTableProps<TData, TValue>) {
+}: FoldersDataTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  const table = useReactTable({
+  const table = useTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
+    features,
     onSortingChange: setSorting,
     state: {
       sorting,

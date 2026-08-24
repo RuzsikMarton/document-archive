@@ -6,6 +6,7 @@ import { customSession, organization } from "better-auth/plugins";
 import { Resend } from "resend";
 import PasswordResetEmail from "@/components/emails/reset-password";
 import emailVerification from "@/components/emails/email-verification";
+import OrganizationInvitationEmail from "@/components/emails/oragnization-invitation";
 
 const resend = new Resend(process.env.RESEND_API_KEY || "");
 
@@ -130,6 +131,21 @@ const options = {
     organization({
       allowUserToCreateOrganization: false,
       creatorRole: "owner",
+      async sendInvitationEmail(data) {
+        const inviteLink = `${process.env.NEXT_PUBLIC_BASE_URL}/api/accept-invitation/${data.id}`;
+        resend.emails.send({
+          from: "Evidio <no-reply@evidio.rk-r.sk>",
+          to: data.email,
+          subject: "Pozvánka do organizácie",
+          react: OrganizationInvitationEmail({
+            email: data.email,
+            invitedByUsername: data.inviter.user.name,
+            invitedByEmail: data.inviter.user.email,
+            teamName: data.organization.name,
+            inviteLink,
+          }),
+        });
+      },
     }),
   ],
 } satisfies BetterAuthOptions;

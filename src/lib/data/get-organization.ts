@@ -65,3 +65,111 @@ export const getOrganizationStats = async () => {
     foldersThisYear,
   };
 };
+
+export const getOrganizationEmployees = async ({
+  search,
+  page,
+}: {
+  search?: string;
+  page?: number;
+}) => {
+  const session = await getSession();
+
+  if (!session) {
+    return {
+      success: false,
+      message: "Neautorizovaný prístup. Prosím prihláste sa.",
+    };
+  }
+
+  if (
+    !session.session.activeOrganizationId ||
+    (session.session.activeOrganizationId &&
+      session.user.organization?.role !== "owner")
+  ) {
+    return {
+      success: false,
+      message:
+        "Nemáte oprávnenie na prístup k týmto údajom. Prosím kontaktujte administrátora.",
+    };
+  }
+
+  const pageSize = 10;
+  const skip = page && page > 1 ? (page - 1) * pageSize : 0;
+
+  try {
+    const employees = await prisma.member.findMany({
+      where: {
+        organizationId: session.session.activeOrganizationId,
+
+        ...(search
+          ? {
+              user: {
+                OR: [
+                  {
+                    name: {
+                      contains: search,
+                      mode: "insensitive",
+                    },
+                  },
+                  {
+                    email: {
+                      contains: search,
+                      mode: "insensitive",
+                    },
+                  },
+                ],
+              },
+            }
+          : {}),
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+      },
+      skip,
+      take: pageSize,
+    });
+
+    const totalCount = await prisma.member.count({
+      where: {
+        organizationId: session.session.activeOrganizationId,
+
+        ...(search
+          ? {
+              user: {
+                OR: [
+                  {
+                    name: {
+                      contains: search,
+                      mode: "insensitive",
+                    },
+                  },
+                  {
+                    email: {
+                      contains: search,
+                      mode: "insensitive",
+                    },
+                  },
+                ],
+              },
+            }
+          : {}),
+      },
+    });
+    return {
+      employees,
+      totalCount,
+    };
+  } catch (error) {
+    console.error("Error fetching organization employees:", error);
+    return {
+      success: false,
+      message: "Nastala chyba pri načítaní zamestnancov organizácie.",
+    };
+  }
+};

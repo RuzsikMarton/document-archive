@@ -6,19 +6,31 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { signUpAction } from "@/actions/auth/sign-up";
 import { SignUpFormValues } from "@/types/auth";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
 
 const SignUpForm = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const inviteId = searchParams?.get("inviteId");
+  const email = searchParams?.get("email");
+
   const {
     register,
     setError,
     clearErrors,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<SignUpFormValues>({ resolver: zodResolver(signUpSchema) });
+  } = useForm<SignUpFormValues>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      name: "",
+      email: email || "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
 
   const onSubmit: SubmitHandler<SignUpFormValues> = async (data) => {
     clearErrors("root");
@@ -27,8 +39,12 @@ const SignUpForm = () => {
       setError("root", { message: res.message });
       return;
     }
-    router.push("/");
-    router.refresh();
+    if (inviteId) {
+      router.push(`/api/accept-invitation/${inviteId}`);
+    } else {
+      router.push("/");
+      router.refresh();
+    }
   };
 
   return (
@@ -114,7 +130,11 @@ const SignUpForm = () => {
         <div className="text-center text-sm text-muted-foreground mt-4">
           Už máte účet?{" "}
           <Link
-            href="/signin"
+            href={
+              inviteId && email
+                ? `/signin?inviteId=${inviteId}&email=${email}`
+                : "/signin"
+            }
             className="hover:underline underline-offset-4 text-primary"
           >
             Prihlásiť sa

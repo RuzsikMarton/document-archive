@@ -10,6 +10,10 @@ export const newOrganizationSchema = z.object({
     .max(32, "ID vlastníka musí mať 32 znakov"),
 });
 
+export const sendInvitationSchema = z.object({
+  email: z.email("Zadajte platnú e-mailovú adresu."),
+});
+
 export const editOrganizationSchema = z.object({
   name: z.string().min(1, "Názov spoločnosti je povinný"),
   ico: z

@@ -3,13 +3,15 @@
 import FolderTableActions from "@/components/folders/folders-table-actions";
 import SortableHeader from "@/components/folders/sortable-header";
 import { Folder } from "@/generated/prisma/client";
-import type { ColumnDef } from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { CheckCircle2, XCircle } from "lucide-react";
 import Link from "next/link";
+import { DataTableFeatures } from "./data-table-features";
 
-export const columns: ColumnDef<Folder>[] = [
-  {
-    accessorKey: "name",
+const columnHelper = createColumnHelper<DataTableFeatures, Folder>();
+
+export const columns = columnHelper.columns([
+  columnHelper.accessor("name", {
     header: () => (
       <div className="font-semibold text-slate-900 dark:text-slate-50">
         Názov
@@ -25,9 +27,8 @@ export const columns: ColumnDef<Folder>[] = [
         </Link>
       );
     },
-  },
-  {
-    accessorKey: "year",
+  }),
+  columnHelper.accessor("year", {
     header: () => (
       <div className="font-semibold text-slate-900 dark:text-slate-50">Rok</div>
     ),
@@ -38,9 +39,8 @@ export const columns: ColumnDef<Folder>[] = [
         </div>
       );
     },
-  },
-  {
-    accessorKey: "createdAt",
+  }),
+  columnHelper.accessor("createdAt", {
     header: ({ column }) => {
       return (
         <div className="hidden md:block">
@@ -60,9 +60,8 @@ export const columns: ColumnDef<Folder>[] = [
         </div>
       );
     },
-  },
-  {
-    accessorKey: "handedOver",
+  }),
+  columnHelper.accessor("handedOver", {
     header: () => (
       <div className="font-semibold text-slate-900 dark:text-slate-50">
         Odovzdané
@@ -94,8 +93,8 @@ export const columns: ColumnDef<Folder>[] = [
         </div>
       );
     },
-  },
-  {
+  }),
+  columnHelper.display({
     id: "actions",
     header: () => (
       <div className="text-right font-semibold text-slate-900 dark:text-slate-50">
@@ -108,5 +107,5 @@ export const columns: ColumnDef<Folder>[] = [
 
       return <FolderTableActions folder={folder} isHandedOver={isHandedOver} />;
     },
-  },
-];
+  }),
+]);

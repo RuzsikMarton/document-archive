@@ -11,7 +11,7 @@ const FoldersPage = async (props: {
     search?: string;
     handedOver?: string;
     years?: string;
-    currentPage?: string;
+    page?: string;
     sortOrder?: "asc" | "desc";
   }>;
 }) => {
@@ -20,7 +20,7 @@ const FoldersPage = async (props: {
   const search = searchParams?.search || "";
   const handedOver = searchParams?.handedOver;
   const years = searchParams?.years || undefined;
-  const currentPage = searchParams?.currentPage || "1";
+  const page = searchParams?.page || "1";
   const sortOrder = searchParams?.sortOrder;
 
   return (
@@ -32,14 +32,14 @@ const FoldersPage = async (props: {
             <div className="sm:px-6 max-w-screen-sm sm:max-w-7xl xl:max-w-350 w-full">
               <TableFilters />
               <Suspense
-                key={`${search}-${handedOver}-${years}-${currentPage}-${sortOrder}`}
+                key={`${search}-${handedOver}-${years}-${page}-${sortOrder}`}
                 fallback={<FoldersTableSkeleton />}
               >
                 <FoldersTable
                   search={search}
                   handedOver={handedOver}
                   years={years}
-                  currentPage={currentPage}
+                  page={page}
                   sortOrder={sortOrder}
                 />
               </Suspense>

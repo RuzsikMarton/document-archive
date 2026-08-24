@@ -3,7 +3,7 @@
 import { useNewFolderDialog } from "@/providers/new-folder-dialog-provider";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Funnel, FunnelX, Plus } from "lucide-react";
+import { Funnel, FunnelX, Plus, Search } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { useRef } from "react";
@@ -19,26 +19,16 @@ import { Checkbox } from "../ui/checkbox";
 import { Separator } from "../ui/separator";
 import { ScrollArea } from "../ui/scroll-area";
 import { cn } from "@/lib/utils";
+import SearchInput from "../common/search-input";
 
 const TableFilters = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const { openDialog } = useNewFolderDialog();
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 10 }, (_, i) => String(currentYear - i));
-
-  const handleSearch = useDebouncedCallback((query: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (query) {
-      params.set("search", query);
-    } else {
-      params.delete("search");
-    }
-    replace(`${pathname}?${params.toString()}`);
-  }, 300);
 
   const handleToggleYears = (year: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -70,16 +60,12 @@ const TableFilters = () => {
   const handleClearFilters = () => {
     const params = new URLSearchParams();
     replace(`${pathname}?${params.toString()}`);
-    // Clear the input field
-    if (searchInputRef.current) {
-      searchInputRef.current.value = "";
-    }
   };
 
   // Check if there are any active filters
   const hasActiveFilters = (() => {
-    const params = new URLSearchParams(searchParams);
-    params.delete("currentPage");
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("page");
     return params.toString().length > 0;
   })();
 
@@ -92,15 +78,7 @@ const TableFilters = () => {
         </Button>
       </div>
       <div className="flex justify-between md:justify-end items-center gap-2 w-full md:w-auto">
-        <Input
-          ref={searchInputRef}
-          type="text"
-          placeholder="Hľadať..."
-          className="w-48 sm:w-64 md:w-80 h-12"
-          onChange={(e) => {
-            handleSearch(e.target.value);
-          }}
-        />
+        <SearchInput />
         <div className="flex gap-2">
           <Popover>
             <PopoverTrigger

@@ -1,9 +1,11 @@
 "use server";
 
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { EditOrganizationFormData } from "@/types/organization";
 import { getSession } from "@/utils/auth";
 import { editOrganizationSchema } from "@/utils/validation/organization";
+import { headers } from "next/headers";
 
 export const EditOrganizationDetailsAction = async (
   data: EditOrganizationFormData,
@@ -14,6 +16,17 @@ export const EditOrganizationDetailsAction = async (
     return {
       success: false,
       message: "Neautorizovaný prístup.",
+    };
+  }
+
+  const { role } = await auth.api.getActiveMemberRole({
+    headers: await headers(),
+  });
+
+  if (role !== "owner") {
+    return {
+      success: false,
+      message: "Nemáte oprávnenie upraviť organizáciu.",
     };
   }
 
@@ -53,6 +66,92 @@ export const EditOrganizationDetailsAction = async (
     return {
       success: false,
       message: "Chyba pri aktualizácii organizácie.",
+    };
+  }
+};
+
+export const removeMemberAction = async (memberEmail: string) => {
+  const session = await getSession();
+
+  if (!session || !session.session.activeOrganizationId) {
+    return {
+      success: false,
+      message: "Neautorizovaný prístup.",
+    };
+  }
+
+  const { role } = await auth.api.getActiveMemberRole({
+    headers: await headers(),
+  });
+
+  if (role !== "owner") {
+    return {
+      success: false,
+      message: "Nemáte oprávnenie upraviť organizáciu.",
+    };
+  }
+  try {
+    await auth.api.removeMember({
+      body: {
+        memberIdOrEmail: memberEmail,
+      },
+      headers: await headers(),
+    });
+    return {
+      success: true,
+      message: "Člen bol úspešne odstránený.",
+    };
+  } catch (error) {
+    console.error("Error removing member", error);
+    return {
+      success: false,
+      message: "Chyba pri odstraňovaní člena.",
+    };
+  }
+};
+
+export const changeMemberRoleAction = async (
+  memberId: string,
+  newRole: string,
+) => {
+  const session = await getSession();
+
+  if (!session || !session.session.activeOrganizationId) {
+    return {
+      success: false,
+      message: "Neautorizovaný prístup.",
+    };
+  }
+
+  const { role } = await auth.api.getActiveMemberRole({
+    headers: await headers(),
+  });
+
+  if (role !== "owner") {
+    return {
+      success: false,
+      message: "Nemáte oprávnenie upraviť organizáciu.",
+    };
+  }
+
+  try {
+    await auth.api.updateMemberRole({
+      body: {
+        role: newRole,
+        memberId: memberId,
+      },
+      headers: await headers(),
+    });
+    console.log(`Role for member ${memberId} changed to ${newRole}`);
+    return {
+      success: true,
+      message: "Rola člena bola úspešne zmenená.",
+    };
+  } catch (error) {
+    console.error("Error changing member role", error);
+    return {
+      success: false,
+      message: "Chyba pri zmene role člena.",
     };
   }
 };
