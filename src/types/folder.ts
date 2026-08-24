@@ -23,9 +23,13 @@ export type FolderWithOrganization = Folder & {
 
 export type DashboardFolder = Prisma.FolderGetPayload<{
   include: {
-    user: {
+    member: {
       select: {
-        name: true;
+        user: {
+          select: {
+            name: true;
+          };
+        };
       };
     };
   };

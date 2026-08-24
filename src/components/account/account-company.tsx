@@ -4,7 +4,7 @@ import { SessionUserType } from "@/types/auth";
 import { Building2, Briefcase, Crown, Users } from "lucide-react";
 
 const AccountCompany = ({ user }: { user: SessionUserType }) => {
-  const hasCompany = user.organization?.id && user.organization?.organizationId;
+  const hasCompany = user.organization?.id && user.organization?.memberId;
 
   return (
     <section className="rounded-lg border bg-slate-100 dark:bg-card p-6 space-y-4">

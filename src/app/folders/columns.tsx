@@ -41,7 +41,7 @@ export const columns = columnHelper.columns([
     },
   }),
   columnHelper.accessor("createdAt", {
-    header: ({ column }) => {
+    header: () => {
       return (
         <div className="hidden md:block">
           <SortableHeader title="Dátum vytvorenia" sortKey="createdAt" />

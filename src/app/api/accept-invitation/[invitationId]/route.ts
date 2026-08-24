@@ -35,7 +35,7 @@ export async function GET(
   }
 
   try {
-    const data = await auth.api.acceptInvitation({
+    await auth.api.acceptInvitation({
       body: {
         invitationId,
       },

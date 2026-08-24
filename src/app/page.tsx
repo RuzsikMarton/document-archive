@@ -22,16 +22,19 @@ export default async function Home() {
   if (session && session.session.activeOrganizationId) {
     folders = await prisma.folder.findMany({
       where: {
-        userId: session.user.id,
         organizationId: session.session.activeOrganizationId,
       },
       orderBy: {
         createdAt: "desc",
       },
       include: {
-        user: {
+        member: {
           select: {
-            name: true,
+            user: {
+              select: {
+                name: true,
+              },
+            },
           },
         },
       },
@@ -47,13 +50,11 @@ export default async function Home() {
     const [total, handedOver, notHandedOver] = await Promise.all([
       prisma.folder.count({
         where: {
-          userId: session.user.id,
           organizationId: session.session.activeOrganizationId,
         },
       }),
       prisma.folder.count({
         where: {
-          userId: session.user.id,
           organizationId: session.session.activeOrganizationId,
           handedOver: true,
           handedOverAt: {
@@ -64,7 +65,6 @@ export default async function Home() {
       }),
       prisma.folder.count({
         where: {
-          userId: session.user.id,
           organizationId: session.session.activeOrganizationId,
           handedOver: false,
         },

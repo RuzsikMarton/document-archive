@@ -12,7 +12,6 @@ import { Button } from "../ui/button";
 import { Check, Loader2, TriangleAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { auth } from "@/lib/auth";
 import { authClient } from "@/lib/auth-client";
 
 const AccountSettingsCard = ({

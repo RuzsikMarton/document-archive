@@ -127,7 +127,9 @@ const Dashboard = ({ folders, stats }: DashboardProps) => {
                           </span>
                         </div>
                         <div className="hidden md:flex items-center gap-3 mt-1 text-xs text-slate-500 dark:text-slate-500">
-                          <span>Vytvoril: {folder.user.name}</span>
+                          <span>
+                            Vytvoril: {folder.member?.user?.name ?? "Neznámy"}
+                          </span>
                         </div>
                       </div>
                     </div>

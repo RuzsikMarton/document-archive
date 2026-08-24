@@ -67,7 +67,7 @@ const AppSidebar = ({ user }: { user: SessionUserType }) => {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarMain user={user} />
+        <SidebarMain />
         {user.organization?.id && (
           <>
             <SidebarSeparator />

@@ -14,7 +14,7 @@ import { FolderClock, FolderOpen, Gauge, Plus } from "lucide-react";
 import { ThemeToggle } from "../common/ThemeToggle";
 import Link from "next/link";
 
-const SidebarMain = ({ user }: { user: SessionUserType }) => {
+const SidebarMain = () => {
   const { openDialog } = useNewFolderDialog();
   const pathname = usePathname();
   const searchParams = useSearchParams();

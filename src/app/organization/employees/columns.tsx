@@ -38,11 +38,6 @@ const roleLabels: Record<string, string> = {
   member: "Člen",
 };
 
-const changeRole = (newRole: "owner" | "admin" | "member") => {
-  // Implement the logic to change the role of the user
-  console.log(`Changing role to: ${newRole}`);
-};
-
 const removeMember = async (email: string) => {
   const res = await removeMemberAction(email);
   if (!res.success) {

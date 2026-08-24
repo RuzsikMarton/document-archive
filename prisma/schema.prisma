@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Folder {
-  id             String        @id @default(cuid())
+  id             String       @id @default(cuid())
   name           String
   qrCodeImage    String?
   year           Int
@@ -16,15 +16,15 @@ model Folder {
   monthTo        Int?
   contents       String?
   transferCode   String?
-  handedOver     Boolean       @default(false)
+  handedOver     Boolean      @default(false)
   handedOverAt   DateTime?
-  createdAt      DateTime      @default(now())
-  userId         String
-  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  organizationId String?
-  organization   Organization? @relation(fields: [organizationId], references: [id])
+  createdAt      DateTime     @default(now())
+  memberId       String?
+  member         Member?      @relation(fields: [memberId], references: [id])
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
+  @@index([memberId])
   @@index([organizationId])
   @@map("folder")
 }
@@ -41,8 +41,6 @@ model User {
   emailVerified Boolean @default(false)
   image         String?
   role          Role    @default(USER)
-
-  folders Folder[]
 
   sessions  Session[]
   accounts  Account[]
@@ -137,6 +135,7 @@ model Member {
   user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   role           String       @default("member")
   createdAt      DateTime
+  folders        Folder[]
 
   @@index([organizationId])
   @@index([userId])

@@ -40,7 +40,7 @@ export const createFolder = async (data: CreateFolderFormType) => {
           name: parsedData.data.name,
           year: parsedData.data.year,
           organizationId: session?.session?.activeOrganizationId || "",
-          userId: session?.user?.id || "",
+          memberId: session?.user?.organization?.memberId || "",
         },
       });
 
@@ -76,7 +76,7 @@ export const getFolderSuggestions = async () => {
   const session = await getSession();
   const data = await prisma.folder.findMany({
     where: {
-      userId: session?.user?.id,
+      memberId: session?.user?.id,
     },
     select: {
       name: true,

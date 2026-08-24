@@ -13,7 +13,7 @@ type SessionOrganization = {
   name: string;
   slug: string;
   role: string;
-  organizationId: string;
+  memberId: string;
 };
 
 export type SessionUserType = {

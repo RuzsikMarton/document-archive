@@ -2,43 +2,14 @@ import { betterAuth, type BetterAuthOptions } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./prisma";
 import { nextCookies } from "better-auth/next-js";
-import { customSession, organization } from "better-auth/plugins";
+import { customSession } from "better-auth/plugins/custom-session";
+import { organization } from "better-auth/plugins/organization";
 import { Resend } from "resend";
 import PasswordResetEmail from "@/components/emails/reset-password";
 import emailVerification from "@/components/emails/email-verification";
 import OrganizationInvitationEmail from "@/components/emails/oragnization-invitation";
 
 const resend = new Resend(process.env.RESEND_API_KEY || "");
-
-export async function getSessionUserData(
-  userId: string,
-  organizationId?: string | null,
-) {
-  return prisma.user.findUnique({
-    where: { id: userId },
-    select: {
-      role: true,
-      members: organizationId
-        ? {
-            where: {
-              organizationId,
-            },
-            select: {
-              role: true,
-              organizationId: true,
-              organization: {
-                select: {
-                  id: true,
-                  name: true,
-                  slug: true,
-                },
-              },
-            },
-          }
-        : false,
-    },
-  });
-}
 
 const options = {
   baseURL: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
@@ -157,24 +128,36 @@ export const auth = betterAuth({
     ...(options.plugins ?? []),
 
     customSession(async ({ user, session }) => {
-      const activeOrganizationId = session.activeOrganizationId;
+      const userData = await prisma.user.findUnique({
+        where: {
+          id: session.userId,
+        },
+        select: {
+          role: true,
+        },
+      });
 
-      const userData = await getSessionUserData(
-        session.userId,
-        activeOrganizationId,
-      );
+      let member = null;
 
-      const member = userData?.members?.[0] as
-        | {
-            role: string;
-            organizationId: string;
+      if (session.activeOrganizationId) {
+        member = await prisma.member.findFirst({
+          where: {
+            userId: session.userId,
+            organizationId: session.activeOrganizationId,
+          },
+          select: {
+            id: true,
+            role: true,
+            organizationId: true,
             organization: {
-              id: string;
-              name: string;
-              slug: string;
-            };
-          }
-        | undefined;
+              select: {
+                name: true,
+                slug: true,
+              },
+            },
+          },
+        });
+      }
 
       return {
         session,
@@ -183,11 +166,11 @@ export const auth = betterAuth({
           role: userData?.role,
           organization: member
             ? {
-                id: member.organization.id,
+                id: member.organizationId,
                 name: member.organization.name,
                 slug: member.organization.slug,
                 role: member.role,
-                organizationId: member.organizationId,
+                memberId: member.id,
               }
             : null,
         },
