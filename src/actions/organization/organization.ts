@@ -84,12 +84,20 @@ export const removeMemberAction = async (memberEmail: string) => {
     headers: await headers(),
   });
 
-  if (role !== "owner") {
+  if (role !== "owner" && role !== "admin") {
     return {
       success: false,
       message: "Nemáte oprávnenie upraviť organizáciu.",
     };
   }
+
+  if (memberEmail === session.user.email) {
+    return {
+      success: false,
+      message: "Nemôžete odstrániť sami seba.",
+    };
+  }
+
   try {
     await auth.api.removeMember({
       body: {
@@ -152,6 +160,72 @@ export const changeMemberRoleAction = async (
     return {
       success: false,
       message: "Chyba pri zmene role člena.",
+    };
+  }
+};
+
+export const inviteMemberAction = async (
+  email: string,
+  organizationId?: string,
+) => {
+  const session = await getSession();
+
+  if (!session || !session.session.activeOrganizationId) {
+    return {
+      success: false,
+      message: "Neautorizovaný prístup.",
+    };
+  }
+
+  const { role } = await auth.api.getActiveMemberRole({
+    headers: await headers(),
+  });
+
+  if (role !== "owner" && role !== "admin") {
+    return {
+      success: false,
+      message: "Nemáte oprávnenie pozvať člena.",
+    };
+  }
+
+  const existingMember = await prisma.member.findFirst({
+    where: {
+      user: {
+        email: email,
+      },
+    },
+    select: {
+      id: true,
+      organizationId: true,
+    },
+  });
+
+  if (existingMember) {
+    return {
+      success: false,
+      message: "Tento používateľ už patrí do organizácie.",
+    };
+  }
+
+  try {
+    await auth.api.createInvitation({
+      body: {
+        email: email,
+        role: "member",
+        organizationId: organizationId,
+        resend: true,
+      },
+      headers: await headers(),
+    });
+    return {
+      success: true,
+      message: "Pozvánka bola úspešne odoslaná.",
+    };
+  } catch (error) {
+    console.error("Error inviting member", error);
+    return {
+      success: false,
+      message: "Chyba pri odosielaní pozvánky.",
     };
   }
 };

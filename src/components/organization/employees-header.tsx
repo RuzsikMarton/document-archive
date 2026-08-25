@@ -17,6 +17,7 @@ import z from "zod";
 import { Field, FieldError, FieldLabel } from "../ui/field";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
+import { inviteMemberAction } from "@/actions/organization/organization";
 
 const EmployeesHeader = ({ organizationId }: { organizationId?: string }) => {
   const {
@@ -34,14 +35,10 @@ const EmployeesHeader = ({ organizationId }: { organizationId?: string }) => {
   const onSubmit: SubmitHandler<z.infer<typeof sendInvitationSchema>> = async (
     data,
   ) => {
-    const { error } = await authClient.organization.inviteMember({
-      email: data.email,
-      role: "member",
-      organizationId: organizationId,
-    });
+    const res = await inviteMemberAction(data.email, organizationId);
 
-    if (error) {
-      toast.error(error.message || "Nepodarilo sa pozvať zamestnanca.");
+    if (!res.success) {
+      toast.error(res.message || "Nepodarilo sa odoslať pozvánku.");
       return;
     }
     toast.success("Pozvánka bola úspešne odoslaná.");

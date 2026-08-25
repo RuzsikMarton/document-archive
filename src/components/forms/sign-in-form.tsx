@@ -35,7 +35,7 @@ const SignInForm = () => {
       return;
     }
     if (inviteId) {
-      router.push(`/api/accept-invitation/${inviteId}`);
+      router.push(`/organization/invitation/${inviteId}`);
     } else {
       router.push("/");
       router.refresh();

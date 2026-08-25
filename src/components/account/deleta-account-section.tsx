@@ -30,6 +30,7 @@ const DeleteAccountSection = () => {
       toast.error(res.message || "Nepodarilo sa vymazať účet.");
     } else {
       router.push("/");
+      router.refresh();
     }
     setIsPending(false);
   };

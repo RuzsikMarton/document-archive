@@ -4,33 +4,78 @@ import { getSession } from "@/utils/auth";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
-export async function GET(
+export async function POST(
   request: Request,
-  { params }: { params: Promise<{ invitationId: string }> },
+  {
+    params,
+  }: {
+    params: Promise<{ invitationId: string }>;
+  },
 ) {
   const { invitationId } = await params;
 
   const invitation = await prisma.invitation.findUnique({
-    where: { id: invitationId },
-    include: { organization: true },
+    where: {
+      id: invitationId,
+    },
   });
 
   if (
     !invitation ||
-    invitation.expiresAt < new Date() ||
-    invitation.status !== "pending"
+    invitation.status !== "pending" ||
+    invitation.expiresAt < new Date()
   ) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Pozvánka nie je platná alebo jej platnosť vypršala.",
+      },
+      { status: 400 },
+    );
   }
 
   const session = await getSession();
-  if (!session?.user || session.user.email !== invitation.email) {
-    // User not logged in - redirect to signup/login
-    return NextResponse.redirect(
-      new URL(
-        `/signup?inviteId=${invitationId}&email=${invitation?.email}`,
-        request.url,
-      ),
+
+  if (!session?.user) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Musíte byť prihlásený.",
+      },
+      { status: 401 },
+    );
+  }
+
+  if (session.user.email !== invitation.email) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Táto pozvánka nie je určená pre tento účet.",
+      },
+      { status: 403 },
+    );
+  }
+
+  // IMPORTANT:
+  // User can belong to only ONE organization
+  const existingMember = await prisma.member.findFirst({
+    where: {
+      userId: session.user.id,
+    },
+    select: {
+      id: true,
+      organizationId: true,
+    },
+  });
+
+  if (existingMember) {
+    return NextResponse.json(
+      {
+        success: false,
+        message:
+          "Už ste členom inej organizácie a túto pozvánku nemôžete prijať.",
+      },
+      { status: 409 },
     );
   }
 
@@ -41,11 +86,19 @@ export async function GET(
       },
       headers: await headers(),
     });
-    return NextResponse.redirect(new URL("/", request.url));
+
+    return NextResponse.json({
+      success: true,
+      message: "Pozvánka bola úspešne prijatá.",
+    });
   } catch (error) {
     console.error("Error accepting invitation:", error);
+
     return NextResponse.json(
-      { error: "Failed to accept invitation." },
+      {
+        success: false,
+        message: "Nepodarilo sa prijať pozvánku.",
+      },
       { status: 500 },
     );
   }
