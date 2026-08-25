@@ -29,20 +29,23 @@ const SidebarMain = () => {
             <SidebarMenuButton
               tooltip="Nový záznam"
               onClick={openDialog}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground duration-200 ease-linear justify-center group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2!"
-            >
-              <Plus />
-              <span className="group-data-[collapsible=icon]:hidden">
-                Nový záznam
-              </span>
-            </SidebarMenuButton>
+              className="bg-primary cursor-pointer text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground duration-200"
+              render={
+                <div className="flex items-center gap-2">
+                  <Plus />
+                  <span>Nový záznam</span>
+                </div>
+              }
+            />
 
             <div className="group-data-[collapsible=icon]:hidden">
               <ThemeToggle />
             </div>
           </SidebarMenuItem>
         </SidebarMenu>
-        <SidebarGroupLabel>Navigácia</SidebarGroupLabel>
+        <SidebarGroupLabel className="group-data-[collapsible=icon]:hidden">
+          Navigácia
+        </SidebarGroupLabel>
         <SidebarMenu className="flex flex-col gap-2">
           <SidebarMenuItem>
             <SidebarMenuButton

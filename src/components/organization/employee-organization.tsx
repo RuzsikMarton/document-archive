@@ -9,8 +9,8 @@ const EmployeeOrganization = ({
   organization: Organization;
 }) => {
   return (
-    <div className="max-w-3xl mx-auto p-8">
-      <div className="bg-card border rounded-lg p-10 space-y-8">
+    <div className="max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto p-8">
+      <div className="w-full bg-card border rounded-lg p-10 space-y-8">
         {/* Header */}
         <div className="flex items-center gap-6">
           {organization.logo ? (

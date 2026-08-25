@@ -69,7 +69,10 @@ const TableFilters = () => {
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-2">
       <div>
-        <Button onClick={openDialog} className="flex items-center gap-2 h-12">
+        <Button
+          onClick={openDialog}
+          className="flex items-center gap-2 h-12 cursor-pointer"
+        >
           <Plus className="h-4 w-4" />
           Nový záznam
         </Button>
@@ -80,7 +83,7 @@ const TableFilters = () => {
           <Popover>
             <PopoverTrigger
               render={
-                <button className="flex items-center gap-2 py-3 px-4 border border-blue-500 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-all dark:border-primary dark:bg-blue-900/50 dark:text-primary dark:hover:bg-blue-800/50">
+                <button className="flex items-center gap-2 py-3 px-4 border border-blue-500 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-all dark:border-primary dark:bg-blue-900/50 dark:text-primary dark:hover:bg-blue-800/50 cursor-pointer">
                   <span className="font-medium text-sm hidden md:block">
                     Filter
                   </span>
@@ -168,7 +171,7 @@ const TableFilters = () => {
             disabled={!hasActiveFilters}
             className={`flex items-center gap-2 py-3 px-4 border rounded-lg transition-all ${
               hasActiveFilters
-                ? "border-blue-500 bg-blue-50 text-blue-600 hover:bg-blue-100 dark:border-primary dark:bg-blue-900/50 dark:text-primary dark:hover:bg-blue-800/50"
+                ? "border-blue-500 bg-blue-50 text-blue-600 hover:bg-blue-100 dark:border-primary dark:bg-blue-900/50 dark:text-primary dark:hover:bg-blue-800/50 cursor-pointer"
                 : "border-border bg-background text-muted-foreground opacity-50 cursor-not-allowed dark:border-input dark:bg-input/30"
             }`}
           >

@@ -79,7 +79,7 @@ const FolderTableActions = ({
               <Button
                 variant="outline"
                 size="sm"
-                className="h-8 border-slate-200 dark:border-slate-700"
+                className="h-8 border-slate-200 dark:border-slate-700 cursor-pointer"
               >
                 <Eye className="h-4 w-4" />
               </Button>
@@ -98,7 +98,7 @@ const FolderTableActions = ({
               variant="outline"
               size="sm"
               disabled={isPending}
-              className={`h-8 border-slate-200 dark:border-slate-700 ${
+              className={`h-8 border-slate-200 dark:border-slate-700 cursor-pointer ${
                 isHandedOver
                   ? "text-amber-600 hover:text-amber-700 hover:bg-amber-50 dark:text-amber-400 dark:hover:bg-amber-950"
                   : "text-green-600 hover:text-green-700 hover:bg-green-50 dark:text-green-400 dark:hover:bg-green-950"
@@ -131,7 +131,7 @@ const FolderTableActions = ({
                       disabled={isPending}
                       variant="outline"
                       size="sm"
-                      className="h-8 border-slate-200 dark:border-slate-700 text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-950"
+                      className="h-8 border-slate-200 dark:border-slate-700 text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-950 cursor-pointer"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>

@@ -56,6 +56,17 @@ export async function POST(
     );
   }
 
+  if (session.user.emailVerified === false) {
+    return NextResponse.json(
+      {
+        success: false,
+        message:
+          "Musíte si overiť svoj e-mail, aby ste mohli prijať pozvánku do organizácie.",
+      },
+      { status: 403 },
+    );
+  }
+
   // IMPORTANT:
   // User can belong to only ONE organization
   const existingMember = await prisma.member.findFirst({

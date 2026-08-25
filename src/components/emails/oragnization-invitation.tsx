@@ -52,7 +52,8 @@ export const OrganizationInvitationEmail = (
 
           <Text style={text}>
             Ak ešte nemáte účet, po kliknutí na tlačidlo si ho budete môcť
-            vytvoriť. Ak už účet máte, jednoducho sa prihlásite.
+            vytvoriť. Ak už účet máte, po overení e-mailu sa jednoducho
+            prihlásite.
           </Text>
 
           <Section style={buttonContainer}>

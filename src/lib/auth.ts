@@ -101,6 +101,7 @@ const options = {
   plugins: [
     organization({
       allowUserToCreateOrganization: false,
+      requireEmailVerificationOnInvitation: true,
       creatorRole: "owner",
       async sendInvitationEmail(data) {
         const inviteLink = `${process.env.NEXT_PUBLIC_BASE_URL}/organization/invitation/${data.id}`;

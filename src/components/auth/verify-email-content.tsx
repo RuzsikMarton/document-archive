@@ -42,11 +42,6 @@ const VerifyEmailContent = () => {
         } else {
           setState("success");
           setMessage("Váš e-mail bol úspešne overený!");
-
-          // Redirect to sign in after 3 seconds
-          setTimeout(() => {
-            router.push("/signin");
-          }, 3000);
         }
       } catch (error) {
         setState("error");
@@ -98,10 +93,10 @@ const VerifyEmailContent = () => {
             </h1>
             <p className="text-foreground">{message}</p>
             <p className="text-sm text-muted-foreground">
-              Budete presmerovaní na prihlasovaciu stránku...
+              Budete presmerovaní...
             </p>
-            <Link href="/signin" className="mt-4">
-              <Button>Prihlásiť sa</Button>
+            <Link href="/" className="mt-4">
+              <Button>Pokračovať</Button>
             </Link>
           </>
         )}

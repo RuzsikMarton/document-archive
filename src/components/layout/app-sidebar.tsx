@@ -43,7 +43,9 @@ const AppSidebar = ({ user }: { user: SessionUserType }) => {
                     <span className="truncate text-xs text-muted-foreground">
                       {user.organization.role === "owner"
                         ? "Majiteľ"
-                        : "Zamestnanec"}
+                        : user.organization.role === "admin"
+                          ? "Administrátor"
+                          : "Zamestnanec"}
                     </span>
                   </>
                 ) : (
