@@ -85,7 +85,12 @@ const FolderEditForm = ({ folder }: { folder: FolderWithOrganization }) => {
   const onSubmit: SubmitHandler<EditFolderFormType> = async (data) => {
     clearErrors();
     setIsPending(true);
-    const res = await updateFolderAction(data, folder.id);
+    const trimmedData = {
+      ...data,
+      name: data.name.trim(),
+      contents: data.contents?.trim(),
+    };
+    const res = await updateFolderAction(trimmedData, folder.id);
     if (!res.success) {
       toast.error(res.message || "Chyba pri aktualizácii záznamu.");
       setIsPending(false);
@@ -94,8 +99,8 @@ const FolderEditForm = ({ folder }: { folder: FolderWithOrganization }) => {
     setIsPending(false);
     setIsEditing(false);
     toast.success("Záznam bol úspešne aktualizovaný.");
+    reset(trimmedData); // Reset the form with the updated data
     router.refresh();
-    reset(data); // Reset the form with the updated data
   };
 
   const handleDelete = async () => {

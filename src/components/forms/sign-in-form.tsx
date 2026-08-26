@@ -3,28 +3,37 @@
 import { SignInFormValues } from "@/types/auth";
 import { signInSchema } from "@/utils/validation/auth";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
-import { Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2, Mail, Lock } from "lucide-react";
 import { signInAction } from "@/actions/auth/sign-in";
 import Link from "next/link";
+import { Input } from "../ui/input";
+import { InputGroup, InputGroupAddon } from "../ui/input-group";
+import { Field, FieldLabel, FieldError } from "../ui/field";
+import { useState } from "react";
 
 const SignInForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const inviteId = searchParams?.get("inviteId");
   const email = searchParams?.get("email");
+  const [isPasswordTyping, setIsPasswordTyping] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
-    register,
+    control,
     handleSubmit,
     clearErrors,
     setError,
     formState: { errors, isSubmitting },
   } = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
-    defaultValues: { email: email || "" },
+    defaultValues: {
+      email: email || "",
+      password: "",
+    },
   });
 
   const onSubmit: SubmitHandler<SignInFormValues> = async (data) => {
@@ -59,45 +68,83 @@ const SignInForm = () => {
           decoding="async"
         />
         <form
-          className="flex flex-col gap-2 w-full mt-4"
+          className="flex flex-col gap-4 w-full mt-6"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <label className="input-label" htmlFor="email">
-            Email
-          </label>
-          <input
-            className="input-form"
-            type="email"
-            id="email"
-            placeholder="Váš email"
-            {...register("email")}
+          <Controller
+            name="email"
+            control={control}
+            render={({ field }) => (
+              <Field data-invalid={!!errors.email}>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <InputGroup
+                  className={`h-10 bg-accent rounded-sm border-primary/25 dark:border-muted-foreground/75 ${!!errors.email ? "border-destructive! ring-2 ring-destructive/20 dark:ring-destructive/30" : "focus-within:ring-1 focus-within:ring-primary/75"}`}
+                >
+                  <InputGroupAddon align="inline-start">
+                    <Mail className="size-4" />
+                  </InputGroupAddon>
+                  <Input
+                    {...field}
+                    id="email"
+                    type="email"
+                    placeholder="email@domena.sk"
+                    className="border-0 bg-transparent! focus-visible:outline-none focus-visible:ring-0"
+                  />
+                </InputGroup>
+                <FieldError>{errors.email?.message}</FieldError>
+              </Field>
+            )}
           />
-          {errors.email && (
-            <span className="text-sm text-destructive">
-              {errors.email.message}
-            </span>
-          )}
 
-          <label className="input-label" htmlFor="password">
-            Heslo
-          </label>
-          <input
-            className="input-form"
-            type="password"
-            id="password"
-            placeholder="Vaše heslo"
-            {...register("password")}
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <Field data-invalid={!!errors.password}>
+                <FieldLabel htmlFor="password">Heslo</FieldLabel>
+                <InputGroup
+                  className={`h-10 bg-accent rounded-sm border-primary/25 dark:border-muted-foreground/75 ${!!errors.password ? "border-destructive! ring-2 ring-destructive/20 dark:ring-destructive/30" : "focus-within:ring-1 focus-within:ring-primary/75"}`}
+                >
+                  <InputGroupAddon align="inline-start">
+                    <Lock className="size-4" />
+                  </InputGroupAddon>
+                  <Input
+                    {...field}
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="********"
+                    onChange={(e) => {
+                      field.onChange(e);
+                      setIsPasswordTyping(e.target.value.length > 0);
+                    }}
+                    className="border-0 bg-transparent! focus-visible:outline-none focus-visible:ring-0"
+                  />
+                  {isPasswordTyping && (
+                    <InputGroupAddon align="inline-end">
+                      <button
+                        className="text-muted-foreground hover:text-foreground/75 mr-1"
+                        type="button"
+                        aria-label={
+                          showPassword ? "Skryť heslo" : "Zobraziť heslo"
+                        }
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? (
+                          <EyeOff className="size-5" />
+                        ) : (
+                          <Eye className="size-5" />
+                        )}
+                      </button>
+                    </InputGroupAddon>
+                  )}
+                </InputGroup>
+                <FieldError>{errors.password?.message}</FieldError>
+              </Field>
+            )}
           />
-          {errors.password && (
-            <span className="text-sm text-destructive">
-              {errors.password.message}
-            </span>
-          )}
-          {errors.root && (
-            <span className="text-sm text-destructive">
-              {errors.root.message}
-            </span>
-          )}
+
+          {errors.root && <FieldError>{errors.root.message}</FieldError>}
+
           <div className="flex justify-end items-center text-xs text-muted-foreground hover:text-primary/90">
             <a href="/forgot-password" className="">
               Zabudli ste heslo?{" "}

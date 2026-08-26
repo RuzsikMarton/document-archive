@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Button } from "../ui/button";
 import {
   Eye,
@@ -10,6 +9,7 @@ import {
   Trash2,
   Trash2Icon,
   Loader2,
+  EllipsisVertical,
 } from "lucide-react";
 import { Folder } from "@/generated/prisma/browser";
 import {
@@ -26,10 +26,17 @@ import {
   AlertDialogHeader,
   AlertDialogMedia,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "../ui/alert-dialog";
 import { useState } from "react";
 import { toast } from "sonner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 const FolderTableActions = ({
   folder,
@@ -68,112 +75,87 @@ const FolderTableActions = ({
   };
 
   return (
-    <div className="flex items-center justify-end gap-2">
-      <Tooltip>
-        <TooltipTrigger
+    <div className="flex items-center justify-end">
+      <AlertDialog open={open} onOpenChange={setOpen}>
+        <AlertDialogContent size="sm">
+          <AlertDialogHeader>
+            <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
+              <Trash2Icon />
+            </AlertDialogMedia>
+            <AlertDialogTitle>Zmazať záznam?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Ste si istý, že chcete zmazať tento záznam? Táto akcia je nevratná
+              a všetky údaje budú nenávratne odstránené.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel variant="outline">Zrušiť</AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              render={
+                <Button onClick={handleDelete} disabled={isPending}>
+                  {isPending ? <Loader2 className="animate-spin" /> : "Zmazať"}
+                </Button>
+              }
+            />
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger
           render={
-            <Link
-              href={`/folders/${folder.id}`}
-              className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-50"
+            <button
+              type="button"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-card/50 hover:text-accent-foreground cursor-pointer"
             >
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-8 border-slate-200 dark:border-slate-700 cursor-pointer"
-              >
-                <Eye className="h-4 w-4" />
-              </Button>
-            </Link>
+              <EllipsisVertical className="text-foreground/60" />
+            </button>
           }
         />
-        <TooltipContent>
-          <p>Zobraziť</p>
-        </TooltipContent>
-      </Tooltip>
-
-      <Tooltip>
-        <TooltipTrigger
-          render={
-            <Button
-              variant="outline"
-              size="sm"
+        <DropdownMenuContent align="end" className="w-44">
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              <Link
+                href={`/folders/${folder.id}`}
+                className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-50"
+              >
+                <div className="flex items-center gap-2 cursor-pointer">
+                  <Eye className="h-4 w-4" /> Zobraziť
+                </div>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem
               disabled={isPending}
-              className={`h-8 border-slate-200 dark:border-slate-700 cursor-pointer ${
-                isHandedOver
-                  ? "text-amber-600 hover:text-amber-700 hover:bg-amber-50 dark:text-amber-400 dark:hover:bg-amber-950"
-                  : "text-green-600 hover:text-green-700 hover:bg-green-50 dark:text-green-400 dark:hover:bg-green-950"
-              }`}
               onClick={() => {
                 handleHandedOverChange(!isHandedOver);
               }}
             >
               {isHandedOver ? (
-                <XCircle className="h-4 w-4" />
+                <XCircle className="text-amber-700 dark:text-amber-300" />
               ) : (
-                <CheckCircle2 className="h-4 w-4" />
+                <CheckCircle2 className="text-green-800 dark:text-green-300" />
               )}
-            </Button>
-          }
-        />
-        <TooltipContent>
-          <p>{isHandedOver ? "Zrušiť odovzdanie" : "Odovzdať"}</p>
-        </TooltipContent>
-      </Tooltip>
-
-      <AlertDialog open={open} onOpenChange={setOpen}>
-        <Tooltip>
-          <TooltipTrigger
-            render={
-              <div>
-                <AlertDialogTrigger
-                  render={
-                    <Button
-                      disabled={isPending}
-                      variant="outline"
-                      size="sm"
-                      className="h-8 border-slate-200 dark:border-slate-700 text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-950 cursor-pointer"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  }
-                />
-                <AlertDialogContent size="sm">
-                  <AlertDialogHeader>
-                    <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
-                      <Trash2Icon />
-                    </AlertDialogMedia>
-                    <AlertDialogTitle>Zmazať záznam?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Ste si istý, že chcete zmazať tento záznam? Táto akcia je
-                      nevratná a všetky údaje budú nenávratne odstránené.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel variant="outline">
-                      Zrušiť
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                      variant="destructive"
-                      render={
-                        <Button onClick={handleDelete} disabled={isPending}>
-                          {isPending ? (
-                            <Loader2 className="animate-spin" />
-                          ) : (
-                            "Zmazať"
-                          )}
-                        </Button>
-                      }
-                    />
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </div>
-            }
-          />
-          <TooltipContent>
-            <p>Odstrániť</p>
-          </TooltipContent>
-        </Tooltip>
-      </AlertDialog>
+              <span className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-50">
+                {isHandedOver ? "Zrušiť odovzdanie" : "Odovzdať"}
+              </span>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem
+              variant="destructive"
+              onClick={(event) => {
+                event.preventDefault();
+                setOpen(true);
+              }}
+            >
+              <Trash2 className="h-4 w-4" />
+              Odstrániť
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };

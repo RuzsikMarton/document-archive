@@ -21,7 +21,7 @@ export const columns = columnHelper.columns([
       return (
         <Link
           href={`/folders/${row.original.id}`}
-          className="font-medium text-slate-900 dark:text-slate-50"
+          className="font-medium underline underline-offset-4 text-slate-900 dark:text-slate-50"
         >
           {row.getValue("name")}
         </Link>
@@ -36,6 +36,23 @@ export const columns = columnHelper.columns([
       return (
         <div className="text-slate-600 dark:text-slate-400">
           {row.getValue("year")}
+        </div>
+      );
+    },
+  }),
+  columnHelper.display({
+    id: "months",
+    header: () => (
+      <div className="flex justify-center font-semibold text-slate-900 dark:text-slate-50">
+        Mesiace
+      </div>
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="flex justify-center text-slate-600 dark:text-slate-400">
+          <span className="text-center">
+            {row.original.monthFrom} – {row.original.monthTo}
+          </span>
         </div>
       );
     },
@@ -96,11 +113,7 @@ export const columns = columnHelper.columns([
   }),
   columnHelper.display({
     id: "actions",
-    header: () => (
-      <div className="text-right font-semibold text-slate-900 dark:text-slate-50">
-        Akcie
-      </div>
-    ),
+
     cell: ({ row }) => {
       const folder = row.original;
       const isHandedOver = row.getValue("handedOver") as boolean;
