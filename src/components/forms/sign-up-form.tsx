@@ -93,7 +93,6 @@ const SignUpForm = () => {
                     id="name"
                     type="text"
                     placeholder="Meno"
-                    aria-invalid={!!errors.name}
                     className="border-0 bg-transparent! focus-visible:outline-none focus-visible:ring-0"
                   />
                 </InputGroup>
@@ -119,7 +118,6 @@ const SignUpForm = () => {
                     id="email"
                     type="email"
                     placeholder="email@domena.sk"
-                    aria-invalid={!!errors.email}
                     className="border-0 bg-transparent! focus-visible:outline-none focus-visible:ring-0"
                   />
                 </InputGroup>
@@ -145,7 +143,6 @@ const SignUpForm = () => {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="********"
-                    aria-invalid={!!errors.password}
                     onChange={(e) => {
                       field.onChange(e);
                       setIsPasswordTyping(e.target.value.length > 0);
@@ -195,7 +192,6 @@ const SignUpForm = () => {
                     id="confirmPassword"
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="********"
-                    aria-invalid={!!errors.confirmPassword}
                     onChange={(e) => {
                       field.onChange(e);
                       setIsConfirmPasswordTyping(e.target.value.length > 0);

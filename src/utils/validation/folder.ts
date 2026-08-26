@@ -3,6 +3,7 @@ import { z } from "zod";
 export const CreateFolderSchema = z.object({
   name: z
     .string()
+    .trim()
     .min(1, "Názov je povinný.")
     .max(30, "Názov môže mať maximálne 30 znakov."),
   year: z
@@ -48,7 +49,7 @@ export const EditFolderSchema = z
   );
 
 export const TransferProtocolSchema = z.object({
-  address: z.string().min(1, { message: "Adresa je povinná" }),
-  ico: z.string().optional(),
-  dic: z.string().optional(),
+  address: z.string().trim().min(1, { message: "Adresa je povinná" }),
+  ico: z.string().trim().optional(),
+  dic: z.string().trim().optional(),
 });

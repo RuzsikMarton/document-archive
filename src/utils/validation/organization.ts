@@ -1,8 +1,8 @@
 import z from "zod";
 
 export const newOrganizationSchema = z.object({
-  name: z.string().min(1, "Názov spoločnosti je povinný"),
-  slug: z.string().min(1, "Slug spoločnosti je povinný"),
+  name: z.string().trim().min(1, "Názov spoločnosti je povinný"),
+  slug: z.string().trim().min(1, "Slug spoločnosti je povinný"),
   ownerId: z
     .string()
     .min(1, "ID vlastníka je povinné")
@@ -11,25 +11,28 @@ export const newOrganizationSchema = z.object({
 });
 
 export const sendInvitationSchema = z.object({
-  email: z.email("Zadajte platnú e-mailovú adresu."),
+  email: z.email("Zadajte platnú e-mailovú adresu.").trim(),
 });
 
 export const editOrganizationSchema = z.object({
-  name: z.string().min(1, "Názov spoločnosti je povinný"),
+  name: z.string().trim().min(1, "Názov spoločnosti je povinný"),
   ico: z
     .string()
+    .trim()
     .regex(/^\d{8}$/, "IČO musí obsahovať 8 číslic.")
     .optional()
     .or(z.literal("")),
 
   dic: z
     .string()
+    .trim()
     .regex(/^\d{10}$/, "DIČ musí obsahovať 10 číslic.")
     .optional()
     .or(z.literal("")),
 
   city: z
     .string()
+    .trim()
     .min(2, "Mesto musí obsahovať aspoň 2 znaky.")
     .max(100, "Mesto môže obsahovať maximálne 100 znakov.")
     .optional()
@@ -37,6 +40,7 @@ export const editOrganizationSchema = z.object({
 
   address: z
     .string()
+    .trim()
     .min(2, "Adresa musí obsahovať aspoň 2 znaky.")
     .max(200, "Adresa môže obsahovať maximálne 200 znakov.")
     .optional()
@@ -44,12 +48,14 @@ export const editOrganizationSchema = z.object({
 
   postalCode: z
     .string()
+    .trim()
     .regex(/^\d{3}\s?\d{2}$/, "PSČ musí mať formát 941 10.")
     .optional()
     .or(z.literal("")),
 
   telephone: z
     .string()
+    .trim()
     .min(6, "Telefónne číslo je príliš krátke.")
     .max(20, "Telefónne číslo je príliš dlhé.")
     .optional()
@@ -57,12 +63,14 @@ export const editOrganizationSchema = z.object({
 
   email: z
     .email("Zadajte platnú e-mailovú adresu.")
+    .trim()
     .max(254, "E-mailová adresa je príliš dlhá.")
     .optional()
     .or(z.literal("")),
 
   website: z
     .url("Zadajte platnú URL adresu.")
+    .trim()
     .max(255, "Webová stránka je príliš dlhá.")
     .optional()
     .or(z.literal("")),
