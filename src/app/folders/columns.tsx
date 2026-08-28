@@ -7,10 +7,33 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { CheckCircle2, XCircle } from "lucide-react";
 import Link from "next/link";
 import { DataTableFeatures } from "./data-table-features";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const columnHelper = createColumnHelper<DataTableFeatures, Folder>();
 
 export const columns = columnHelper.columns([
+  columnHelper.display({
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected()}
+        indeterminate={
+          table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected()
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  }),
   columnHelper.accessor("name", {
     header: () => (
       <div className="font-semibold text-slate-900 dark:text-slate-50">
@@ -60,7 +83,7 @@ export const columns = columnHelper.columns([
   columnHelper.accessor("createdAt", {
     header: () => {
       return (
-        <div className="hidden md:block">
+        <div className="hidden md:flex justify-center">
           <SortableHeader title="Dátum vytvorenia" sortKey="createdAt" />
         </div>
       );
@@ -72,7 +95,7 @@ export const columns = columnHelper.columns([
         timeStyle: "short",
       }).format(date);
       return (
-        <div className="hidden md:block text-sm text-slate-600 dark:text-slate-400">
+        <div className="hidden md:flex justify-center text-sm text-slate-600 dark:text-slate-400">
           {formatted}
         </div>
       );

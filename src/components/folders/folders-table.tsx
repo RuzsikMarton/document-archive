@@ -1,35 +1,41 @@
+"use client";
+
 import { columns } from "@/app/folders/columns";
 import { FoldersDataTable } from "@/app/folders/data-table";
-import { GetFolders } from "@/lib/data/get-folders";
+import { useState } from "react";
 import TablePagination from "../common/table-pagination";
+import { Folder } from "@/generated/prisma/client";
+import TableFilters from "./table-filters";
 
 type Props = {
-  search?: string;
-  handedOver?: string;
-  years?: string;
-  page?: string;
-  sortOrder?: "asc" | "desc";
+  data: Folder[];
+  totalCount: number;
+  currentPage: number;
+  sortOrder: "asc" | "desc";
 };
 
-const FoldersTable = async (props: Props) => {
-  const result = await GetFolders({
-    search: props.search,
-    handedOver: props.handedOver,
-    years: props.years,
-    page: Number(props.page),
-    sortOrder: props.sortOrder,
-  });
+const FoldersTable = (props: Props) => {
+  const [rowSelection, setRowSelection] = useState({});
+  const selectedFolders = props.data.filter((folder) =>
+    Object.keys(rowSelection).includes(folder.id),
+  );
+
   return (
     <div>
+      <TableFilters selectedFolders={selectedFolders} />
       <FoldersDataTable
         columns={columns}
-        data={result.data || []}
-        sortOrder={props.sortOrder || "desc"}
+        data={props.data}
+        sortOrder={props.sortOrder}
+        rowSelection={rowSelection}
+        onRowSelectionChange={setRowSelection}
       />
       <TablePagination
-        totalCount={result.totalCount || 0}
+        totalCount={props.totalCount}
         pageSize={25}
-        page={Number(props.page) || 1}
+        page={props.currentPage}
+        dataLength={props.data.length}
+        selectedRowsCount={Object.keys(rowSelection).length}
       />
     </div>
   );

@@ -14,20 +14,27 @@ import {
   type RowData,
   type SortingState,
   useTable,
+  type RowSelectionState,
+  OnChangeFn,
 } from "@tanstack/react-table";
 import { SearchX } from "lucide-react";
 import { useState } from "react";
 import { DataTableFeatures, features } from "./data-table-features";
+import { Folder } from "@/generated/prisma/client";
 
 interface FoldersDataTableProps<TData extends RowData> {
-  columns: ColumnDef<DataTableFeatures, TData>[];
-  data: TData[];
+  columns: ColumnDef<DataTableFeatures, Folder>[];
+  data: Folder[];
   sortOrder: "asc" | "desc";
+  rowSelection: RowSelectionState;
+  onRowSelectionChange: OnChangeFn<RowSelectionState>;
 }
 
 export function FoldersDataTable<TData extends RowData>({
   columns,
   data,
+  rowSelection,
+  onRowSelectionChange,
 }: FoldersDataTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -36,8 +43,11 @@ export function FoldersDataTable<TData extends RowData>({
     columns,
     features,
     onSortingChange: setSorting,
+    onRowSelectionChange,
+    getRowId: (row) => row.id,
     state: {
       sorting,
+      rowSelection,
     },
   });
 
@@ -54,7 +64,7 @@ export function FoldersDataTable<TData extends RowData>({
                 return (
                   <TableHead
                     key={header.id}
-                    className="text-slate-900 dark:text-slate-50 px-4 sm:px-6 py-3 sm:py-4"
+                    className="text-slate-900 dark:text-slate-50 px-2 sm:px-4 py-2 sm:py-2"
                   >
                     {header.isPlaceholder
                       ? null
@@ -79,7 +89,7 @@ export function FoldersDataTable<TData extends RowData>({
                 {row.getVisibleCells().map((cell) => (
                   <TableCell
                     key={cell.id}
-                    className="px-4 sm:px-6 py-4 sm:py-2"
+                    className="px-2 sm:px-4 py-4 sm:py-2"
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>

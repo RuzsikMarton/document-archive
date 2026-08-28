@@ -5,6 +5,7 @@ import FoldersTableSkeleton from "@/components/table-skeleton";
 import { requireAuth } from "@/utils/auth";
 import NoCompany from "@/components/layout/no-company";
 import SiteHeader from "@/components/layout/site-header";
+import { GetFolders } from "@/lib/data/get-folders";
 
 const FoldersPage = async (props: {
   searchParams?: Promise<{
@@ -23,24 +24,31 @@ const FoldersPage = async (props: {
   const page = searchParams?.page || "1";
   const sortOrder = searchParams?.sortOrder;
 
+  // Fetch data in server component
+  const result = await GetFolders({
+    search,
+    handedOver,
+    years,
+    page: Number(page),
+    sortOrder,
+  });
+
   return (
     <>
       {session?.session && <SiteHeader title={"Všetky záznamy"} />}
       <div className="flex min-h-screen md:min-h-[calc(100vh-4rem)] px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
         {session?.session.activeOrganizationId ? (
           <div className="flex w-full">
-            <div className="sm:px-6 max-w-screen-sm sm:max-w-7xl xl:max-w-350 w-full">
-              <TableFilters />
+            <div className="sm:px-4 max-w-screen-sm sm:max-w-7xl xl:max-w-350 w-full">
               <Suspense
                 key={`${search}-${handedOver}-${years}-${page}-${sortOrder}`}
                 fallback={<FoldersTableSkeleton />}
               >
                 <FoldersTable
-                  search={search}
-                  handedOver={handedOver}
-                  years={years}
-                  page={page}
-                  sortOrder={sortOrder}
+                  data={result.data || []}
+                  totalCount={result.totalCount || 0}
+                  currentPage={Number(page)}
+                  sortOrder={sortOrder || "desc"}
                 />
               </Suspense>
             </div>

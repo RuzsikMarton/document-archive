@@ -17,12 +17,16 @@ interface TablePaginationProps {
   totalCount: number;
   pageSize: number;
   page: number;
+  dataLength: number;
+  selectedRowsCount: number;
 }
 
 const TablePagination = ({
   totalCount,
   pageSize,
   page,
+  dataLength,
+  selectedRowsCount,
 }: TablePaginationProps) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -92,26 +96,31 @@ const TablePagination = ({
     return items;
   };
   return (
-    <Pagination className="mt-4 justify-center md:justify-start">
-      <PaginationContent>
-        <PaginationPrevious
-          aria-disabled={page === 1}
-          className={cn(
-            "border-border",
-            page === 1 && "pointer-events-none opacity-50",
-          )}
-          href={buildLink(Math.max(page - 1, 1))}
-        />
-        {renderPageNumbers()}
-        <PaginationNext
-          className={cn(
-            "border-border",
-            page === totalPageCount && "pointer-events-none opacity-50",
-          )}
-          href={buildLink(Math.min(page + 1, totalPageCount))}
-        />
-      </PaginationContent>
-    </Pagination>
+    <div className="flex flex-col md:flex-row items-center justify-between">
+      <Pagination className="mt-4 justify-center md:justify-start order-1 md:order-0">
+        <PaginationContent>
+          <PaginationPrevious
+            aria-disabled={page === 1}
+            className={cn(
+              "border-border",
+              page === 1 && "pointer-events-none opacity-50",
+            )}
+            href={buildLink(Math.max(page - 1, 1))}
+          />
+          {renderPageNumbers()}
+          <PaginationNext
+            className={cn(
+              "border-border",
+              page === totalPageCount && "pointer-events-none opacity-50",
+            )}
+            href={buildLink(Math.min(page + 1, totalPageCount))}
+          />
+        </PaginationContent>
+      </Pagination>
+      <div className="mt-2 md:mt-0 text-sm text-muted-foreground whitespace-nowrap order-0 md:order-1">
+        {selectedRowsCount} z {dataLength} riadkov vybraných.
+      </div>
+    </div>
   );
 };
 

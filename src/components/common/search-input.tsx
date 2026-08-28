@@ -25,7 +25,7 @@ const SearchInput = () => {
     <Input
       type="text"
       placeholder="Hľadať..."
-      className="w-48 sm:w-64 md:w-80 h-12"
+      className="w-48 sm:w-64 md:w-80"
       value={search}
       onChange={(e) => {
         const value = e.target.value;

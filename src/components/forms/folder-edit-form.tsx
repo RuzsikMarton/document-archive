@@ -44,7 +44,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
-import { Loader2, Trash2Icon } from "lucide-react";
+import { Download, Loader2, Trash2Icon } from "lucide-react";
 import { toast } from "sonner";
 import { jsPDF } from "jspdf";
 import { EditFolderSchema } from "@/utils/validation/folder";
@@ -52,6 +52,8 @@ import { FolderWithOrganization } from "@/types/folder";
 import { TransferProtocolDialog } from "./transfer-protocol-form";
 
 import "@/lib/fonts/Roboto-Regular-normal";
+import { drawFolderLabel } from "@/utils/pdf/draw-folder-label";
+import { drawSmallFolderLabel } from "@/utils/pdf/draw-smallfolder-label";
 
 type EditFolderFormType = z.infer<typeof EditFolderSchema>;
 
@@ -139,40 +141,29 @@ const FolderEditForm = ({ folder }: { folder: FolderWithOrganization }) => {
   };
 
   const handleDownloadQR = () => {
-    if (folder.qrCodeImage) {
-      const doc = new jsPDF({
-        orientation: "portrait",
-        unit: "mm",
-        format: "a4",
-      });
-      const pageWidth = doc.internal.pageSize.getWidth();
-      doc.setFont("Roboto", "normal");
+    if (!folder.qrCodeImage) return;
 
-      doc.setFontSize(20);
-      const maxWidth = pageWidth - 170;
-      const lines = doc.splitTextToSize(folder.name, maxWidth);
-      doc.text(lines, pageWidth / 2, 30, {
-        align: "center",
-      });
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: [70, 170],
+    });
 
-      doc.setFontSize(24);
-      const year = `${folder.year}`;
-      let period = "";
-      if (folder.monthFrom && folder.monthTo) {
-        period += `${folder.monthFrom}-${folder.monthTo}`;
-      } else if (folder.monthFrom) {
-        period += `od ${folder.monthFrom}`;
-      } else if (folder.monthTo) {
-        period += `do ${folder.monthTo}`;
-      }
-      doc.text(year, pageWidth / 2, 70, { align: "center" });
-      doc.text(period, pageWidth / 2, 80, { align: "center" });
-      doc.addImage(folder.qrCodeImage, "PNG", pageWidth / 2 - 25, 85, 50, 50);
-      doc.setFontSize(8);
-      doc.text(`${folder.id}`, pageWidth / 2, 135, { align: "center" });
-      doc.rect(80, 10, pageWidth - 160, 150);
-      doc.save(`qr-${folder.name}-${folder.year}.pdf`);
-    }
+    drawFolderLabel(doc, folder, 10, 10);
+    doc.save(`qr-${folder.name}-${folder.year}.pdf`);
+  };
+
+  const handleDownloadSmallQR = () => {
+    if (!folder.qrCodeImage) return;
+
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: [50, 170],
+    });
+
+    drawSmallFolderLabel(doc, folder, 10, 10);
+    doc.save(`qr-${folder.name}-${folder.year}.pdf`);
   };
 
   return (
@@ -183,8 +174,8 @@ const FolderEditForm = ({ folder }: { folder: FolderWithOrganization }) => {
           Detaily záznamu
         </h1>
 
-        <div className="text-sm text-muted-foreground">
-          ID záznamu: <span className="font-mono">{folder.id}</span>
+        <div className="text-xs text-muted-foreground">
+          ID: <span className="font-mono">{folder.id}</span>
         </div>
       </div>
       {session &&
@@ -255,7 +246,7 @@ const FolderEditForm = ({ folder }: { folder: FolderWithOrganization }) => {
           </>
         )}
       <form id="folder-edit-form" onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_400px]">
           {/* Left Column - Form Fields */}
           <div className="space-y-4">
             <FieldGroup>
@@ -274,7 +265,7 @@ const FolderEditForm = ({ folder }: { folder: FolderWithOrganization }) => {
                       disabled={!isEditing}
                       aria-invalid={fieldState.invalid}
                       placeholder="Zadajte názov"
-                      className="disabled:opacity-50 disabled:cursor-default"
+                      className="disabled:opacity-100 disabled:cursor-default"
                     />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
@@ -474,14 +465,27 @@ const FolderEditForm = ({ folder }: { folder: FolderWithOrganization }) => {
                   {session &&
                     session.session.activeOrganizationId ===
                       folder.organizationId && (
-                      <Button
-                        type="button"
-                        variant="outline"
-                        className="w-full"
-                        onClick={handleDownloadQR}
-                      >
-                        Stiahnuť QR kód
-                      </Button>
+                      <div className="flex w-full flex-col gap-2 sm:flex-row">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="w-full sm:w-2/4"
+                          onClick={handleDownloadQR}
+                        >
+                          <Download />
+                          Štítok 5 × 15 cm
+                        </Button>
+
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="w-full sm:w-2/4"
+                          onClick={handleDownloadSmallQR}
+                        >
+                          <Download />
+                          Štítok 3 × 15 cm
+                        </Button>
+                      </div>
                     )}
                 </div>
               ) : (

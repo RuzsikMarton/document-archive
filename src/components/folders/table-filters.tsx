@@ -2,7 +2,7 @@
 
 import { useNewFolderDialog } from "@/providers/new-folder-dialog-provider";
 import { Button } from "../ui/button";
-import { Funnel, FunnelX, Plus } from "lucide-react";
+import { Funnel, FunnelX, Plus, QrCode } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import {
@@ -17,8 +17,15 @@ import { Separator } from "../ui/separator";
 import { ScrollArea } from "../ui/scroll-area";
 import { cn } from "@/lib/utils";
 import SearchInput from "../common/search-input";
+import { Folder } from "@/generated/prisma/browser";
+import jsPDF from "jspdf";
+import { drawFolderLabel } from "@/utils/pdf/draw-folder-label";
 
-const TableFilters = () => {
+const TableFilters = ({
+  selectedFolders,
+}: {
+  selectedFolders: Folder[] | [];
+}) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -66,16 +73,52 @@ const TableFilters = () => {
     return params.toString().length > 0;
   })();
 
+  const handleDownloadSelected = () => {
+    if (selectedFolders.length === 0) return;
+    const pages = Math.ceil(selectedFolders.length / 5);
+    const doc = new jsPDF({
+      orientation: "landscape",
+      unit: "mm",
+      format: "a4",
+    });
+    for (let i = 0; i < pages; i++) {
+      for (let j = 0; j < 5; j++) {
+        const folder = selectedFolders[i * 5 + j];
+        if (!folder) continue;
+        const x = 20 + j * 55;
+        drawFolderLabel(doc, folder, x, 30);
+      }
+      if (i < pages - 1) {
+        doc.addPage();
+      }
+    }
+    doc.save(`qrZaznamy_strany_${pages}.pdf`);
+  };
+
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-2">
-      <div>
+      <div className="flex justify-between md:justify-start gap-2 w-full md:w-auto">
         <Button
           onClick={openDialog}
-          className="flex items-center gap-2 h-12 cursor-pointer"
+          className="flex items-center gap-2 cursor-pointer"
         >
           <Plus className="h-4 w-4" />
           Nový záznam
         </Button>
+        {selectedFolders.length > 0 && (
+          <div className="relative">
+            <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+              {selectedFolders.length}
+            </div>
+            <Button
+              disabled={selectedFolders.length === 0}
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={handleDownloadSelected}
+            >
+              Stiahnuť <QrCode />
+            </Button>
+          </div>
+        )}
       </div>
       <div className="flex justify-between md:justify-end items-center gap-2 w-full md:w-auto">
         <SearchInput />
@@ -83,11 +126,11 @@ const TableFilters = () => {
           <Popover>
             <PopoverTrigger
               render={
-                <button className="flex items-center gap-2 py-3 px-4 border border-blue-500 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-all dark:border-primary dark:bg-blue-900/50 dark:text-primary dark:hover:bg-blue-800/50 cursor-pointer">
+                <button className="flex items-center h-8 gap-1.5 px-2.5 border text-sm border-blue-500 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-all dark:border-primary dark:bg-blue-900/50 dark:text-primary dark:hover:bg-blue-800/50 cursor-pointer">
                   <span className="font-medium text-sm hidden md:block">
                     Filter
                   </span>
-                  <Funnel className="h-5 w-5 md:w-4 md:h-4" />
+                  <Funnel className="w-4 h-4" />
                 </button>
               }
             />
@@ -169,7 +212,7 @@ const TableFilters = () => {
           <button
             onClick={handleClearFilters}
             disabled={!hasActiveFilters}
-            className={`flex items-center gap-2 py-3 px-4 border rounded-lg transition-all ${
+            className={`flex items-center h-8 gap-1.5 px-2.5 border text-sm rounded-lg transition-all ${
               hasActiveFilters
                 ? "border-blue-500 bg-blue-50 text-blue-600 hover:bg-blue-100 dark:border-primary dark:bg-blue-900/50 dark:text-primary dark:hover:bg-blue-800/50 cursor-pointer"
                 : "border-border bg-background text-muted-foreground opacity-50 cursor-not-allowed dark:border-input dark:bg-input/30"
