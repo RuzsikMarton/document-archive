@@ -1,6 +1,5 @@
 "use client";
 import { usePathname, useSearchParams } from "next/navigation";
-import { SessionUserType } from "@/types/auth";
 import {
   SidebarGroup,
   SidebarGroupContent,

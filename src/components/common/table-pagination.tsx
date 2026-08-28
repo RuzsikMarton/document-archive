@@ -17,8 +17,8 @@ interface TablePaginationProps {
   totalCount: number;
   pageSize: number;
   page: number;
-  dataLength: number;
-  selectedRowsCount: number;
+  dataLength?: number;
+  selectedRowsCount?: number;
 }
 
 const TablePagination = ({
@@ -117,9 +117,11 @@ const TablePagination = ({
           />
         </PaginationContent>
       </Pagination>
-      <div className="mt-2 md:mt-0 text-sm text-muted-foreground whitespace-nowrap order-0 md:order-1">
-        {selectedRowsCount} z {dataLength} riadkov vybraných.
-      </div>
+      {selectedRowsCount && dataLength && (
+        <div className="mt-2 md:mt-0 text-sm text-muted-foreground whitespace-nowrap order-0 md:order-1">
+          {selectedRowsCount} z {dataLength} riadkov vybraných.
+        </div>
+      )}
     </div>
   );
 };

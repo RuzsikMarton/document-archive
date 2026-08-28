@@ -258,15 +258,15 @@ const Help = ({ session }: { session?: any }) => {
         <div className="rounded-lg border bg-card p-6 space-y-4">
           <div className="space-y-2">
             <p className="text-base">
-              Funkcia "Vydané" slúži na sledovanie priečinkov, ktoré boli
-              odovzdané alebo zapožičané.
+              Funkcia &quot;Vydané&quot; slúži na sledovanie priečinkov, ktoré
+              boli odovzdané alebo zapožičané.
             </p>
             <h3 className="text-lg font-medium">Ako označiť ako vydané:</h3>
             <ol className="list-decimal list-inside space-y-2 ml-2">
               <li className="text-base">Otvorte detail záznamu</li>
               <li className="text-base">
                 Aktivujte prepínač{" "}
-                <span className="font-semibold">"Vydané"</span>
+                <span className="font-semibold">&quot;Vydané&quot;</span>
               </li>
               <li className="text-base">
                 Automaticky sa zaznamená dátum a čas vydania
@@ -305,12 +305,12 @@ const Help = ({ session }: { session?: any }) => {
               <li className="text-base">Otvorte detail záznamu</li>
               <li className="text-base">
                 Prejdite do režimu úprav kliknutím na{" "}
-                <span className="font-semibold">"Upraviť"</span>
+                <span className="font-semibold">&quot;Upraviť&quot;</span>
               </li>
               <li className="text-base">
                 Kliknite na tlačidlo{" "}
                 <span className="font-semibold text-destructive">
-                  "Vymazať záznam"
+                  &quot;Vymazať záznam&quot;
                 </span>
               </li>
               <li className="text-base">

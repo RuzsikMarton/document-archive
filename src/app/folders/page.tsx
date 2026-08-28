@@ -1,4 +1,3 @@
-import TableFilters from "@/components/folders/table-filters";
 import FoldersTable from "@/components/folders/folders-table";
 import { Suspense } from "react";
 import FoldersTableSkeleton from "@/components/table-skeleton";

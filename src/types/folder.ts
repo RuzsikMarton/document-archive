@@ -5,6 +5,14 @@ export type CreateFolderFormType = {
   year: number;
 };
 
+export type UpdateFolderFormType = {
+  name: string;
+  year: number;
+  monthFrom?: number | null | undefined;
+  monthTo?: number | null | undefined;
+  contents: string | undefined;
+};
+
 type FolderOrganization = {
   name: string;
   ico: string | null;

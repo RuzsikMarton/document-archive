@@ -4,9 +4,13 @@ import { prisma } from "@/lib/prisma";
 import { getSession } from "@/utils/auth";
 import { checkFolderAccess } from "@/utils/folder";
 import { EditFolderSchema } from "@/utils/validation/folder";
+import type { UpdateFolderFormType } from "@/types/folder";
 import { revalidatePath } from "next/cache";
 
-export const updateFolderAction = async (data: any, folderId: string) => {
+export const updateFolderAction = async (
+  data: UpdateFolderFormType,
+  folderId: string,
+) => {
   const session = await getSession();
 
   if (!session?.user) {

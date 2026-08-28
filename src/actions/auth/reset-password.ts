@@ -27,6 +27,7 @@ export const resetPasswordAction = async (
       },
     });
   } catch (error) {
+    console.error("Error resetting password:", error);
     return {
       success: false,
       message: "Nastala chyba. Skúste to znova.",
