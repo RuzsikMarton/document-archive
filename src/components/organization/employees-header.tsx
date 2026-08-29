@@ -1,5 +1,5 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { sendInvitationSchema } from "../../utils/validation/organization";
 import { Loader2, Plus } from "lucide-react";
 import SearchInput from "../common/search-input";
@@ -15,11 +15,11 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import { Field, FieldError, FieldLabel } from "../ui/field";
-import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { inviteMemberAction } from "@/actions/organization/organization";
 
 const EmployeesHeader = ({ organizationId }: { organizationId?: string }) => {
+  const router = useRouter();
   const {
     control,
     handleSubmit,
@@ -43,6 +43,7 @@ const EmployeesHeader = ({ organizationId }: { organizationId?: string }) => {
     }
     toast.success("Pozvánka bola úspešne odoslaná.");
     reset();
+    router.refresh();
   };
   return (
     <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">

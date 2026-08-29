@@ -74,7 +74,7 @@ export const OrganizationInvitationEmail = (
           </Text>
 
           <Text style={textSecondary}>
-            Toto pozvanie vyprší o 7 dní z bezpečnostných dôvodov.
+            Toto pozvanie vyprší o 3 dní z bezpečnostných dôvodov.
           </Text>
 
           <Hr style={divider} />

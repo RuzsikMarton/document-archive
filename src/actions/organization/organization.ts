@@ -229,3 +229,44 @@ export const inviteMemberAction = async (
     };
   }
 };
+
+export const cancelInvitationAction = async (invitationId: string) => {
+  const session = await getSession();
+
+  if (!session || !session.session.activeOrganizationId) {
+    return {
+      success: false,
+      message: "Neautorizovaný prístup.",
+    };
+  }
+
+  const { role } = await auth.api.getActiveMemberRole({
+    headers: await headers(),
+  });
+
+  if (role !== "owner" && role !== "admin") {
+    return {
+      success: false,
+      message: "Nemáte oprávnenie zrušiť pozvánku.",
+    };
+  }
+
+  try {
+    await auth.api.cancelInvitation({
+      body: {
+        invitationId: invitationId,
+      },
+      headers: await headers(),
+    });
+    return {
+      success: true,
+      message: "Pozvánka bola úspešne zrušená.",
+    };
+  } catch (error) {
+    console.error("Error canceling invitation", error);
+    return {
+      success: false,
+      message: "Chyba pri rušení pozvánky.",
+    };
+  }
+};

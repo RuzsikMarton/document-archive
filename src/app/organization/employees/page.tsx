@@ -1,11 +1,15 @@
 import SiteHeader from "@/components/layout/site-header";
-import { getOrganizationEmployees } from "@/lib/data/get-organization";
+import {
+  getOrganizationEmployees,
+  getPendingInvitations,
+} from "@/lib/data/get-organization";
 import { requireAuth } from "@/utils/auth";
 import { redirect } from "next/navigation";
 import { DataTable } from "../../../components/ui/data-table";
 import { columns } from "./columns";
 import TablePagination from "@/components/common/table-pagination";
 import EmployeesHeader from "@/components/organization/employees-header";
+import PendingInvitationsTable from "@/components/organization/pending-invitations-table";
 
 const OrganizationEmployees = async (props: {
   searchParams?: Promise<{
@@ -28,6 +32,8 @@ const OrganizationEmployees = async (props: {
     page: Number(page),
   });
 
+  const { invitations } = await getPendingInvitations();
+
   return (
     <>
       <SiteHeader title="Zamestnanci" />
@@ -39,6 +45,7 @@ const OrganizationEmployees = async (props: {
           totalCount={Number(totalCount)}
           pageSize={10}
         />
+        <PendingInvitationsTable invitations={invitations} />
       </div>
     </>
   );
