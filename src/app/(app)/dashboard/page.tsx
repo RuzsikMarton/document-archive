@@ -1,5 +1,4 @@
 import Dashboard from "@/components/Dashboard";
-import HomeLanding from "@/components/home-landing";
 import NoCompany from "@/components/layout/no-company";
 import SiteHeader from "@/components/layout/site-header";
 import { auth } from "@/lib/auth";
@@ -7,10 +6,14 @@ import { prisma } from "@/lib/prisma";
 import { DashboardFolder } from "@/types/folder";
 import { headers } from "next/headers";
 
-export default async function Home() {
+export default async function DashboardPage() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
+
+  if (!session) {
+    return null; // This is protected by layout, but added for type safety
+  }
 
   let folders: DashboardFolder[] | null = [];
   let stats = {
@@ -19,7 +22,7 @@ export default async function Home() {
     notHandedOver: 0,
   };
 
-  if (session && session.session.activeOrganizationId) {
+  if (session.session.activeOrganizationId) {
     folders = await prisma.folder.findMany({
       where: {
         organizationId: session.session.activeOrganizationId,
@@ -76,31 +79,22 @@ export default async function Home() {
 
   return (
     <>
-      {session ? (
-        session.session.activeOrganizationId ||
-        session.user.role === "ADMIN" ? (
-          <>
-            <SiteHeader title="Informačný panel" />
-            <div className="flex min-h-[calc(100vh-4rem)] px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
-              <Dashboard folders={folders} stats={stats} />
-            </div>
-          </>
-        ) : (
-          <>
-            <SiteHeader title="Informačný panel" />
-            <div className="flex min-h-[calc(100vh-4rem)] px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
-              <div className="flex flex-col items-center justify-center w-full">
-                <NoCompany />
-              </div>
-            </div>
-          </>
-        )
-      ) : (
-        <div className="flex min-h-[calc(100vh-4rem)] px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
-          <div className="flex flex-col items-center justify-center w-full">
-            <HomeLanding />
+      {session.session.activeOrganizationId || session.user.role === "ADMIN" ? (
+        <>
+          <SiteHeader title="Informačný panel" />
+          <div className="flex min-h-[calc(100vh-4rem)] px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
+            <Dashboard folders={folders} stats={stats} />
           </div>
-        </div>
+        </>
+      ) : (
+        <>
+          <SiteHeader title="Informačný panel" />
+          <div className="flex min-h-[calc(100vh-4rem)] px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
+            <div className="flex flex-col items-center justify-center w-full">
+              <NoCompany />
+            </div>
+          </div>
+        </>
       )}
     </>
   );

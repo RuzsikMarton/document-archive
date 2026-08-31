@@ -1,12 +1,14 @@
 import {
   tableFeatures,
-  columnVisibilityFeature,
+  rowSortingFeature,
   rowSelectionFeature,
+  columnVisibilityFeature,
 } from "@tanstack/react-table";
 
 export const features = tableFeatures({
-  columnVisibilityFeature,
+  rowSortingFeature,
   rowSelectionFeature,
+  columnVisibilityFeature,
 });
 
 export type DataTableFeatures = typeof features;

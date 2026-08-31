@@ -48,9 +48,9 @@ const SignUpForm = () => {
       return;
     }
     if (inviteId) {
-      router.push(`/organization/invitation/${inviteId}`);
+      router.push(`/invitation/${inviteId}`);
     } else {
-      router.push("/");
+      router.push("/dashboard");
       router.refresh();
     }
   };

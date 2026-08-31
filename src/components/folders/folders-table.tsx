@@ -1,11 +1,11 @@
 "use client";
 
-import { columns } from "@/app/folders/columns";
-import { FoldersDataTable } from "@/app/folders/data-table";
 import { useState } from "react";
 import TablePagination from "../common/table-pagination";
 import { Folder } from "@/generated/prisma/client";
 import TableFilters from "./table-filters";
+import { FoldersDataTable } from "@/app/(app)/folders/data-table";
+import { columns } from "@/app/(app)/folders/columns";
 
 type Props = {
   data: Folder[];

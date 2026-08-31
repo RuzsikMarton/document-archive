@@ -1,16 +1,29 @@
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 export default function TermsPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
       <div className="space-y-8">
-        <div>
-          <h1 className="text-4xl font-bold tracking-tight">
-            Terms of Service
-          </h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Last updated: August 5, 2026
-          </p>
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+          <div className="space-y-1 order-2 md:order-1">
+            <h1 className="text-4xl font-bold tracking-tight">
+              Terms of Service
+            </h1>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Last updated: August 5, 2026
+            </p>
+          </div>
+          <Link
+            href="/"
+            className="order-1 md:order-2 shrink-0 self-end md:self-start"
+          >
+            <Button variant="outline">
+              <ArrowLeft />
+              Späť na hlavnú stránku
+            </Button>
+          </Link>
         </div>
 
         <section className="space-y-3">

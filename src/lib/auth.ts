@@ -104,7 +104,7 @@ const options = {
       requireEmailVerificationOnInvitation: true,
       creatorRole: "owner",
       async sendInvitationEmail(data) {
-        const inviteLink = `${process.env.NEXT_PUBLIC_BASE_URL}/organization/invitation/${data.id}`;
+        const inviteLink = `${process.env.NEXT_PUBLIC_BASE_URL}/invitation/${data.id}`;
         resend.emails.send({
           from: "Evidio <no-reply@evidio.rk-r.sk>",
           to: data.email,

@@ -1,7 +1,7 @@
 "use client";
 
 import { createColumnHelper } from "@tanstack/react-table";
-import { DataTableFeatures } from "./data-table-features";
+import { DataTableFeatures } from "../../../../components/ui/data-table-features";
 import { EmployeeOrganizationResult } from "@/types/organization";
 import {
   DropdownMenu,

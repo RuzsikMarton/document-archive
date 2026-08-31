@@ -29,7 +29,7 @@ export default function AcceptInvitationButton({
       return;
     }
 
-    router.push("/");
+    router.push("/dashboard");
     router.refresh();
   };
 

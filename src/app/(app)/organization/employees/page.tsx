@@ -5,11 +5,11 @@ import {
 } from "@/lib/data/get-organization";
 import { requireAuth } from "@/utils/auth";
 import { redirect } from "next/navigation";
-import { DataTable } from "../../../components/ui/data-table";
 import { columns } from "./columns";
 import TablePagination from "@/components/common/table-pagination";
 import EmployeesHeader from "@/components/organization/employees-header";
 import PendingInvitationsTable from "@/components/organization/pending-invitations-table";
+import { DataTable } from "@/components/ui/data-table";
 
 const OrganizationEmployees = async (props: {
   searchParams?: Promise<{

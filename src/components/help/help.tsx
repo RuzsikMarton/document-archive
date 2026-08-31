@@ -10,11 +10,13 @@ import {
   FileText,
   CheckCircle,
   QrCode,
+  ArrowLeft,
 } from "lucide-react";
 import Link from "next/link";
 import { Separator } from "../ui/separator";
+import { Button } from "../ui/button";
 
-const Help = ({ session }: { session?: any }) => {
+const Help = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -25,6 +27,12 @@ const Help = ({ session }: { session?: any }) => {
             Naučte sa používať aplikáciu Evidio
           </p>
         </div>
+        <Link href="/" className="order-1 md:order-2 shrink-0 md:self-start">
+          <Button variant="outline">
+            <ArrowLeft />
+            <span className="hidden md:block">Späť na hlavnú stránku</span>
+          </Button>
+        </Link>
       </div>
 
       <Separator />
@@ -364,26 +372,13 @@ const Help = ({ session }: { session?: any }) => {
       <div className="pt-6 pb-4 text-center text-sm text-muted-foreground">
         <p>
           Potrebujete ďalšiu pomoc? Kontaktujte správcu systému{" "}
-          {session?.session ? (
-            <span>
-              alebo navštívte{" "}
-              <Link
-                href="/account/settings"
-                className="text-primary hover:underline"
-              >
-                nastavenia účtu
-              </Link>
-              .
-            </span>
-          ) : (
-            <span>
-              tu:{" "}
-              <Link href="/kontakt" className="text-primary hover:underline">
-                kontakt
-              </Link>
-              .
-            </span>
-          )}
+          <span>
+            tu:{" "}
+            <Link href="/kontakt" className="text-primary hover:underline">
+              kontakt
+            </Link>
+            .
+          </span>
         </p>
       </div>
     </div>

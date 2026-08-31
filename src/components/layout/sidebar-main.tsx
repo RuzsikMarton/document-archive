@@ -49,9 +49,9 @@ const SidebarMain = () => {
           <SidebarMenuItem>
             <SidebarMenuButton
               tooltip="Informačný panel"
-              isActive={pathname === "/"}
+              isActive={pathname === "/dashboard"}
               render={
-                <Link href="/">
+                <Link href="/dashboard">
                   <Gauge />
                   <span>Informačný panel</span>
                 </Link>

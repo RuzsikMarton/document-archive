@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { ThemeToggle } from "../common/ThemeToggle";
 import { Button } from "@/components/ui/button";

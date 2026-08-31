@@ -1,10 +1,25 @@
-import { Separator } from "@base-ui/react";
 import Link from "next/link";
+import { Button } from "../ui/button";
+import { ArrowLeft } from "lucide-react";
+import { Separator } from "../ui/separator";
 
 const GettingStarted = () => {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold mb-8">Začíname</h1>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Začíname</h1>
+          <p className="text-muted-foreground mt-2">
+            Naučte sa používať aplikáciu Evidio
+          </p>
+        </div>
+        <Link href="/" className="order-1 md:order-2 shrink-0 md:self-start">
+          <Button variant="outline">
+            <ArrowLeft />
+            <span className="hidden md:block">Späť na hlavnú stránku</span>
+          </Button>
+        </Link>
+      </div>
 
       <Separator />
 

@@ -29,7 +29,7 @@ const InvitationPage = async ({
   ) {
     return (
       <div className="flex min-h-screen items-center justify-center p-4">
-        <div className="flex flex-col items-center w-full rounded-md bg-card p-6 sm:p-8 max-w-md border shadow-sm">
+        <div className="flex flex-col items-center w-full rounded-md bg-card p-6 sm:p-8 max-w-md md:min-w-md border shadow-sm">
           <img
             src={"/logo-dark-2.webp"}
             alt="Evidio Logo"
@@ -73,7 +73,7 @@ const InvitationPage = async ({
   if (!session) {
     return (
       <div className="flex min-h-screen items-center justify-center p-4">
-        <div className="flex flex-col items-center w-full rounded-md bg-card p-6 sm:p-8 max-w-md border shadow-sm">
+        <div className="flex flex-col items-center w-full rounded-md bg-card p-6 sm:p-8 max-w-md md:min-w-md border shadow-sm">
           <img
             src={"/logo-dark-2.webp"}
             alt="Evidio Logo"
@@ -145,7 +145,7 @@ const InvitationPage = async ({
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
-      <div className="flex flex-col items-center w-full rounded-md bg-card p-6 sm:p-8 max-w-md border shadow-sm">
+      <div className="flex flex-col items-center w-full rounded-md bg-card p-6 sm:p-8 max-w-md md:min-w-md border shadow-sm">
         <img
           src={"/logo-dark-2.webp"}
           alt="Evidio Logo"

@@ -4,7 +4,7 @@ import { type RowData, type ColumnDef, useTable } from "@tanstack/react-table";
 import {
   features,
   type DataTableFeatures,
-} from "../../app/organization/employees/data-table-features";
+} from "@/components/ui/data-table-features";
 import {
   Table,
   TableBody,
@@ -25,9 +25,9 @@ export function DataTable<TData extends RowData>({
   data,
 }: DataTableProps<TData>) {
   const table = useTable({
-    features,
     data,
     columns,
+    features,
   });
 
   return (

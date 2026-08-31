@@ -1,30 +1,47 @@
 // app/privacy/page.tsx
 
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+
 export default function PrivacyPolicyPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
       <div className="space-y-12">
         {/* Header */}
-        <section>
-          <h1 className="text-4xl font-bold tracking-tight">Privacy Policy</h1>
+        <section className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+          <div className="space-y-1 order-2 md:order-1">
+            <h1 className="text-4xl font-bold tracking-tight">
+              Privacy Policy
+            </h1>
 
-          <p className="mt-3 text-muted-foreground">
-            <strong>Last updated:</strong> August 4, 2026
-          </p>
+            <p className="mt-3 text-muted-foreground">
+              <strong>Last updated:</strong> August 4, 2026
+            </p>
 
-          <p className="mt-6 leading-7 text-muted-foreground">
-            This Privacy Policy explains how <strong>Evidio</strong>{" "}
-            (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) collects, uses,
-            stores, and protects your personal data when you use our document
-            management platform.
-          </p>
+            <p className="mt-6 leading-7 text-muted-foreground">
+              This Privacy Policy explains how <strong>Evidio</strong>{" "}
+              (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) collects,
+              uses, stores, and protects your personal data when you use our
+              document management platform.
+            </p>
 
-          <p className="mt-4 leading-7 text-muted-foreground">
-            We are committed to protecting your privacy and processing your
-            personal data in accordance with the General Data Protection
-            Regulation (EU) 2016/679 (&quot;GDPR&quot;) and other applicable
-            data protection laws.
-          </p>
+            <p className="mt-4 leading-7 text-muted-foreground">
+              We are committed to protecting your privacy and processing your
+              personal data in accordance with the General Data Protection
+              Regulation (EU) 2016/679 (&quot;GDPR&quot;) and other applicable
+              data protection laws.
+            </p>
+          </div>
+          <Link
+            href="/"
+            className="order-1 md:order-2 shrink-0 self-end md:self-start"
+          >
+            <Button variant="outline">
+              <ArrowLeft />
+              Späť na hlavnú stránku
+            </Button>
+          </Link>
         </section>
 
         {/* Data Controller */}

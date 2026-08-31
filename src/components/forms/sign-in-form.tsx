@@ -44,15 +44,15 @@ const SignInForm = () => {
       return;
     }
     if (inviteId) {
-      router.push(`/organization/invitation/${inviteId}`);
+      router.push(`/invitation/${inviteId}`);
     } else {
-      router.push("/");
+      router.push("/dashboard");
       router.refresh();
     }
   };
   return (
     <div className="flex flex-col items-center w-full">
-      <div className="flex flex-col items-center w-full rounded-md bg-card p-6 sm:p-8 max-w-md">
+      <div className="flex flex-col items-center w-full md:min-w-sm rounded-md bg-card p-6 sm:p-8 max-w-md shadow-md">
         <img
           src={"/logo-dark-2.webp"}
           alt="Evidio Logo"
