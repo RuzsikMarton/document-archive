@@ -92,7 +92,6 @@ export const columns = columnHelper.columns([
   columnHelper.display({
     id: "actions",
 
-    header: () => <div className="text-right">Akcie</div>,
     cell: ({ row }) => {
       const actions = row.original;
 

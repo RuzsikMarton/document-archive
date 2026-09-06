@@ -2,7 +2,7 @@
 
 import { useNewFolderDialog } from "@/providers/new-folder-dialog-provider";
 import { Button } from "../ui/button";
-import { Funnel, FunnelX, Plus, QrCode } from "lucide-react";
+import { Download, Funnel, FunnelX, Plus, QrCode } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import {
@@ -100,25 +100,11 @@ const TableFilters = ({
       <div className="flex justify-between md:justify-start gap-2 w-full md:w-auto">
         <Button
           onClick={openDialog}
-          className="flex items-center gap-2 cursor-pointer"
+          className="flex items-center gap-2 cursor-pointer w-full"
         >
           <Plus className="h-4 w-4" />
           Nový záznam
         </Button>
-        {selectedFolders.length > 0 && (
-          <div className="relative">
-            <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-              {selectedFolders.length}
-            </div>
-            <Button
-              disabled={selectedFolders.length === 0}
-              className="flex items-center gap-2 cursor-pointer"
-              onClick={handleDownloadSelected}
-            >
-              Stiahnuť <QrCode />
-            </Button>
-          </div>
-        )}
       </div>
       <div className="flex justify-between md:justify-end items-center gap-2 w-full md:w-auto">
         <SearchInput />
@@ -127,7 +113,7 @@ const TableFilters = ({
             <PopoverTrigger
               render={
                 <button className="flex items-center h-8 gap-1.5 px-2.5 border text-sm border-blue-500 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-all dark:border-primary dark:bg-blue-900/50 dark:text-primary dark:hover:bg-blue-800/50 cursor-pointer">
-                  <span className="font-medium text-sm hidden md:block">
+                  <span className="font-medium text-sm hidden lg:block">
                     Filter
                   </span>
                   <Funnel className="w-4 h-4" />
@@ -218,11 +204,37 @@ const TableFilters = ({
                 : "border-border bg-background text-muted-foreground opacity-50 cursor-not-allowed dark:border-input dark:bg-input/30"
             }`}
           >
-            <span className="font-medium text-sm hidden md:block">
+            <span className="font-medium text-sm hidden lg:block">
               Vyčistiť filtre
             </span>
             <FunnelX className="h-4 w-4" />
           </button>
+
+          <div className="relative">
+            <div
+              className={cn(
+                "absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs",
+                selectedFolders.length === 0 && "hidden",
+              )}
+            >
+              {selectedFolders.length}
+            </div>
+            <button
+              disabled={selectedFolders.length === 0}
+              className={`flex items-center h-8 gap-1.5 px-2.5 border text-sm rounded-lg transition-all ${
+                selectedFolders.length > 0
+                  ? "border-blue-500 bg-blue-50 text-blue-600 hover:bg-blue-100 dark:border-primary dark:bg-blue-900/50 dark:text-primary dark:hover:bg-blue-800/50 cursor-pointer"
+                  : "border-border bg-background text-muted-foreground opacity-50 cursor-not-allowed dark:border-input dark:bg-input/30"
+              }`}
+              onClick={handleDownloadSelected}
+            >
+              <span className="font-medium text-sm hidden lg:block">
+                Stiahnuť
+              </span>
+              <QrCode className="hidden lg:block h-4 w-4" />
+              <Download className="block lg:hidden h-4 w-4" />
+            </button>
+          </div>
         </div>
       </div>
     </div>

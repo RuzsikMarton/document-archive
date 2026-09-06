@@ -20,7 +20,7 @@ const FoldersPage = async (props: {
   const search = searchParams?.search || "";
   const handedOver = searchParams?.handedOver;
   const years = searchParams?.years || undefined;
-  const page = searchParams?.page || "1";
+  const page = Number(searchParams?.page ?? 1);
   const sortOrder = searchParams?.sortOrder;
 
   // Fetch data in server component
@@ -35,7 +35,7 @@ const FoldersPage = async (props: {
   return (
     <>
       {session?.session && <SiteHeader title={"Všetky záznamy"} />}
-      <div className="flex min-h-screen md:min-h-[calc(100vh-4rem)] px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
+      <div className="flex min-h-screen md:min-h-[calc(100vh-4rem)] px-2 py-2 sm:px-4 sm:py-8">
         {session?.session.activeOrganizationId ? (
           <div className="flex w-full">
             <div className="sm:px-4 max-w-screen-sm sm:max-w-7xl xl:max-w-350 w-full">
@@ -46,7 +46,7 @@ const FoldersPage = async (props: {
                 <FoldersTable
                   data={result.data || []}
                   totalCount={result.totalCount || 0}
-                  currentPage={Number(page)}
+                  currentPage={page}
                   sortOrder={sortOrder || "desc"}
                 />
               </Suspense>

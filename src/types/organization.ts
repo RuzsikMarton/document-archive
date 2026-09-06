@@ -1,5 +1,8 @@
 import { Prisma } from "@/generated/prisma/browser";
-import { editOrganizationSchema } from "@/utils/validation/organization";
+import {
+  editOrganizationAdminSchema,
+  editOrganizationSchema,
+} from "@/utils/validation/organization";
 import z from "zod";
 
 export interface CreateOrganizationInput {
@@ -9,6 +12,9 @@ export interface CreateOrganizationInput {
 }
 
 export type EditOrganizationFormData = z.infer<typeof editOrganizationSchema>;
+export type EditOrganizationAdminFormData = z.infer<
+  typeof editOrganizationAdminSchema
+>;
 
 export interface OrganizationStats {
   employees: number;

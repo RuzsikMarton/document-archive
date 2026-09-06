@@ -16,6 +16,7 @@ type Props = {
 
 const FoldersTable = (props: Props) => {
   const [rowSelection, setRowSelection] = useState({});
+  console.log(Object.keys(rowSelection).length);
   const selectedFolders = props.data.filter((folder) =>
     Object.keys(rowSelection).includes(folder.id),
   );
@@ -36,6 +37,7 @@ const FoldersTable = (props: Props) => {
         page={props.currentPage}
         dataLength={props.data.length}
         selectedRowsCount={Object.keys(rowSelection).length}
+        showSelectedRowsCount
       />
     </div>
   );

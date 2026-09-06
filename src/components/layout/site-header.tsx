@@ -10,12 +10,14 @@ const SiteHeader = ({
   title,
   showTrigger = true,
   showDate = true,
-  showButton,
+  showText,
+  showBackButton,
 }: {
   title?: string;
   showTrigger?: boolean;
   showDate?: boolean;
-  showButton?: { href: string; text: string };
+  showText?: string;
+  showBackButton?: { href: string; text: string };
 }) => {
   return (
     <header className="flex h-12 shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear ">
@@ -46,11 +48,16 @@ const SiteHeader = ({
               </span>
             </div>
           )}
-          {showButton && (
-            <Link href={showButton.href}>
+          {showText && (
+            <span className="text-sm font-medium text-muted-foreground">
+              {showText}
+            </span>
+          )}
+          {showBackButton && (
+            <Link href={showBackButton.href}>
               <Button variant="outline" size="sm">
                 <ArrowLeft className="size-4" />
-                {showButton.text}
+                {showBackButton.text}
               </Button>
             </Link>
           )}

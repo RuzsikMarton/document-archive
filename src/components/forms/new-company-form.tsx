@@ -44,7 +44,7 @@ const NewCompanyForm = () => {
       toast.success("Spoločnosť bola úspešne vytvorená.");
       console.log(res.company);
     }
-    router.push(`/company/${res.company?.id}`);
+    router.push(`/admin/organizations/${res.company?.id}`);
   };
   return (
     <>

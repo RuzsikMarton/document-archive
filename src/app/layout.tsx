@@ -4,6 +4,13 @@ import { Providers } from "@/providers/providers";
 import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
+{
+  /*
+  Alternate font Jost
+  const jost = Jost({
+  subsets: ["latin"],
+});*/
+}
 
 export async function generateMetadata() {
   const title = "Evidio";

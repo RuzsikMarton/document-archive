@@ -59,7 +59,15 @@ export function DataTable<TData extends RowData>({
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="px-4 sm:px-6 py-2">
+                  <TableCell
+                    key={cell.id}
+                    style={{ width: cell.column.getSize() }}
+                    className={
+                      cell.column.id === "actions"
+                        ? "px-2 py-2"
+                        : "px-4 sm:px-6 py-2"
+                    }
+                  >
                     <table.FlexRender cell={cell} />
                   </TableCell>
                 ))}

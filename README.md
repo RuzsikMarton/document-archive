@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Evidio
 
-## Getting Started
+Evidio is a document archive and physical folder management application for organizations.
 
-First, run the development server:
+It helps organizations register physical document folders, track their contents and status, assign folders to members, and identify folders using QR codes.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- User registration and authentication
+- Email verification
+- Password reset by email
+- Organization-based access control
+- Organization member management
+- Admin user and organization management
+- Physical document folder management
+- Folder metadata including:
+  - Name
+  - Year
+  - Date range
+  - Contents
+  - Transfer status
+  - Transfer date
+- QR code generation for folders
+- Folder search, sorting, and filtering
+- Dashboard statistics
+- PDF generation and downloading
+- Responsive interface
+- Slovak user interface
+- Light and dark theme support
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Technology Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Next.js 16
+- React 19
+- TypeScript
+- PostgreSQL
+- Prisma 7
+- Better Auth
+- Tailwind CSS 4
+- shadcn/ui
+- Resend
+- React Hook Form
+- Zod
+- jsPDF
+- QRCode
+- TanStack Table
 
-## Learn More
+## Requirements
 
-To learn more about Next.js, take a look at the following resources:
+Before running the application, install the following:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Node.js 20 or newer
+- npm
+- PostgreSQL database
+- A Resend account for email delivery
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Roadmap
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Make organization leaders able to edit employee information
+- Add profile pictures for users
+- Add phone numbers to user profiles
+- Support users belonging to multiple organizations
+- Organization public page

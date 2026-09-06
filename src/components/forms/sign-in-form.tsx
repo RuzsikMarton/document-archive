@@ -9,8 +9,11 @@ import { Button } from "../ui/button";
 import { Eye, EyeOff, Loader2, Mail, Lock } from "lucide-react";
 import { signInAction } from "@/actions/auth/sign-in";
 import Link from "next/link";
-import { Input } from "../ui/input";
-import { InputGroup, InputGroupAddon } from "../ui/input-group";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "../ui/input-group";
 import { Field, FieldLabel, FieldError } from "../ui/field";
 import { useState } from "react";
 
@@ -83,12 +86,12 @@ const SignInForm = () => {
                   <InputGroupAddon align="inline-start">
                     <Mail className="size-4" />
                   </InputGroupAddon>
-                  <Input
+                  <InputGroupInput
                     {...field}
                     id="email"
                     type="email"
                     placeholder="email@domena.sk"
-                    className="border-0 bg-transparent! focus-visible:outline-none focus-visible:ring-0"
+                    autoComplete="email"
                   />
                 </InputGroup>
                 <FieldError>{errors.email?.message}</FieldError>
@@ -108,16 +111,16 @@ const SignInForm = () => {
                   <InputGroupAddon align="inline-start">
                     <Lock className="size-4" />
                   </InputGroupAddon>
-                  <Input
+                  <InputGroupInput
                     {...field}
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="********"
+                    autoComplete="current-password"
                     onChange={(e) => {
                       field.onChange(e);
                       setIsPasswordTyping(e.target.value.length > 0);
                     }}
-                    className="border-0 bg-transparent! focus-visible:outline-none focus-visible:ring-0"
                   />
                   {isPasswordTyping && (
                     <InputGroupAddon align="inline-end">

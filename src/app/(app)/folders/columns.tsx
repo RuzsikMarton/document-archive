@@ -44,7 +44,7 @@ export const columns = columnHelper.columns([
       return (
         <Link
           href={`/folders/${row.original.id}`}
-          className="font-medium underline underline-offset-4 text-slate-900 dark:text-slate-50"
+          className="truncate font-medium underline underline-offset-4 text-slate-900 dark:text-slate-50"
         >
           {row.getValue("name")}
         </Link>
@@ -80,37 +80,16 @@ export const columns = columnHelper.columns([
       );
     },
   }),
-  columnHelper.accessor("createdAt", {
-    header: () => {
-      return (
-        <div className="hidden md:flex justify-center">
-          <SortableHeader title="Dátum vytvorenia" sortKey="createdAt" />
-        </div>
-      );
-    },
-    cell: ({ row }) => {
-      const date = new Date(row.getValue("createdAt"));
-      const formatted = new Intl.DateTimeFormat("sk-SK", {
-        dateStyle: "medium",
-        timeStyle: "short",
-      }).format(date);
-      return (
-        <div className="hidden md:flex justify-center text-sm text-slate-600 dark:text-slate-400">
-          {formatted}
-        </div>
-      );
-    },
-  }),
   columnHelper.accessor("handedOver", {
     header: () => (
-      <div className="font-semibold text-slate-900 dark:text-slate-50">
+      <div className="text-center font-semibold text-slate-900 dark:text-slate-50">
         Odovzdané
       </div>
     ),
     cell: ({ row }) => {
       const isHandedOver = row.getValue("handedOver") as boolean;
       return (
-        <div className="flex items-center">
+        <div className="flex items-center justify-center">
           <span
             className={
               isHandedOver
@@ -134,6 +113,28 @@ export const columns = columnHelper.columns([
       );
     },
   }),
+  columnHelper.accessor("createdAt", {
+    header: () => {
+      return (
+        <div className="hidden md:flex justify-center">
+          <SortableHeader title="Dátum vytvorenia" sortKey="createdAt" />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      const date = new Date(row.getValue("createdAt"));
+      const formatted = new Intl.DateTimeFormat("sk-SK", {
+        dateStyle: "medium",
+        timeStyle: "short",
+      }).format(date);
+      return (
+        <div className="hidden md:flex justify-center text-sm text-slate-600 dark:text-slate-400">
+          {formatted}
+        </div>
+      );
+    },
+  }),
+
   columnHelper.display({
     id: "actions",
 

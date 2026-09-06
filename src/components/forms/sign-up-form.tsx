@@ -10,7 +10,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "../ui/button";
 import { Loader2, Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { Input } from "../ui/input";
-import { InputGroup, InputGroupAddon } from "../ui/input-group";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "../ui/input-group";
 import { Field, FieldLabel, FieldError } from "../ui/field";
 import { useState } from "react";
 
@@ -88,12 +92,11 @@ const SignUpForm = () => {
                   <InputGroupAddon align="inline-start">
                     <User className="size-4" />
                   </InputGroupAddon>
-                  <Input
+                  <InputGroupInput
                     {...field}
                     id="name"
                     type="text"
                     placeholder="Meno"
-                    className="border-0 bg-transparent! focus-visible:outline-none focus-visible:ring-0"
                   />
                 </InputGroup>
                 <FieldError>{errors.name?.message}</FieldError>
@@ -113,12 +116,12 @@ const SignUpForm = () => {
                   <InputGroupAddon align="inline-start">
                     <Mail className="size-4" />
                   </InputGroupAddon>
-                  <Input
+                  <InputGroupInput
                     {...field}
                     id="email"
                     type="email"
                     placeholder="email@domena.sk"
-                    className="border-0 bg-transparent! focus-visible:outline-none focus-visible:ring-0"
+                    autoComplete="email"
                   />
                 </InputGroup>
                 <FieldError>{errors.email?.message}</FieldError>
@@ -138,16 +141,16 @@ const SignUpForm = () => {
                   <InputGroupAddon align="inline-start">
                     <Lock className="size-4" />
                   </InputGroupAddon>
-                  <Input
+                  <InputGroupInput
                     {...field}
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="********"
+                    autoComplete="new-password"
                     onChange={(e) => {
                       field.onChange(e);
                       setIsPasswordTyping(e.target.value.length > 0);
                     }}
-                    className="border-0 bg-transparent! focus-visible:outline-none focus-visible:ring-0"
                   />
                   {isPasswordTyping && (
                     <InputGroupAddon align="inline-end">
@@ -187,7 +190,7 @@ const SignUpForm = () => {
                   <InputGroupAddon align="inline-start">
                     <Lock className="size-4" />
                   </InputGroupAddon>
-                  <Input
+                  <InputGroupInput
                     {...field}
                     id="confirmPassword"
                     type={showConfirmPassword ? "text" : "password"}
@@ -196,7 +199,6 @@ const SignUpForm = () => {
                       field.onChange(e);
                       setIsConfirmPasswordTyping(e.target.value.length > 0);
                     }}
-                    className="border-0 bg-transparent! focus-visible:outline-none focus-visible:ring-0"
                   />
                   {isConfirmPasswordTyping && (
                     <InputGroupAddon align="inline-end">

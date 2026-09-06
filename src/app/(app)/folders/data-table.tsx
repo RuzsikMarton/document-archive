@@ -21,6 +21,7 @@ import { SearchX } from "lucide-react";
 import { useState } from "react";
 import { DataTableFeatures, features } from "./data-table-features";
 import { Folder } from "@/generated/prisma/client";
+import { getColumnPinningStyle } from "@/lib/data-table";
 
 interface FoldersDataTableProps<TData extends RowData> {
   columns: ColumnDef<DataTableFeatures, Folder>[];
@@ -44,6 +45,12 @@ export function FoldersDataTable<TData extends RowData>({
     features,
     onSortingChange: setSorting,
     onRowSelectionChange,
+    initialState: {
+      columnPinning: {
+        start: [],
+        end: ["actions"],
+      },
+    },
     getRowId: (row) => row.id,
     state: {
       sorting,
@@ -84,12 +91,15 @@ export function FoldersDataTable<TData extends RowData>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors group"
+                className="border-slate-200 bg-background dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors group"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell
                     key={cell.id}
-                    className="px-2 sm:px-4 py-4 sm:py-2"
+                    className="px-2 sm:px-4 py-2 sm:py-2"
+                    style={{
+                      ...getColumnPinningStyle({ column: cell.column }),
+                    }}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>

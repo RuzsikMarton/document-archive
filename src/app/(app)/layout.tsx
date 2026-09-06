@@ -35,8 +35,9 @@ export default async function AppLayout({
           } as React.CSSProperties
         }
       >
+        {/*className="md:mr-4!"*/}
         <AppSidebar user={session.user} />
-        <SidebarInset className="md:mr-4!">
+        <SidebarInset>
           <main className="w-full">{children}</main>
         </SidebarInset>
       </SidebarProvider>

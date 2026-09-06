@@ -133,6 +133,7 @@ const OrganizationDetailsEditForm = ({
                   disabled={isSubmitting}
                   aria-invalid={fieldState.invalid}
                   placeholder="pr.: Hlavná 123"
+                  autoComplete="street-address"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -154,6 +155,7 @@ const OrganizationDetailsEditForm = ({
                   disabled={isSubmitting}
                   aria-invalid={fieldState.invalid}
                   placeholder="pr.: Bratislava"
+                  autoComplete="address-level2"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -175,6 +177,7 @@ const OrganizationDetailsEditForm = ({
                   disabled={isSubmitting}
                   aria-invalid={fieldState.invalid}
                   placeholder="pr.: 12345"
+                  autoComplete="postal-code"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -199,6 +202,7 @@ const OrganizationDetailsEditForm = ({
                   disabled={isSubmitting}
                   aria-invalid={fieldState.invalid}
                   placeholder="info@example.sk"
+                  autoComplete="email"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -222,6 +226,7 @@ const OrganizationDetailsEditForm = ({
                   disabled={isSubmitting}
                   aria-invalid={fieldState.invalid}
                   placeholder="+421 900 123 456"
+                  autoComplete="tel"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -245,6 +250,7 @@ const OrganizationDetailsEditForm = ({
                   disabled={isSubmitting}
                   aria-invalid={fieldState.invalid}
                   placeholder="https://example.sk"
+                  autoComplete="url"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />

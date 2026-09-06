@@ -1,9 +1,11 @@
 "use client";
 
-import { Input } from "../ui/input";
 import { useDebouncedCallback } from "use-debounce";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
+import { InputGroup, InputGroupInput } from "../ui/input-group";
+import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const SearchInput = () => {
   const searchParams = useSearchParams();
@@ -22,17 +24,28 @@ const SearchInput = () => {
   }, 300);
 
   return (
-    <Input
-      type="text"
-      placeholder="Hľadať..."
-      className="w-48 sm:w-64 md:w-80"
-      value={search}
-      onChange={(e) => {
-        const value = e.target.value;
-        setSearch(value);
-        handleSearch(value);
-      }}
-    />
+    <InputGroup className="w-48 sm:w-64 md:w-80">
+      <InputGroupInput
+        type="text"
+        placeholder="Hľadať..."
+        value={search}
+        onChange={(e) => {
+          const value = e.target.value;
+          setSearch(value);
+          handleSearch(value);
+        }}
+      />
+      <X
+        className={cn(
+          "cursor-pointer mr-1 text-muted-foreground",
+          search ? "visible" : "hidden",
+        )}
+        onClick={() => {
+          setSearch("");
+          handleSearch("");
+        }}
+      />
+    </InputGroup>
   );
 };
 

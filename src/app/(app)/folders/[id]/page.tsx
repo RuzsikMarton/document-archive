@@ -16,7 +16,9 @@ const FolderPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   return (
     <>
       {session?.session && (
-        <SiteHeader showButton={{ href: "/folders", text: "Späť na zoznam" }} />
+        <SiteHeader
+          showBackButton={{ href: "/folders", text: "Späť na zoznam" }}
+        />
       )}
       <FolderEditForm folder={data} />
     </>

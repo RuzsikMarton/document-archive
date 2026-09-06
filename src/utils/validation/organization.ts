@@ -75,3 +75,7 @@ export const editOrganizationSchema = z.object({
     .optional()
     .or(z.literal("")),
 });
+
+export const editOrganizationAdminSchema = editOrganizationSchema.extend({
+  slug: z.string().trim().min(1, "Slug je povinný"),
+});
