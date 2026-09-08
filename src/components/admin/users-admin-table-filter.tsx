@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Funnel, FunnelX } from "lucide-react";
 import SearchInput from "../common/search-input";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";

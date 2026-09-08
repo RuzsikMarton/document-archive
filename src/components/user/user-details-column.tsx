@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  CircleCheck,
-  CircleX,
-  Copy,
-  CopyCheck,
-  ImageIcon,
-  X,
-} from "lucide-react";
+import { CircleCheck, CircleX, Copy, CopyCheck, ImageIcon } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { Progress } from "../ui/progress";

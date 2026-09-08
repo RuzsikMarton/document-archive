@@ -172,6 +172,7 @@ export const auth = betterAuth({
                 name: member.organization.name,
                 slug: member.organization.slug,
                 role: member.role,
+                logo: member.organization.logo,
                 memberId: member.id,
               }
             : null,

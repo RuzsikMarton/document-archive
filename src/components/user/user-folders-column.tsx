@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const UserFoldersCol = ({ user }: { user: UserPageDataType }) => {
   const folders = (user.members ?? []).flatMap(
-    (member: any) => member.folders ?? [],
+    (member) => member.folders ?? [],
   );
   const lastSession = user.sessions?.[0];
 
@@ -46,7 +46,7 @@ const UserFoldersCol = ({ user }: { user: UserPageDataType }) => {
         </div>
       ) : (
         <div className="flex flex-col gap-2 w-full bg-card/40 dark:bg-accent rounded-lg p-2">
-          {folders.map((folder: any) => (
+          {folders.map((folder) => (
             <Link
               key={folder.id}
               href={`/folders/${folder.id}`}

@@ -76,6 +76,7 @@ export const changeUserDataAdmin = async ({
       success: true,
     };
   } catch (error) {
+    console.error("Error changing user data:", error);
     return {
       success: false,
       message: "Nepodarilo sa zmeniť údaje používateľa",
@@ -109,6 +110,7 @@ export const changeUserRoleAdmin = async (
       message: "Rola používateľa bola úspešne zmenená",
     };
   } catch (error) {
+    console.error("Error changing user role:", error);
     return {
       success: false,
       message: "Nepodarilo sa zmeniť rolu používateľa",
@@ -137,6 +139,7 @@ export const resetPasswordAdmin = async (email: string) => {
       message: "Odkaz na resetovanie hesla bol odoslaný na email",
     };
   } catch (error) {
+    console.error("Error resetting user password:", error);
     return {
       success: false,
       message: "Nepodarilo sa resetovať heslo používateľa",
@@ -164,6 +167,7 @@ export const deleteUserAdmin = async (userId: string) => {
       message: "Používateľ bol úspešne zmazaný",
     };
   } catch (error) {
+    console.error("Error deleting user:", error);
     return {
       success: false,
       message: "Nepodarilo sa zmazať používateľa",

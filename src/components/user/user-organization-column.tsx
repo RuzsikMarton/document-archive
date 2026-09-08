@@ -22,7 +22,7 @@ const UserOrganizationCol = ({ user }: { user: UserPageDataType }) => {
           Používateľ nie je členom žiadnej organizácie.
         </div>
       ) : (
-        members.map((member: any) => (
+        members.map((member) => (
           <div
             key={member.id}
             className="flex flex-col gap-2 p-4 w-full bg-card/40 dark:bg-accent rounded-lg"

@@ -1,5 +1,4 @@
 import SiteHeader from "@/components/layout/site-header";
-import { Button } from "@/components/ui/button";
 import UserDetailsCol from "@/components/user/user-details-column";
 import UserFoldersCol from "@/components/user/user-folders-column";
 import UserOrganizationCol from "@/components/user/user-organization-column";

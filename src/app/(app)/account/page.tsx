@@ -9,6 +9,7 @@ import AccountCompany from "@/components/account/account-company";
 
 const AccountPage = async () => {
   const session = await requireAuth("/account/settings");
+  console.log(session.user.organization);
 
   return (
     <>
