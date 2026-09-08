@@ -56,8 +56,8 @@ Before running the application, install the following:
 
 ## Roadmap
 
+- Support users belonging to multiple organizations ✓
+- Add phone numbers to user profiles
+- Organization public page
 - Make organization leaders able to edit employee information
 - Add profile pictures for users
-- Add phone numbers to user profiles
-- Support users belonging to multiple organizations
-- Organization public page

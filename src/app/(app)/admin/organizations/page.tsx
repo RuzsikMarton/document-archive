@@ -1,4 +1,4 @@
-import CompaniesTable from "@/components/admin/organizations-admin-table";
+import OrganizationsTable from "@/components/admin/organizations-admin-table";
 import SiteHeader from "@/components/layout/site-header";
 import { getAdminDataOrganizations } from "@/lib/data/get-admin-data";
 import { requireAdmin } from "@/utils/auth";
@@ -20,7 +20,7 @@ const AdminOrganizationsPage = async (props: {
     <div className="min-h-[calc(100vh-4rem)] mx-auto">
       <SiteHeader title="Organizácie" />
       <div className="flex flex-col w-full justify-center px-4 py-4 sm:px-6 sm:py-6 lg:px-8 gap-2">
-        <CompaniesTable
+        <OrganizationsTable
           data={data || []}
           totalCount={totalCount || 0}
           currentPage={page}

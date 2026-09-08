@@ -1,6 +1,11 @@
 "use client";
 
-import { BriefcaseBusiness, ChevronRight } from "lucide-react";
+import {
+  BriefcaseBusiness,
+  ChevronDown,
+  ChevronRight,
+  Loader2,
+} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -18,53 +23,175 @@ import Link from "next/link";
 import { SessionUserType } from "@/types/auth";
 import OrganizationSidebar from "./sidebar-organization";
 import AdminSidebar from "./sidebar-admin";
+import { OrganizationList } from "@/types/organization";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { useState } from "react";
+import { changeActiveOrganizationAction } from "@/actions/organization/organization";
+import { toast } from "sonner";
 
-const AppSidebar = ({ user }: { user: SessionUserType }) => {
+const AppSidebar = ({
+  user,
+  organizations,
+}: {
+  user: SessionUserType;
+  organizations: OrganizationList;
+}) => {
+  const [pending, setPending] = useState(false);
+
+  const handleChangeActiveOrganization = async (
+    orgId: string,
+    orgSlug: string,
+  ) => {
+    if (
+      user.organization?.id === orgId &&
+      user.organization?.slug === orgSlug
+    ) {
+      return;
+    }
+    setPending(true);
+    const res = await changeActiveOrganizationAction(orgId, orgSlug);
+    if (!res.success) {
+      toast.error(res.message || "Failed to change active organization");
+      setPending(false);
+      return;
+    }
+    toast.success(res.message || "Active organization changed successfully");
+    setPending(false);
+  };
+
   return (
     <Sidebar collapsible="icon" variant="inset">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem className="group-data-[collapsible=icon]:hidden">
-            <SidebarMenuButton
-              size="lg"
-              className="h-auto min-h-12 py-2 bg-primary/10"
-            >
-              <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary/20 text-primary">
-                <BriefcaseBusiness className="size-4" />
-              </div>
+            {organizations.length === 0 ? (
+              <SidebarMenuButton
+                size="lg"
+                className="h-auto min-h-12 bg-primary/10 py-2"
+              >
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary/20 text-primary">
+                  <BriefcaseBusiness className="size-4" />
+                </div>
 
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                {user.organization ? (
-                  <>
-                    <span className="truncate font-semibold">
-                      {user.organization.name}
-                    </span>
+                <Link
+                  href="/help?topic=getting-started"
+                  className="grid flex-1 text-left text-sm leading-tight"
+                >
+                  <span className="truncate font-medium">Žiadny tím</span>
 
-                    <span className="truncate text-xs text-muted-foreground">
-                      {user.organization.role === "owner"
-                        ? "Majiteľ"
-                        : user.organization.role === "admin"
-                          ? "Administrátor"
-                          : "Zamestnanec"}
-                    </span>
-                  </>
-                ) : (
-                  <Link
-                    href="/help?topic=getting-started"
-                    className="grid flex-1 text-left text-sm leading-tight"
-                  >
-                    <span className="truncate font-medium">Žiadny tím</span>
+                  <span className="truncate text-xs text-primary">
+                    Vytvoriť alebo pripojiť sa
+                  </span>
+                </Link>
 
-                    <span className="truncate text-xs text-primary">
-                      Vytvoriť alebo pripojiť sa
-                    </span>
-                  </Link>
-                )}
-              </div>
-              {!user.organization && (
                 <ChevronRight className="ml-auto size-4 text-muted-foreground" />
-              )}
-            </SidebarMenuButton>
+              </SidebarMenuButton>
+            ) : organizations.length === 1 ? (
+              <SidebarMenuButton
+                size="lg"
+                className="h-auto min-h-12 bg-primary/10 py-2"
+              >
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary/20 text-primary">
+                  {organizations[0].logo ? (
+                    <img
+                      src={organizations[0].logo}
+                      alt={`${organizations[0].name} logo`}
+                      className="size-4"
+                    />
+                  ) : (
+                    <BriefcaseBusiness className="size-4" />
+                  )}
+                </div>
+
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-semibold">
+                    {organizations[0].name}
+                  </span>
+                </div>
+              </SidebarMenuButton>
+            ) : (
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  render={
+                    <SidebarMenuButton
+                      size="lg"
+                      className="h-auto min-h-12 cursor-pointer bg-primary/10 py-2"
+                    >
+                      <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary/20 text-primary">
+                        {user.organization?.logo ? (
+                          <img
+                            src={user.organization?.logo}
+                            alt={`${user.organization?.name} logo`}
+                            className="size-4"
+                          />
+                        ) : (
+                          <BriefcaseBusiness className="size-4" />
+                        )}
+                      </div>
+
+                      <div className="grid flex-1 text-left text-sm leading-tight">
+                        <span className="truncate font-semibold">
+                          {user.organization?.name}
+                        </span>
+                        <span className="truncate text-muted-foreground">
+                          {user.organization?.role === "owner"
+                            ? "Vlastník"
+                            : user.organization?.role === "admin"
+                              ? "Administrátor"
+                              : "Člen"}
+                        </span>
+                      </div>
+                      {pending ? (
+                        <Loader2 className="ml-auto size-4 text-muted-foreground animate-spin" />
+                      ) : (
+                        <ChevronDown className="ml-auto size-4 text-muted-foreground" />
+                      )}
+                    </SidebarMenuButton>
+                  }
+                />
+
+                <DropdownMenuContent>
+                  {organizations.map((org) => (
+                    <DropdownMenuItem
+                      key={org.id}
+                      disabled={pending}
+                      onClick={() =>
+                        handleChangeActiveOrganization(org.id, org.slug)
+                      }
+                    >
+                      <div className="flex items-center">
+                        <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary/20 text-primary">
+                          {org.logo ? (
+                            <img
+                              src={org.logo}
+                              alt={`${org.name} logo`}
+                              className="size-4"
+                            />
+                          ) : (
+                            <BriefcaseBusiness className="size-4" />
+                          )}
+                        </div>
+                        <div className="grid flex-1 text-left text-sm leading-tight ml-2">
+                          <span className="truncate font-semibold">
+                            {org.name}
+                          </span>
+                        </div>
+                      </div>
+                      {org.id === user.organization?.id && (
+                        <span className="ml-auto text-xs text-muted-foreground">
+                          Aktívna
+                        </span>
+                      )}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>

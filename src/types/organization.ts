@@ -11,6 +11,15 @@ export interface CreateOrganizationInput {
   ownerId: string;
 }
 
+export type OrganizationList = {
+  id: string;
+  name: string;
+  slug: string;
+  createdAt: Date;
+  logo?: string | null | undefined;
+  metadata?: any;
+}[];
+
 export type EditOrganizationFormData = z.infer<typeof editOrganizationSchema>;
 export type EditOrganizationAdminFormData = z.infer<
   typeof editOrganizationAdminSchema

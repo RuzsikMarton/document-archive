@@ -13,6 +13,7 @@ type SessionOrganization = {
   name: string;
   slug: string;
   role: string;
+  logo: string;
   memberId: string;
 };
 

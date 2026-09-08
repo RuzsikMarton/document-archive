@@ -154,6 +154,7 @@ export const auth = betterAuth({
               select: {
                 name: true,
                 slug: true,
+                logo: true,
               },
             },
           },

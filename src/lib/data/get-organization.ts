@@ -1,4 +1,4 @@
-import { getSession } from "@/utils/auth";
+import { getSession, isOrganizationAdmin } from "@/utils/auth";
 import { prisma } from "../prisma";
 
 export const getOrganizationStats = async () => {
@@ -84,8 +84,7 @@ export const getOrganizationEmployees = async ({
 
   if (
     !session.session.activeOrganizationId ||
-    (session.session.activeOrganizationId &&
-      session.user.organization?.role !== "owner")
+    !isOrganizationAdmin(session.user.organization?.role)
   ) {
     return {
       success: false,

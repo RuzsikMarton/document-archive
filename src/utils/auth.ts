@@ -39,3 +39,26 @@ export async function isAdmin() {
   });
   return session?.user.role === "ADMIN";
 }
+
+export function isOrganizationAdmin(role?: string) {
+  return role === "owner" || role === "admin";
+}
+
+export function isOrganizationOwner(role?: string) {
+  return role === "owner";
+}
+
+export function hasPermissionForAction(
+  currentUserRole: string,
+  targetMemberRole: string,
+) {
+  if (currentUserRole === "owner") {
+    return targetMemberRole === "admin" || targetMemberRole === "member";
+  }
+
+  if (currentUserRole === "admin") {
+    return targetMemberRole === "member";
+  }
+
+  return false;
+}

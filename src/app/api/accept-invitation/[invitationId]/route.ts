@@ -67,6 +67,8 @@ export async function POST(
     );
   }
 
+  {
+    /* IF ONLY ONE ORGANIZATION PER USER 
   // IMPORTANT:
   // User can belong to only ONE organization
   const existingMember = await prisma.member.findFirst({
@@ -88,6 +90,7 @@ export async function POST(
       },
       { status: 409 },
     );
+  }}*/
   }
 
   try {

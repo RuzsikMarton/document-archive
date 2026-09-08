@@ -31,7 +31,7 @@ const OrganizationSidebar = ({ role }: { role: string }) => {
               }
             />
           </SidebarMenuItem>
-          {role === "owner" && (
+          {(role === "owner" || role === "admin") && (
             <SidebarMenuItem>
               <SidebarMenuButton
                 tooltip="Zamestnanci"

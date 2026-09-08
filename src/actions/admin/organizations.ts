@@ -1,10 +1,60 @@
 "use server";
 
-import type { EditOrganizationAdminFormData } from "@/types/organization";
+import type {
+  EditOrganizationAdminFormData,
+  CreateOrganizationInput,
+} from "@/types/organization";
 import { prisma } from "@/lib/prisma";
 import { isAdmin } from "@/utils/auth";
 import { revalidatePath } from "next/cache";
-import { editOrganizationAdminSchema } from "@/utils/validation/organization";
+import {
+  editOrganizationAdminSchema,
+  newOrganizationSchema,
+} from "@/utils/validation/organization";
+import { auth } from "@/lib/auth";
+
+export const createOrganizationAction = async (
+  data: CreateOrganizationInput,
+) => {
+  if (!isAdmin()) {
+    return {
+      success: false,
+      message: "Nemáte oprávnenie na tento úkon",
+    };
+  }
+
+  const parsedData = newOrganizationSchema.safeParse(data);
+  if (!parsedData.success) {
+    return {
+      success: false,
+      message: "Neplatné údaje.",
+    };
+  }
+
+  try {
+    const company = await prisma.$transaction(async (tx) => {
+      const company = await auth.api.createOrganization({
+        body: {
+          name: parsedData.data.name,
+          slug: parsedData.data.slug,
+          userId: parsedData.data.ownerId,
+        },
+      });
+
+      return company;
+    });
+    return {
+      success: true,
+      company,
+    };
+  } catch (error) {
+    console.error("Error creating company:", error);
+    return {
+      success: false,
+      message: "Chyba pri vytváraní spoločnosti.",
+    };
+  }
+};
 
 export const updateOrganizationAdmin = async (
   id: string,

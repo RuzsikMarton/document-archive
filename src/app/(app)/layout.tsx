@@ -19,6 +19,10 @@ export default async function AppLayout({
     redirect("/signin");
   }
 
+  const userOrganizations = await auth.api.listOrganizations({
+    headers: await headers(),
+  });
+
   return (
     <Suspense
       fallback={
@@ -36,7 +40,7 @@ export default async function AppLayout({
         }
       >
         {/*className="md:mr-4!"*/}
-        <AppSidebar user={session.user} />
+        <AppSidebar user={session.user} organizations={userOrganizations} />
         <SidebarInset>
           <main className="w-full">{children}</main>
         </SidebarInset>

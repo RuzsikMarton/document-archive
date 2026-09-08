@@ -16,8 +16,8 @@ import z from "zod";
 import { Input } from "../ui/input";
 import { Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
-import { createCompanyAction } from "@/actions/organization/admin-company";
 import { toast } from "sonner";
+import { createOrganizationAction } from "@/actions/admin/organizations";
 
 const NewCompanyForm = () => {
   const router = useRouter();
@@ -36,7 +36,7 @@ const NewCompanyForm = () => {
   ) => {
     clearErrors();
     console.log(data);
-    const res = await createCompanyAction(data);
+    const res = await createOrganizationAction(data);
     if (!res.success) {
       toast.error(res.message || "Chyba pri vytváraní spoločnosti.");
       return;

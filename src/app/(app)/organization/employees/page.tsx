@@ -3,7 +3,7 @@ import {
   getOrganizationEmployees,
   getPendingInvitations,
 } from "@/lib/data/get-organization";
-import { requireAuth } from "@/utils/auth";
+import { isOrganizationAdmin, requireAuth } from "@/utils/auth";
 import { redirect } from "next/navigation";
 import { columns } from "./columns";
 import TablePagination from "@/components/common/table-pagination";
@@ -19,7 +19,7 @@ const OrganizationEmployees = async (props: {
 }) => {
   const session = await requireAuth("/organization/employees");
 
-  if (session.user.organization?.role !== "owner") {
+  if (!isOrganizationAdmin(session.user.organization?.role)) {
     redirect("/");
   }
 

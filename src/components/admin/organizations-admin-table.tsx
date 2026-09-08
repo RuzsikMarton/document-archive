@@ -8,7 +8,7 @@ import { columns } from "@/app/(app)/admin/organizations/columns";
 import { AdminOrganizations } from "@/types/admin";
 import { Plus } from "lucide-react";
 
-const CompaniesTable = ({
+const OrganizationsTable = ({
   data,
   totalCount,
   currentPage,
@@ -44,4 +44,4 @@ const CompaniesTable = ({
   );
 };
 
-export default CompaniesTable;
+export default OrganizationsTable;

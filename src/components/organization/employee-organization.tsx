@@ -43,14 +43,18 @@ const EmployeeOrganization = ({
 
           {organization.telephone && (
             <div>
-              <p className="text-sm text-muted-foreground mb-1">Phone</p>
+              <p className="text-sm text-muted-foreground mb-1">
+                Telefónne číslo
+              </p>
               <p className="text-base font-medium">{organization.telephone}</p>
             </div>
           )}
 
           {organization.website && (
             <div>
-              <p className="text-sm text-muted-foreground mb-1">Website</p>
+              <p className="text-sm text-muted-foreground mb-1">
+                Webová stránka
+              </p>
               <a
                 href={organization.website}
                 target="_blank"
@@ -66,7 +70,7 @@ const EmployeeOrganization = ({
             organization.city ||
             organization.postalCode) && (
             <div>
-              <p className="text-sm text-muted-foreground mb-1">Address</p>
+              <p className="text-sm text-muted-foreground mb-1">Adresa</p>
               <p className="text-base font-medium">
                 {organization.address}
                 {organization.address &&

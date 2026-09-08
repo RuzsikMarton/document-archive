@@ -3,7 +3,7 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { EditOrganizationFormData } from "@/types/organization";
-import { getSession } from "@/utils/auth";
+import { hasPermissionForAction, getSession } from "@/utils/auth";
 import { editOrganizationSchema } from "@/utils/validation/organization";
 import { headers } from "next/headers";
 
@@ -80,25 +80,51 @@ export const removeMemberAction = async (memberEmail: string) => {
     };
   }
 
-  const { role } = await auth.api.getActiveMemberRole({
-    headers: await headers(),
-  });
-
-  if (role !== "owner" && role !== "admin") {
-    return {
-      success: false,
-      message: "Nemáte oprávnenie upraviť organizáciu.",
-    };
-  }
-
-  if (memberEmail === session.user.email) {
-    return {
-      success: false,
-      message: "Nemôžete odstrániť sami seba.",
-    };
-  }
-
   try {
+    const { role: currentUserRole } = await auth.api.getActiveMemberRole({
+      headers: await headers(),
+    });
+
+    if (currentUserRole !== "owner" && currentUserRole !== "admin") {
+      return {
+        success: false,
+        message: "Nemáte oprávnenie upraviť organizáciu.",
+      };
+    }
+
+    if (memberEmail === session.user.email) {
+      return {
+        success: false,
+        message: "Nemôžete odstrániť sami seba.",
+      };
+    }
+
+    const targetMember = await prisma.member.findFirst({
+      where: {
+        organizationId: session.session.activeOrganizationId,
+        user: {
+          email: memberEmail,
+        },
+      },
+      select: {
+        role: true,
+      },
+    });
+
+    if (!targetMember) {
+      return {
+        success: false,
+        message: "Člen nebol nájdený.",
+      };
+    }
+
+    if (!hasPermissionForAction(currentUserRole, targetMember.role)) {
+      return {
+        success: false,
+        message: "Nemáte oprávnenie odstrániť tohto člena.",
+      };
+    }
+
     await auth.api.removeMember({
       body: {
         memberIdOrEmail: memberEmail,
@@ -138,7 +164,7 @@ export const changeMemberRoleAction = async (
   if (role !== "owner") {
     return {
       success: false,
-      message: "Nemáte oprávnenie upraviť organizáciu.",
+      message: "Nemáte oprávnenie upraviť rolu člena.",
     };
   }
 
@@ -188,7 +214,9 @@ export const inviteMemberAction = async (
     };
   }
 
-  const existingMember = await prisma.member.findFirst({
+  {
+    /*IF ONLY ONE ORGANIZATION PER USER
+    const existingMember = await prisma.member.findFirst({
     where: {
       user: {
         email: email,
@@ -205,6 +233,7 @@ export const inviteMemberAction = async (
       success: false,
       message: "Tento používateľ už patrí do organizácie.",
     };
+  }*/
   }
 
   try {
@@ -267,6 +296,40 @@ export const cancelInvitationAction = async (invitationId: string) => {
     return {
       success: false,
       message: "Chyba pri rušení pozvánky.",
+    };
+  }
+};
+
+export const changeActiveOrganizationAction = async (
+  organizationId: string,
+  organizationSlug: string,
+) => {
+  const session = await getSession();
+
+  if (!session || !session.session.activeOrganizationId) {
+    return {
+      success: false,
+      message: "Neautorizovaný prístup.",
+    };
+  }
+
+  try {
+    await auth.api.setActiveOrganization({
+      body: {
+        organizationId,
+        organizationSlug,
+      },
+      headers: await headers(),
+    });
+    return {
+      success: true,
+      message: "Aktívna organizácia bola úspešne zmenená.",
+    };
+  } catch (error) {
+    console.error("Error changing active organization", error);
+    return {
+      success: false,
+      message: "Chyba pri zmene aktívnej organizácie.",
     };
   }
 };
