@@ -5,11 +5,11 @@ import AccountSettingsCard from "@/components/account/account-settings";
 import AccountInfo from "@/components/account/account-info";
 import DeleteAccountSection from "@/components/account/deleta-account-section";
 import AccountBadges from "@/components/account/account-badges";
-import AccountCompany from "@/components/account/account-company";
+import { getHasOwnedOrganization } from "@/lib/data/users";
 
 const AccountPage = async () => {
   const session = await requireAuth("/account/settings");
-  console.log(session.user.organization);
+  const hasOwnedOrganization = await getHasOwnedOrganization();
 
   return (
     <>
@@ -17,22 +17,21 @@ const AccountPage = async () => {
 
       <div className="grid grid-cols-1 gap-6 p-4 lg:p-8 lg:grid-cols-2">
         <div className="space-y-6">
-          <AccountSettingsCard
-            name={session.user.name}
-            email={session.user.email}
-            emailVerified={session.user.emailVerified}
+          <AccountSettingsCard user={session.user} />
+          <AccountBadges
+            user={session.user}
+            hasOwnedOrganization={hasOwnedOrganization}
           />
+        </div>
+
+        <div className="space-y-6">
           <AccountInfo
             userId={session.user.id}
             createdAt={session.user.createdAt}
             role={session.user.role}
           />
-          <AccountBadges user={session.user} />
-        </div>
-
-        <div className="space-y-6">
-          <AccountCompany user={session.user} />
           <ChangePasswordForm />
+          {/*Not used becasue of multiple organizations <AccountCompany user={session.user} /> */}
           <DeleteAccountSection />
         </div>
       </div>

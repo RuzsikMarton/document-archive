@@ -4,11 +4,17 @@ import { SessionUserType } from "@/types/auth";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { BadgeCheck, Crown, Shield, Users, Award } from "lucide-react";
 
-const AccountBadges = ({ user }: { user: SessionUserType }) => {
+const AccountBadges = ({
+  user,
+  hasOwnedOrganization,
+}: {
+  user: SessionUserType;
+  hasOwnedOrganization?: boolean;
+}) => {
   const hasBadges =
     user.emailVerified ||
     user.role === "ADMIN" ||
-    user.organization?.role === "owner" ||
+    hasOwnedOrganization ||
     user.organization?.id;
 
   return (
@@ -66,7 +72,7 @@ const AccountBadges = ({ user }: { user: SessionUserType }) => {
                 <TooltipContent>Administrátor</TooltipContent>
               </Tooltip>
             )}
-            {user.organization?.role === "owner" && (
+            {hasOwnedOrganization && (
               <Tooltip>
                 <TooltipTrigger
                   render={

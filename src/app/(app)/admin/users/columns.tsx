@@ -41,6 +41,21 @@ export const columns = columnHelper.columns([
       );
     },
   }),
+  columnHelper.accessor("telephone", {
+    header: () => (
+      <div className="max-w-10 font-semibold text-slate-900 dark:text-slate-50">
+        Telefón
+      </div>
+    ),
+    size: 10,
+    cell: ({ row }) => {
+      return (
+        <div className="w-full truncate text-slate-900 dark:text-slate-50">
+          {row.getValue("telephone") || "-"}
+        </div>
+      );
+    },
+  }),
   columnHelper.accessor("role", {
     header: () => (
       <div className="font-semibold text-slate-900 dark:text-slate-50">
@@ -55,16 +70,16 @@ export const columns = columnHelper.columns([
       );
     },
   }),
-  columnHelper.accessor("members.organization", {
+  columnHelper.accessor("members", {
     header: () => (
       <div className="font-semibold text-slate-900 dark:text-slate-50">
-        Organizácia
+        Organizácie
       </div>
     ),
     cell: ({ row }) => {
       return (
         <div className="text-slate-900 dark:text-slate-50">
-          {row.original.members[0]?.organization.name || "-"}
+          {row.original.members.length || "-"}
         </div>
       );
     },

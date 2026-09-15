@@ -2,6 +2,7 @@
 
 import { Organization } from "@/generated/prisma/client";
 import { Building2 } from "lucide-react";
+import { CldImage } from "next-cloudinary";
 
 const EmployeeOrganization = ({
   organization,
@@ -10,17 +11,23 @@ const EmployeeOrganization = ({
 }) => {
   return (
     <div className="max-w-3xl md:min-w-md lg:max-w-4xl xl:max-w-5xl mx-auto p-8">
-      <div className="w-full bg-card border rounded-lg p-10 space-y-8">
+      <div className="w-full bg-muted dark:bg-card border rounded-lg p-10 space-y-8 shadow-sm">
         {/* Header */}
         <div className="flex items-center gap-6">
           {organization.logo ? (
-            <img
-              src={organization.logo}
-              alt={organization.name}
-              className="w-20 h-20 rounded-lg object-cover"
-            />
+            <div className="w-20 h-20 rounded-lg bg-slate-300 dark:bg-slate-700 flex items-center justify-center">
+              <CldImage
+                src={organization.logo}
+                alt={organization.name}
+                width={80}
+                height={80}
+                sizes="100vw"
+                className="object-contain max-w-full max-h-full"
+                loading="lazy"
+              />
+            </div>
           ) : (
-            <div className="w-20 h-20 rounded-lg bg-muted flex items-center justify-center">
+            <div className="w-20 h-20 rounded-lg bg-slate-300 dark:bg-slate-700 flex items-center justify-center">
               <Building2 className="w-10 h-10 text-muted-foreground" />
             </div>
           )}

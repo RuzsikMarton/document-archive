@@ -1,8 +1,9 @@
 "use client";
 
 import { CircleCheck, CircleX, Copy, CopyCheck, ImageIcon } from "lucide-react";
-import Image from "next/image";
+import { CldImage } from "next-cloudinary";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Progress } from "../ui/progress";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { useSession } from "@/lib/auth-client";
@@ -15,11 +16,53 @@ type SetupStep = {
 };
 
 import { UserPageDataType } from "@/types/user";
+import ImageChangeDialog from "../common/image-change-dialog";
+import Image from "next/image";
+import { updateProfilePictureAction } from "@/actions/user/profile";
+import { toast } from "sonner";
 
 const UserDetailsCol = ({ user }: { user: UserPageDataType }) => {
   const [copiedMail, setCopiedMail] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const session = useSession();
+  const router = useRouter();
+
+  const uploadProfileImage = async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "evidio");
+    formData.append("folder", "evidio/profilePics");
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
+
+    const data = await res.json();
+    const optimizedUrl = data.secure_url.replace(
+      "/image/upload/",
+      "/image/upload/c_limit,w_500,h_500/q_auto/f_auto/",
+    );
+
+    const actionResult = await updateProfilePictureAction(
+      user.id,
+      optimizedUrl,
+    );
+
+    if (!actionResult.success) {
+      toast.error(
+        actionResult.message || "Chyba pri aktualizácii profilového obrázku.",
+      );
+    } else {
+      toast.success(
+        actionResult.message || "Profilový obrázok bol úspešne aktualizovaný.",
+      );
+    }
+    router.refresh();
+  };
 
   const steps: SetupStep[] = [
     {
@@ -51,25 +94,55 @@ const UserDetailsCol = ({ user }: { user: UserPageDataType }) => {
   return (
     <div className="w-full flex flex-col items-center gap-4">
       <div className="relative aspect-square w-full max-w-60">
-        <Image
-          src="/no-img.webp"
-          alt="No Image"
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-contain rounded-2xl"
-          loading="eager"
-        />
+        {user.image ? (
+          <CldImage
+            src={user.image}
+            width={500}
+            height={500}
+            crop="fill"
+            gravity="face"
+            alt={user.name}
+            loading="lazy"
+            className="object-contain max-w-full max-h-full rounded-2xl"
+          />
+        ) : (
+          <Image
+            src="/no-img.webp"
+            alt="No Image"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-contain rounded-2xl"
+            loading="eager"
+          />
+        )}
       </div>
       {/* Profile pics future content */}
       {(session.data?.user?.id === user.id ||
         session.data?.user.role === "ADMIN") && (
-        <button
-          disabled
-          className="flex items-center font-semibold text-primary text-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <ImageIcon />
-          <span className="ml-2">Zmeniť profilový obrázok</span>
-        </button>
+        <>
+          <button
+            onClick={() => setOpenDialog(true)}
+            disabled={
+              !(
+                session.data?.user?.id === user.id ||
+                session.data?.user.role === "ADMIN"
+              )
+            }
+            className="flex items-center font-semibold text-primary text-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <ImageIcon />
+            <span className="ml-2">Zmeniť profilový obrázok</span>
+          </button>
+          <ImageChangeDialog
+            open={openDialog}
+            setOpen={setOpenDialog}
+            title="Zmeniť profilový obrázok"
+            description="Vyberte nový profilový obrázok."
+            uploadImage={async (file) => {
+              await uploadProfileImage(file);
+            }}
+          />
+        </>
       )}
       <div className="w-full flex flex-col my-4 bg-card rounded-lg p-4">
         <Tooltip>
@@ -128,18 +201,17 @@ const UserDetailsCol = ({ user }: { user: UserPageDataType }) => {
             )}
           </div>
         </div>
-        {/*TODO: Phone number section */}
         <div className="flex items-center justify-between p-2 w-full bg-card/40 dark:bg-accent rounded-lg">
           <div>
             <p className="font-semibold text-muted-foreground text-sm">
               Telefón
             </p>
-            <p>-</p>
+            <p>{user.telephone ?? "-"}</p>
           </div>
           <div
             className="cursor-pointer hover:text-primary"
             onClick={() => {
-              navigator.clipboard.writeText("No phone number");
+              navigator.clipboard.writeText(user.telephone ?? "");
               setCopiedPhone(true);
               setTimeout(() => setCopiedPhone(false), 2000);
             }}

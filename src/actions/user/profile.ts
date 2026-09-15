@@ -10,14 +10,18 @@ import {
 import { headers } from "next/headers";
 import z from "zod";
 
-export const updateProfileAction = async (name: string, email?: string) => {
+export const updateProfileAction = async (
+  name: string,
+  email?: string,
+  telephone?: string,
+) => {
   const session = await getSession();
 
   if (!session) {
     return { success: false, message: "Neautorizovaný prístup." };
   }
 
-  const parsedData = updateProfileSchema.safeParse({ name, email });
+  const parsedData = updateProfileSchema.safeParse({ name, email, telephone });
 
   if (!parsedData.success) {
     return {
@@ -31,8 +35,10 @@ export const updateProfileAction = async (name: string, email?: string) => {
       name: string;
       email?: string;
       emailVerified?: boolean;
+      telephone?: string;
     } = {
       name: parsedData.data.name,
+      telephone: parsedData.data.telephone,
     };
 
     if (email !== undefined) {
@@ -65,6 +71,44 @@ export const updateProfileAction = async (name: string, email?: string) => {
     return {
       success: false,
       message: "Nepodarilo sa aktualizovať profil.",
+    };
+  }
+};
+
+export const updateProfilePictureAction = async (
+  userId: string,
+  pictureUrl: string,
+) => {
+  const session = await getSession();
+
+  if (!session) {
+    return { success: false, message: "Neautorizovaný prístup." };
+  }
+
+  if (session.user.id !== userId || session.user.role !== "ADMIN") {
+    return {
+      success: false,
+      message:
+        "Nemáte oprávnenie na aktualizáciu profilovej fotky tohto používateľa.",
+    };
+  }
+
+  try {
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        image: pictureUrl,
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating profile picture:", error);
+    return {
+      success: false,
+      message: "Nepodarilo sa aktualizovať profilovú fotku.",
     };
   }
 };

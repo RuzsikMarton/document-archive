@@ -135,6 +135,7 @@ export const auth = betterAuth({
         },
         select: {
           role: true,
+          telephone: true,
         },
       });
 
@@ -166,6 +167,7 @@ export const auth = betterAuth({
         user: {
           ...user,
           role: userData?.role,
+          telephone: userData?.telephone,
           organization: member
             ? {
                 id: member.organizationId,

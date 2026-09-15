@@ -44,3 +44,27 @@ export const getUsersById = async (id: string) => {
     throw new Error("Failed to fetch user");
   }
 };
+
+export const getHasOwnedOrganization = async () => {
+  const session = await getSession();
+  if (!session) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      include: {
+        members: {
+          select: {
+            role: true,
+          },
+        },
+      },
+    });
+    return user?.members.some((member) => member.role === "owner");
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to fetch organization status");
+  }
+};

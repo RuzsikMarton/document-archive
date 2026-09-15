@@ -41,6 +41,7 @@ export type EmployeeOrganizationResult = Prisma.MemberGetPayload<{
       select: {
         name: true;
         email: true;
+        telephone: true;
       };
     };
   };

@@ -127,6 +127,7 @@ export const getOrganizationEmployees = async ({
           select: {
             name: true,
             email: true,
+            telephone: true,
           },
         },
       },

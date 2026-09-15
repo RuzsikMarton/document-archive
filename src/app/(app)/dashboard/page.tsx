@@ -1,19 +1,12 @@
 import Dashboard from "@/components/Dashboard";
 import NoCompany from "@/components/layout/no-company";
 import SiteHeader from "@/components/layout/site-header";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { DashboardFolder } from "@/types/folder";
-import { headers } from "next/headers";
+import { requireAuth } from "@/utils/auth";
 
 export default async function DashboardPage() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (!session) {
-    return null; // This is protected by layout, but added for type safety
-  }
+  const session = await requireAuth("/dashboard");
 
   let folders: DashboardFolder[] | null = [];
   let stats = {

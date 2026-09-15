@@ -9,7 +9,6 @@ import { SignUpFormValues } from "@/types/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "../ui/button";
 import { Loader2, Mail, Lock, User, Eye, EyeOff } from "lucide-react";
-import { Input } from "../ui/input";
 import {
   InputGroup,
   InputGroupAddon,

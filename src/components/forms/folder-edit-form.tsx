@@ -265,7 +265,7 @@ const FolderEditForm = ({ folder }: { folder: FolderWithOrganization }) => {
                       disabled={!isEditing}
                       aria-invalid={fieldState.invalid}
                       placeholder="Zadajte názov"
-                      className="disabled:opacity-100 disabled:cursor-default"
+                      className="disabled:opacity-100 disabled:cursor-default shadow-sm"
                     />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
@@ -294,7 +294,7 @@ const FolderEditForm = ({ folder }: { folder: FolderWithOrganization }) => {
                           showClear={true}
                           aria-invalid={fieldState.invalid}
                           disabled={!isEditing}
-                          className="disabled:cursor-default"
+                          className="disabled:cursor-default shadow-sm"
                         />
 
                         <ComboboxContent>
@@ -343,7 +343,7 @@ const FolderEditForm = ({ folder }: { folder: FolderWithOrganization }) => {
                             showClear={true}
                             disabled={!isEditing}
                             aria-invalid={fieldState.invalid}
-                            className="disabled:cursor-default"
+                            className="disabled:cursor-default shadow-sm"
                           />
                           <ComboboxContent>
                             <ComboboxEmpty>Žiadne výsledky</ComboboxEmpty>
@@ -389,7 +389,7 @@ const FolderEditForm = ({ folder }: { folder: FolderWithOrganization }) => {
                             placeholder="Do"
                             showClear={true}
                             disabled={!isEditing}
-                            className="disabled:cursor-default"
+                            className="disabled:cursor-default shadow-sm"
                           />
                           <ComboboxContent>
                             <ComboboxEmpty>Žiadne výsledky</ComboboxEmpty>
@@ -417,7 +417,7 @@ const FolderEditForm = ({ folder }: { folder: FolderWithOrganization }) => {
               )}
 
               {/* Handed Over Toggle - Not part of form */}
-              <div className="flex items-center justify-between mt-6 p-4 border rounded-lg">
+              <div className="flex items-center justify-between mt-6 p-4 border rounded-lg shadow-sm">
                 <div className="space-y-0.5">
                   <FieldLabel>Odovzdané</FieldLabel>
                   {!folder.handedOver ? (
@@ -454,7 +454,7 @@ const FolderEditForm = ({ folder }: { folder: FolderWithOrganization }) => {
             <div className="w-full max-w-sm">
               {folder.qrCodeImage ? (
                 <div className="space-y-4">
-                  <div className="relative aspect-square w-full border rounded-lg overflow-hidden bg-white">
+                  <div className="relative aspect-square w-full border rounded-lg overflow-hidden bg-white shadow-sm">
                     <Image
                       src={folder.qrCodeImage}
                       alt={`QR kód pre ${folder.name}`}
@@ -469,7 +469,7 @@ const FolderEditForm = ({ folder }: { folder: FolderWithOrganization }) => {
                         <Button
                           type="button"
                           variant="outline"
-                          className="w-full sm:w-2/4"
+                          className="w-full sm:w-2/4 shadow-sm hover:shadow-md cursor-pointer"
                           onClick={handleDownloadQR}
                         >
                           <Download />
@@ -479,7 +479,7 @@ const FolderEditForm = ({ folder }: { folder: FolderWithOrganization }) => {
                         <Button
                           type="button"
                           variant="outline"
-                          className="w-full sm:w-2/4"
+                          className="w-full sm:w-2/4 shadow-sm hover:shadow-md cursor-pointer"
                           onClick={handleDownloadSmallQR}
                         >
                           <Download />
@@ -518,7 +518,7 @@ const FolderEditForm = ({ folder }: { folder: FolderWithOrganization }) => {
                   aria-invalid={fieldState.invalid}
                   placeholder="Zadajte obsah záznamu..."
                   rows={12}
-                  className="resize-none disabled:opacity-100 disabled:cursor-default"
+                  className="resize-none disabled:opacity-100 disabled:cursor-default shadow-sm"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />

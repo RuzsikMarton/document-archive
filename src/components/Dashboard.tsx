@@ -30,7 +30,7 @@ const Dashboard = ({ folders, stats }: DashboardProps) => {
           <button
             type="button"
             onClick={openDialog}
-            className="flex items-center gap-3 sm:gap-4 bg-white cursor-pointer dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-3 sm:p-5 text-left transition-all hover:shadow-md hover:border-slate-300 dark:hover:border-slate-600 group"
+            className="flex items-center gap-3 sm:gap-4 bg-white cursor-pointer dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-3 sm:p-5 text-left transition-all shadow-sm hover:shadow-md hover:border-slate-300 dark:hover:border-slate-600 group"
           >
             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-blue-50 dark:bg-blue-950 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover:bg-blue-100 dark:group-hover:bg-blue-900 transition-colors">
               <Plus className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -47,7 +47,7 @@ const Dashboard = ({ folders, stats }: DashboardProps) => {
 
           <Link
             href="/folders"
-            className="flex items-center gap-3 sm:gap-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-3 sm:p-5 transition-all hover:shadow-md hover:border-slate-300 dark:hover:border-slate-600 group"
+            className="flex items-center gap-3 sm:gap-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-3 sm:p-5 transition-all shadow-sm hover:shadow-md hover:border-slate-300 dark:hover:border-slate-600 group"
           >
             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-slate-50 dark:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 group-hover:bg-slate-100 dark:group-hover:bg-slate-600 transition-colors">
               <FolderOpen className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -63,7 +63,7 @@ const Dashboard = ({ folders, stats }: DashboardProps) => {
           </Link>
           <Link
             href="/folders?handedOver=false"
-            className="flex items-center gap-3 sm:gap-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-3 sm:p-5 transition-all hover:shadow-md hover:border-slate-300 dark:hover:border-slate-600 group"
+            className="flex items-center gap-3 sm:gap-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-3 sm:p-5 transition-all shadow-sm hover:shadow-md hover:border-slate-300 dark:hover:border-slate-600 group"
           >
             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-amber-50 dark:bg-amber-950 flex items-center justify-center text-amber-600 dark:text-amber-400 group-hover:bg-amber-100 dark:group-hover:bg-amber-900 transition-colors">
               <Clock className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -80,7 +80,7 @@ const Dashboard = ({ folders, stats }: DashboardProps) => {
         </div>
 
         {/* Table */}
-        <div className="bg-white dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700  overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
           <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
             <h2 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-slate-50">
               Nedávna aktivita

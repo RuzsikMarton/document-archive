@@ -10,10 +10,12 @@ export const changeUserDataAdmin = async ({
   id,
   name,
   email,
+  telephone,
 }: {
   id: string;
   name?: string;
   email?: string;
+  telephone?: string;
 }) => {
   if (!(await isAdmin())) {
     return {
@@ -36,6 +38,7 @@ export const changeUserDataAdmin = async ({
     select: {
       name: true,
       email: true,
+      telephone: true,
     },
   });
 
@@ -51,10 +54,15 @@ export const changeUserDataAdmin = async ({
       name?: string;
       email?: string;
       emailVerified?: boolean;
+      telephone?: string;
     } = {};
 
     if (parsedData.data.name !== undefined) {
       data.name = parsedData.data.name;
+    }
+
+    if (telephone !== undefined && telephone !== existingUser.telephone) {
+      data.telephone = telephone;
     }
 
     if (

@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import {
   BriefcaseBusiness,
   ChevronDown,
@@ -33,6 +34,7 @@ import {
 import { useState } from "react";
 import { changeActiveOrganizationAction } from "@/actions/organization/organization";
 import { toast } from "sonner";
+import { CldImage } from "next-cloudinary";
 
 const AppSidebar = ({
   user,
@@ -42,6 +44,7 @@ const AppSidebar = ({
   organizations: OrganizationList;
 }) => {
   const [pending, setPending] = useState(false);
+  const router = useRouter();
 
   const handleChangeActiveOrganization = async (
     orgId: string,
@@ -62,6 +65,7 @@ const AppSidebar = ({
     }
     toast.success(res.message || "Active organization changed successfully");
     setPending(false);
+    router.push("/dashboard");
   };
 
   return (
@@ -98,10 +102,14 @@ const AppSidebar = ({
               >
                 <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary/20 text-primary">
                   {organizations[0].logo ? (
-                    <img
+                    <CldImage
                       src={organizations[0].logo}
-                      alt={`${organizations[0].name} logo`}
-                      className="size-4"
+                      alt={organizations[0].name}
+                      width={500}
+                      height={500}
+                      crop="limit"
+                      className="max-h-full max-w-full object-contain"
+                      sizes="200px"
                     />
                   ) : (
                     <BriefcaseBusiness className="size-4" />
@@ -124,10 +132,15 @@ const AppSidebar = ({
                     >
                       <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary/20 text-primary">
                         {user.organization?.logo ? (
-                          <img
+                          <CldImage
                             src={user.organization?.logo}
-                            alt={`${user.organization?.name} logo`}
-                            className="size-4"
+                            alt={user.organization?.name}
+                            width={500}
+                            height={500}
+                            crop="limit"
+                            className="max-h-full max-w-full object-contain"
+                            sizes="200px"
+                            loading="lazy"
                           />
                         ) : (
                           <BriefcaseBusiness className="size-4" />
@@ -167,10 +180,15 @@ const AppSidebar = ({
                       <div className="flex items-center">
                         <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary/20 text-primary">
                           {org.logo ? (
-                            <img
+                            <CldImage
                               src={org.logo}
-                              alt={`${org.name} logo`}
-                              className="size-4"
+                              alt={org.name}
+                              width={500}
+                              height={500}
+                              crop="limit"
+                              className="max-h-full max-w-full object-contain"
+                              sizes="200px"
+                              loading="lazy"
                             />
                           ) : (
                             <BriefcaseBusiness className="size-4" />

@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { EditOrganizationFormData } from "@/types/organization";
 import { hasPermissionForAction, getSession } from "@/utils/auth";
 import { editOrganizationSchema } from "@/utils/validation/organization";
+import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
 export const EditOrganizationDetailsAction = async (
@@ -330,6 +331,49 @@ export const changeActiveOrganizationAction = async (
     return {
       success: false,
       message: "Chyba pri zmene aktívnej organizácie.",
+    };
+  }
+};
+
+export const updateOrganizationLogoAction = async (logoUrl: string) => {
+  const session = await getSession();
+
+  if (!session || !session.session.activeOrganizationId) {
+    return {
+      success: false,
+      message: "Neautorizovaný prístup.",
+    };
+  }
+
+  const { role } = await auth.api.getActiveMemberRole({
+    headers: await headers(),
+  });
+
+  if (role !== "owner") {
+    return {
+      success: false,
+      message: "Nemáte oprávnenie upraviť organizáciu.",
+    };
+  }
+
+  try {
+    await prisma.organization.update({
+      where: {
+        id: session.session.activeOrganizationId,
+      },
+      data: {
+        logo: logoUrl,
+      },
+    });
+    revalidatePath("/organization");
+    return {
+      success: true,
+    };
+  } catch (error) {
+    console.error("Error changing organization logo", error);
+    return {
+      success: false,
+      message: "Chyba pri zmene loga organizácie.",
     };
   }
 };

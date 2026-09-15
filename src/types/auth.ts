@@ -22,6 +22,7 @@ export type SessionUserType = {
   id: string;
   createdAt: Date;
   updatedAt: Date;
+  telephone?: string | null;
   email: string;
   emailVerified: boolean;
   name: string;

@@ -12,6 +12,14 @@ export const updateProfileSchema = z.object({
     .trim()
     .max(100, { message: "E-mail môže mať maximálne 100 znakov." })
     .optional(),
+
+  telephone: z
+    .string()
+    .trim()
+    .min(6, "Telefónne číslo je príliš krátke.")
+    .max(20, "Telefónne číslo je príliš dlhé.")
+    .optional()
+    .or(z.literal("")),
 });
 
 export const changePasswordSchema = z

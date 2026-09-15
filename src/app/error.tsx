@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { CircleX } from "lucide-react";
+import { CircleX, RotateCcw } from "lucide-react";
 import Link from "next/link";
 
 export default function Error({
@@ -12,24 +12,27 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <div className="flex min-h-[75vh] flex-col items-center justify-center gap-4">
-      <div className="flex flex-col items-center gap-4 w-full text-center max-w-3xl bg-card rounded-2xl p-4">
-        <CircleX className="h-12 w-12 text-destructive" />
-        <h2 className="text-2xl font-bold text-destructive">
-          Niečo sa pokazilo.
-        </h2>
-        <span className="text-muted-foreground text-sm">
-          Neočakávaná chyba. Skúste to prosím znova.
-        </span>
-        <div className="flex gap-2">
-          <Button variant={"outline"} onClick={() => reset()}>
+    <main className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4">
+      <div className="w-full max-w-md rounded-2xl border bg-card p-8 text-center shadow-sm">
+        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-destructive/10">
+          <CircleX className="h-7 w-7 text-destructive" />
+        </div>
+
+        <h1 className="text-2xl font-semibold">Niečo sa pokazilo</h1>
+
+        <p className="mt-2 text-sm text-muted-foreground">
+          Nastala neočakávaná chyba. Skúste stránku načítať znova.
+        </p>
+
+        <div className="mt-6 flex justify-center gap-2">
+          <Button variant="outline" onClick={reset}>
+            <RotateCcw />
             Skúsiť znova
           </Button>
-          <Link href="/">
-            <Button>Späť na hlavnú</Button>
-          </Link>
+
+          <Button render={<Link href="/">Späť na hlavnú</Link>} />
         </div>
       </div>
-    </div>
+    </main>
   );
 }

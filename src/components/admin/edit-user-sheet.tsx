@@ -35,6 +35,8 @@ const EditUserSheet = ({
       id: user.id,
       name: (document.getElementById("user-name") as HTMLInputElement).value,
       email: (document.getElementById("user-email") as HTMLInputElement).value,
+      telephone: (document.getElementById("user-telephone") as HTMLInputElement)
+        .value,
     });
 
     if (!res.success) {
@@ -65,6 +67,14 @@ const EditUserSheet = ({
           <div className="grid gap-3">
             <Label htmlFor="user-email">Email</Label>
             <Input id="user-email" defaultValue={user.email} />
+          </div>
+          <div className="grid gap-3">
+            <Label htmlFor="user-telephone">Telephone</Label>
+            <Input
+              placeholder="pr.: +421912345678"
+              id="user-telephone"
+              defaultValue={user.telephone || ""}
+            />
           </div>
         </div>
         <SheetFooter>

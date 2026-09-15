@@ -4,13 +4,27 @@ import { editOrganizationSchema } from "@/utils/validation/organization";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
-import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Loader2 } from "lucide-react";
+import {
+  Building2,
+  Globe,
+  Hash,
+  Loader2,
+  Mail,
+  MapPin,
+  MapPinHouse,
+  MapPinned,
+  Phone,
+} from "lucide-react";
 import { Organization } from "@/generated/prisma/browser";
 import { EditOrganizationFormData } from "@/types/organization";
 import { EditOrganizationDetailsAction } from "@/actions/organization/organization";
 import { toast } from "sonner";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "../ui/input-group";
 
 const OrganizationDetailsEditForm = ({
   organization,
@@ -47,7 +61,7 @@ const OrganizationDetailsEditForm = ({
     }
   };
   return (
-    <div className="w-full lg:w-2/3 rounded-lg border bg-slate-100 p-6 space-y-4 dark:bg-slate-800  dark:border-slate-700">
+    <div className="w-full lg:w-2/3 rounded-lg border bg-muted p-6 space-y-4 dark:bg-card dark:border-slate-700 shadow-sm">
       <h1 className="text-lg font-semibold">Detaily firmy</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FieldGroup className="grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -60,14 +74,21 @@ const OrganizationDetailsEditForm = ({
                 className="lg:col-span-2"
                 data-invalid={fieldState.invalid}
               >
-                <FieldLabel htmlFor="organization-name">Názov firmy</FieldLabel>
-                <Input
-                  id="organization-name"
-                  {...field}
-                  disabled={isSubmitting}
-                  aria-invalid={fieldState.invalid}
-                  placeholder="Zadajte názov firmy"
-                />
+                <FieldLabel htmlFor="organization-name">
+                  Názov firmy *
+                </FieldLabel>
+                <InputGroup>
+                  <InputGroupInput
+                    id="organization-name"
+                    {...field}
+                    disabled={isSubmitting}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="Zadajte názov firmy"
+                  />
+                  <InputGroupAddon>
+                    <Building2 />
+                  </InputGroupAddon>
+                </InputGroup>
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -82,13 +103,18 @@ const OrganizationDetailsEditForm = ({
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="organization-ico">IČO</FieldLabel>
-                <Input
-                  id="organization-ico"
-                  {...field}
-                  disabled={isSubmitting}
-                  aria-invalid={fieldState.invalid}
-                  placeholder="pr.: 12345678"
-                />
+                <InputGroup>
+                  <InputGroupAddon>
+                    <Hash />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    id="organization-ico"
+                    {...field}
+                    disabled={isSubmitting}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="pr.: 12345678"
+                  />
+                </InputGroup>
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -103,13 +129,18 @@ const OrganizationDetailsEditForm = ({
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="organization-dic">DIČ</FieldLabel>
-                <Input
-                  id="organization-dic"
-                  {...field}
-                  disabled={isSubmitting}
-                  aria-invalid={fieldState.invalid}
-                  placeholder="pr.: 1234567890"
-                />
+                <InputGroup>
+                  <InputGroupAddon>
+                    <Hash />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    id="organization-dic"
+                    {...field}
+                    disabled={isSubmitting}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="pr.: 1234567890"
+                  />
+                </InputGroup>
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -127,14 +158,19 @@ const OrganizationDetailsEditForm = ({
                 data-invalid={fieldState.invalid}
               >
                 <FieldLabel htmlFor="organization-address">Adresa</FieldLabel>
-                <Input
-                  id="organization-address"
-                  {...field}
-                  disabled={isSubmitting}
-                  aria-invalid={fieldState.invalid}
-                  placeholder="pr.: Hlavná 123"
-                  autoComplete="street-address"
-                />
+                <InputGroup>
+                  <InputGroupAddon>
+                    <MapPinHouse />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    id="organization-address"
+                    {...field}
+                    disabled={isSubmitting}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="pr.: Hlavná 123"
+                    autoComplete="street-address"
+                  />
+                </InputGroup>
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -149,14 +185,19 @@ const OrganizationDetailsEditForm = ({
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="organization-city">Mesto</FieldLabel>
-                <Input
-                  id="organization-city"
-                  {...field}
-                  disabled={isSubmitting}
-                  aria-invalid={fieldState.invalid}
-                  placeholder="pr.: Bratislava"
-                  autoComplete="address-level2"
-                />
+                <InputGroup>
+                  <InputGroupAddon>
+                    <MapPinned />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    id="organization-city"
+                    {...field}
+                    disabled={isSubmitting}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="pr.: Bratislava"
+                    autoComplete="address-level2"
+                  />
+                </InputGroup>
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -171,14 +212,19 @@ const OrganizationDetailsEditForm = ({
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="organization-postal-code">PSČ</FieldLabel>
-                <Input
-                  id="organization-postal-code"
-                  {...field}
-                  disabled={isSubmitting}
-                  aria-invalid={fieldState.invalid}
-                  placeholder="pr.: 12345"
-                  autoComplete="postal-code"
-                />
+                <InputGroup>
+                  <InputGroupAddon>
+                    <MapPin />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    id="organization-postal-code"
+                    {...field}
+                    disabled={isSubmitting}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="pr.: 12345"
+                    autoComplete="postal-code"
+                  />
+                </InputGroup>
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -196,14 +242,19 @@ const OrganizationDetailsEditForm = ({
                 className="lg:col-span-2"
               >
                 <FieldLabel htmlFor="organization-email">E-mail</FieldLabel>
-                <Input
-                  id="organization-email"
-                  {...field}
-                  disabled={isSubmitting}
-                  aria-invalid={fieldState.invalid}
-                  placeholder="info@example.sk"
-                  autoComplete="email"
-                />
+                <InputGroup>
+                  <InputGroupAddon>
+                    <Mail />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    id="organization-email"
+                    {...field}
+                    disabled={isSubmitting}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="info@example.sk"
+                    autoComplete="email"
+                  />
+                </InputGroup>
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -220,14 +271,19 @@ const OrganizationDetailsEditForm = ({
                 <FieldLabel htmlFor="organization-telephone">
                   Telefón
                 </FieldLabel>
-                <Input
-                  id="organization-telephone"
-                  {...field}
-                  disabled={isSubmitting}
-                  aria-invalid={fieldState.invalid}
-                  placeholder="+421 900 123 456"
-                  autoComplete="tel"
-                />
+                <InputGroup>
+                  <InputGroupAddon>
+                    <Phone />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    id="organization-telephone"
+                    {...field}
+                    disabled={isSubmitting}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="+421 900 123 456"
+                    autoComplete="tel"
+                  />
+                </InputGroup>
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -244,14 +300,19 @@ const OrganizationDetailsEditForm = ({
                 <FieldLabel htmlFor="organization-website">
                   Webová stránka
                 </FieldLabel>
-                <Input
-                  id="organization-website"
-                  {...field}
-                  disabled={isSubmitting}
-                  aria-invalid={fieldState.invalid}
-                  placeholder="https://example.sk"
-                  autoComplete="url"
-                />
+                <InputGroup>
+                  <InputGroupAddon>
+                    <Globe />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    id="organization-website"
+                    {...field}
+                    disabled={isSubmitting}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="https://example.sk"
+                    autoComplete="url"
+                  />
+                </InputGroup>
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}

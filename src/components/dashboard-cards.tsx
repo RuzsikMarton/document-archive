@@ -14,7 +14,7 @@ const DashboardCards = ({ stats }: DashboardCardsProps) => {
   return (
     <div className="hidden md:grid md:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-10">
       {/* Total Folders Card */}
-      <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4 sm:p-6">
+      <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4 sm:p-6 shadow-sm">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400">
@@ -31,7 +31,7 @@ const DashboardCards = ({ stats }: DashboardCardsProps) => {
       </div>
 
       {/* Handed Over Card */}
-      <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4 sm:p-6">
+      <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4 sm:p-6 shadow-sm">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400">
@@ -48,7 +48,7 @@ const DashboardCards = ({ stats }: DashboardCardsProps) => {
       </div>
 
       {/* Not Handed Over Card */}
-      <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4 sm:p-6">
+      <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4 sm:p-6 shadow-sm">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400">

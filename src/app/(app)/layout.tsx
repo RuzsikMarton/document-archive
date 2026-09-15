@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import { LoaderCircle } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/layout/app-sidebar";
 
@@ -15,13 +14,11 @@ export default async function AppLayout({
     headers: await headers(),
   });
 
-  if (!session) {
-    redirect("/signin");
-  }
-
-  const userOrganizations = await auth.api.listOrganizations({
-    headers: await headers(),
-  });
+  const userOrganizations = session
+    ? await auth.api.listOrganizations({
+        headers: await headers(),
+      })
+    : [];
 
   return (
     <Suspense
@@ -40,7 +37,10 @@ export default async function AppLayout({
         }
       >
         {/*className="md:mr-4!"*/}
-        <AppSidebar user={session.user} organizations={userOrganizations} />
+        {session && (
+          <AppSidebar user={session.user} organizations={userOrganizations} />
+        )}
+        {/* <AppSidebar user={session.user} organizations={userOrganizations} /> */}
         <SidebarInset>
           <main className="w-full">{children}</main>
         </SidebarInset>

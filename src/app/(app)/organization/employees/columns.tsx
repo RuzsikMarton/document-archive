@@ -80,6 +80,18 @@ export const columns = columnHelper.columns([
       <div className="hidden lg:block">{row.original.user.email}</div>
     ),
   }),
+  columnHelper.accessor("user.telephone", {
+    header: () => (
+      <div className="hidden lg:block font-semibold text-slate-900 dark:text-slate-50">
+        Telefón
+      </div>
+    ),
+    cell: ({ row }) => (
+      <div className="hidden lg:block">
+        {row.original.user.telephone || "-"}
+      </div>
+    ),
+  }),
   columnHelper.accessor("role", {
     header: "Rola",
     cell: ({ row }) => {
