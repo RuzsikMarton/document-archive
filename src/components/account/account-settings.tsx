@@ -72,7 +72,7 @@ const AccountSettingsCard = ({ user }: { user: SessionUserType }) => {
     formData.append("upload_preset", "evidio");
     formData.append("folder", "evidio/profilePics");
     const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+      `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`,
       {
         method: "POST",
         body: formData,
