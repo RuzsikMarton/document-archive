@@ -1,3 +1,4 @@
+import PublicFolderView from "@/components/folders/public-folder";
 import FolderEditForm from "@/components/forms/folder-edit-form";
 import SiteHeader from "@/components/layout/site-header";
 import { getFolderById } from "@/lib/data/get-folders";
@@ -12,15 +13,29 @@ const FolderPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   if (!data) {
     notFound();
   }
+  const isAuthenticated = !!session?.session;
+  const isOrganizationMember =
+    session?.session.activeOrganizationId === data.organizationId;
 
   return (
     <>
-      {session?.session && (
+      {isAuthenticated && (
         <SiteHeader
-          showBackButton={{ href: "/folders", text: "Späť na zoznam" }}
+          showBackButton={{
+            href: "/folders",
+            text: "Späť na zoznam",
+          }}
         />
       )}
-      <FolderEditForm folder={data} />
+
+      {isOrganizationMember ? (
+        <FolderEditForm
+          folder={data}
+          activeOrganizationId={session?.session.activeOrganizationId}
+        />
+      ) : (
+        <PublicFolderView isLoggedIn={isAuthenticated} folder={data} />
+      )}
     </>
   );
 };

@@ -15,6 +15,7 @@ export type UpdateFolderFormType = {
 
 type FolderOrganization = {
   name: string;
+  logo: string | null;
   ico: string | null;
   dic: string | null;
   address: string | null;

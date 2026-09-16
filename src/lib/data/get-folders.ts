@@ -10,6 +10,7 @@ export const getFolderById = async (id: string) => {
       organization: {
         select: {
           name: true,
+          logo: true,
           ico: true,
           dic: true,
           address: true,

@@ -60,5 +60,6 @@ Before running the application, install the following:
 - Add phone numbers to user profiles ✓
 - Add profile pictures for users ✓
 - Add organization logos ✓
+- Folders public page ✓
 - Organization public page
 - Make organization leaders able to edit employee information ?

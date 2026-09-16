@@ -26,6 +26,28 @@ const SignUpForm = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isPasswordTyping, setIsPasswordTyping] = useState(false);
   const [isConfirmPasswordTyping, setIsConfirmPasswordTyping] = useState(false);
+  const redirect = searchParams.get("redirect");
+
+  function getSafeRedirect(redirect: string | null) {
+    if (!redirect) return null;
+
+    if (!redirect.startsWith("/") || redirect.startsWith("//")) {
+      return null;
+    }
+
+    return redirect;
+  }
+
+  const params = new URLSearchParams();
+
+  if (inviteId) params.set("inviteId", inviteId);
+  if (email) params.set("email", email);
+  const safeRedirect = getSafeRedirect(redirect);
+  if (safeRedirect) params.set("redirect", safeRedirect);
+
+  const signInUrl = params.toString()
+    ? `/signin?${params.toString()}`
+    : "/signin";
 
   const {
     control,
@@ -50,12 +72,12 @@ const SignUpForm = () => {
       setError("root", { message: res.message });
       return;
     }
-    if (inviteId) {
-      router.push(`/invitation/${inviteId}`);
-    } else {
-      router.push("/dashboard");
-      router.refresh();
-    }
+    const destination = inviteId
+      ? `/invitation/${inviteId}`
+      : safeRedirect || "/dashboard";
+
+    router.push(destination);
+    router.refresh();
   };
 
   return (
@@ -242,11 +264,7 @@ const SignUpForm = () => {
         <div className="text-center text-sm text-muted-foreground mt-4">
           Už máte účet?{" "}
           <Link
-            href={
-              inviteId && email
-                ? `/signin?inviteId=${inviteId}&email=${email}`
-                : "/signin"
-            }
+            href={signInUrl}
             className="hover:underline underline-offset-4 text-primary"
           >
             Prihlásiť sa

@@ -120,6 +120,13 @@ const AppSidebar = ({
                   <span className="truncate font-semibold">
                     {organizations[0].name}
                   </span>
+                  <span className="truncate text-muted-foreground">
+                    {user.organization?.role === "owner"
+                      ? "Vlastník"
+                      : user.organization?.role === "admin"
+                        ? "Administrátor"
+                        : "Člen"}
+                  </span>
                 </div>
               </SidebarMenuButton>
             ) : (
